@@ -2,7 +2,6 @@ package com.example.rosnama.Controller;
 
 import com.example.rosnama.Api.ApiResponse;
 import com.example.rosnama.Model.User;
-import com.example.rosnama.Repository.UserRepository;
 import com.example.rosnama.Service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
