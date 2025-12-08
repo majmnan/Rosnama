@@ -1,0 +1,46 @@
+package com.example.rosnama.Model;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.validator.constraints.URL;
+
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class EventOwner {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @NotEmpty
+    @Column(columnDefinition = "varchar(20) not null unique")
+    private String username;
+
+    @NotEmpty
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,20}$")
+    @Column(columnDefinition = "varchar(20) not null")
+    private String password;
+
+    @NotEmpty
+    @Email
+    @Column(columnDefinition = "varchar(40) not null unique")
+    private String email;
+
+    @NotEmpty
+    @Pattern(regexp = "^9665\\d{8}$")
+    @Column(columnDefinition = "varchar(15) not null unique")
+    private String phone;
+
+    @NotEmpty
+    @URL
+    @Column(columnDefinition = "text not null")
+    private String url;
+}
