@@ -1,9 +1,6 @@
-package com.example.rosnama.model;
+package com.example.rosnama.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,24 +18,28 @@ public class User {
     private Integer id;
 
     @NotEmpty(message = "Username should not be empty")
+    @Column(columnDefinition = "varchar(50) not null")
     private String username;
 
-    @NotEmpty(message = "password should not be empty")
+    @NotEmpty
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,20}$")
+    @Column(columnDefinition = "varchar(20) not null")
     private String password;
 
 
     @NotNull(message = "Age should not be empty")
+    @Column(columnDefinition = "int not null")
     @Max(100)
     private Integer age;
-    @Pattern(regexp = "^[0-9]{10}$")
-    @NotEmpty(message = "phoneNumber should not be empty")
+
+
+    @NotEmpty
+    @Pattern(regexp = "^9665\\d{8}$")
+    @Column(columnDefinition = "varchar(15) not null unique")
     private String phoneNumber;
 
     @NotEmpty(message = "password should not be empty")
     @Email(message = "Email should be valid")
+    @Column(columnDefinition = "varchar(40) not null unique")
     private String email;
-
-
-
-
 }
