@@ -14,4 +14,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             lsfmvlksfmv
 
     olsvoenjvonin
+
+
+    loknjlkjlkjnlknljknlk
 }
+
