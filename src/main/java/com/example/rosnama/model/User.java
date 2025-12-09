@@ -43,5 +43,5 @@ public class User {
     @Column(columnDefinition = "varchar(40) not null unique")
     private String email;
 
-    knjkndalnalfknadfwed
+    llknjljdasadasdasd
 }
