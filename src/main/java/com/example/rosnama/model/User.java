@@ -42,4 +42,6 @@ public class User {
     @Email(message = "Email should be valid")
     @Column(columnDefinition = "varchar(40) not null unique")
     private String email;
+
+    ljhlkhlklk;
 }
