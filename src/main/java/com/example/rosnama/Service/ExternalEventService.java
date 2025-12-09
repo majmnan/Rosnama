@@ -94,18 +94,6 @@ public class ExternalEventService {
         }
 
 
-        // save
-        externalEventRepository.save(new ExternalEvent(null, externalEventDTOIn.getTitle(), externalEventDTOIn.getOrganizationName(),
-                                                        externalEventDTOIn.getDescription(), externalEventDTOIn.getCity(),
-                                                        externalEventDTOIn.getStart_date(), externalEventDTOIn.getEnd_date(),
-                                                        externalEventDTOIn.getStart_time() , externalEventDTOIn.getEnd_time(),
-                                                        externalEventDTOIn.getUrl() , null , null , null ));
-
-
-        // create an event request
-        ExternalEventRequest request 
-
-
     }
 
 

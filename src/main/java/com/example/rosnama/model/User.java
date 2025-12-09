@@ -1,11 +1,14 @@
 package com.example.rosnama.Model;
 
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.SetJoin;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -42,4 +45,7 @@ public class User {
     @Email(message = "Email should be valid")
     @Column(columnDefinition = "varchar(40) not null unique")
     private String email;
+
+    @OneToMany(cascade = CascadeType.ALL , mappedBy = "user")
+    private Set <InternalEvent> internalEvents;
 }
