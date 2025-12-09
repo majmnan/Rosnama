@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/external-event")
@@ -21,15 +23,15 @@ public class ExternalEventController {
 
     // get
     @GetMapping("/get/{adminId}")
-    public ResponseEntity<?> getAllExternalEvents(@PathVariable Integer adminId){
+    public ResponseEntity<List<ExternalEvent>> getAllExternalEvents(@PathVariable Integer adminId){
         return ResponseEntity.status(HttpStatus.OK).body(externalEventService.getAllExternalEvents(adminId));
     }
 
     // add
     @PostMapping("/add/{adminId}")
-    public ResponseEntity<?> addExternalEvent(@PathVariable Integer adminId, @RequestBody @Valid ExternalEvent externalEvent){
+    public ResponseEntity<ApiResponse> addExternalEvent(@PathVariable Integer adminId, @RequestBody @Valid ExternalEvent externalEvent){
         externalEventService.addExternalEventByAdmin(adminId, externalEvent);
-        return ResponseEntity.status(HttpStatus.OK).body("External Event has been added successfully");
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External Event has been added successfully"));
     }
 
     // update
@@ -42,8 +44,8 @@ public class ExternalEventController {
 
     //delete
     @DeleteMapping("{adminId}/delete/{id}")
-    public ResponseEntity<?> deleteExternalEvent(@PathVariable Integer adminId, @PathVariable Integer id){
+    public ResponseEntity<ApiResponse> deleteExternalEvent(@PathVariable Integer adminId, @PathVariable Integer id){
         externalEventService.deleteExternalEvent(adminId, id);
-        return ResponseEntity.status(HttpStatus.OK).body("External Event has been deleted successfully");
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External Event has been deleted successfully"));
     }
 }

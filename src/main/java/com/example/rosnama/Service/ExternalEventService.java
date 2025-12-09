@@ -5,6 +5,7 @@ import com.example.rosnama.DTO.ExternalEventDTOIn;
 import com.example.rosnama.Model.Admin;
 import com.example.rosnama.Model.EventOwner;
 import com.example.rosnama.Model.ExternalEvent;
+import com.example.rosnama.Model.ExternalEventRequest;
 import com.example.rosnama.Repository.AdminRepository;
 import com.example.rosnama.Repository.EventOwnerRepository;
 import com.example.rosnama.Repository.ExternalEventRepository;
@@ -95,18 +96,90 @@ public class ExternalEventService {
 
 
         // save
-        externalEventRepository.save(new ExternalEvent(null, externalEventDTOIn.getTitle(), externalEventDTOIn.getOrganizationName(),
+        ExternalEvent externalEvent =  externalEventRepository.save(new ExternalEvent(null, externalEventDTOIn.getTitle(), externalEventDTOIn.getOrganizationName(),
                                                         externalEventDTOIn.getDescription(), externalEventDTOIn.getCity(),
                                                         externalEventDTOIn.getStart_date(), externalEventDTOIn.getEnd_date(),
                                                         externalEventDTOIn.getStart_time() , externalEventDTOIn.getEnd_time(),
-                                                        externalEventDTOIn.getUrl() , null , null , null ));
+                                                        externalEventDTOIn.getUrl() , "InActive" , null , owner ));
 
 
         // create an event request
-        ExternalEventRequest request 
+        ExternalEventRequest request = new ExternalEventRequest();
+        request.setExternalEvent(externalEvent);
+        request.setStatus("Requested"); // or pending
+
+        // save
+        externalEventRequestRepository.save(request);
 
 
     }
+
+
+    // update event by event owner
+    public void updateEventByOwner(Integer ownerId, Integer eventId, ExternalEventDTOIn dto){
+
+        // check owner exists
+        EventOwner owner = eventOwnerRepository.findEventOwnerById(ownerId);
+        if(owner == null){
+            throw new ApiException("event owner not found !");
+        }
+
+        // check event exists
+        ExternalEvent event = externalEventRepository.findExternalEventById(eventId);
+        if(event == null){
+            throw new ApiException("event not found !");
+        }
+
+        // check if the owner who want to update it owns this event
+        if(!event.getEventOwner().getId().equals(ownerId)){
+            throw new ApiException("you do not own this event to update its information!");
+        }
+
+        // update
+        event.setTitle(dto.getTitle());
+        event.setOrganizationName(dto.getOrganizationName());
+        event.setDescription(dto.getDescription());
+        event.setCity(dto.getCity());
+        event.setStart_date(dto.getStart_date());
+        event.setEnd_date(dto.getEnd_date());
+        event.setStart_time(dto.getStart_time());
+        event.setEnd_time(dto.getEnd_time());
+        event.setUrl(dto.getUrl());
+
+
+        // save
+        externalEventRepository.save(event);
+    }
+
+
+    public void deleteEventByOwner(Integer ownerId, Integer eventId){
+
+        // check owner exists
+        EventOwner owner = eventOwnerRepository.findEventOwnerById(ownerId);
+        if(owner == null){
+            throw new ApiException("event owner not found !");
+        }
+
+        // check event exists
+        ExternalEvent event = externalEventRepository.findExternalEventById(eventId);
+        if(event == null){
+            throw new ApiException("event not found !");
+        }
+
+        // check if the owner who want to update it owns this event
+        if(!event.getEventOwner().getId().equals(ownerId)){
+            throw new ApiException("you do not own this event to update its information!");
+        }
+
+        // check if the request to this event to delete it
+        if(event.getExternalEventRequest() != null){
+            externalEventRequestRepository.delete(event.getExternalEventRequest());
+        }
+
+        externalEventRepository.delete(event);
+    }
+
+
 
 
 

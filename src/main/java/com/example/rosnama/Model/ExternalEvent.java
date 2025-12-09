@@ -65,12 +65,10 @@ public class ExternalEvent {
     @Column(columnDefinition = "timestamp not null")
     private LocalTime end_time;
 
-
     @NotEmpty
     @URL
     @Column(columnDefinition = "text not null")
     private String url;
-
 
     @NotEmpty(message = " event status can not be empty ! ")
     @Pattern(regexp = "^(InActive|Active)$")
