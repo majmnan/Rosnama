@@ -1,9 +1,7 @@
 package com.example.rosnama.Model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,5 +44,11 @@ public class EventOwner {
 
     @NotEmpty
     @Pattern(regexp = "^(Active|InActive)$")
+    @Column(columnDefinition = "varchar(10) not null")
     private String status;
+
+    @NotNull
+    @PositiveOrZero
+    @Column(columnDefinition = "int not null")
+    private Double balance;
 }
