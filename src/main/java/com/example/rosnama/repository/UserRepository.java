@@ -7,5 +7,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User findUserById(Integer id);
 
-    lkmafldmflkas
+    ldsmvl;sm
+
+    svlksfmvlkdfm
+
+            lsfmvlksfmv
+
+    olsvoenjvonin
 }
