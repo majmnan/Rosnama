@@ -17,8 +17,6 @@ public class AdminService {
 
     // get all admins information from the database
     public List<Admin> getAllAdmins() {
-
-
         return adminRepository.findAll();
     }
 
@@ -52,7 +50,7 @@ public class AdminService {
 
 
     // delete admin information from the database
-    public  void deleteAdmin(Integer id) {
+    public void deleteAdmin(Integer id) {
 
         Admin admin = adminRepository.findAdminById(id);
 
@@ -63,6 +61,10 @@ public class AdminService {
 
         adminRepository.delete(admin);
     }
+
+    /// extra endpoints
+
+
 
 
 }
