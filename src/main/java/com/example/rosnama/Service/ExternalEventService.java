@@ -1,9 +1,12 @@
 package com.example.rosnama.Service;
 
 import com.example.rosnama.Api.ApiException;
+import com.example.rosnama.DTO.ExternalEventDTOIn;
 import com.example.rosnama.Model.Admin;
+import com.example.rosnama.Model.EventOwner;
 import com.example.rosnama.Model.ExternalEvent;
 import com.example.rosnama.Repository.AdminRepository;
+import com.example.rosnama.Repository.EventOwnerRepository;
 import com.example.rosnama.Repository.ExternalEventRepository;
 import com.example.rosnama.Repository.ExternalEventRequestRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ public class ExternalEventService {
     private final AdminRepository adminRepository;
     private final ExternalEventRepository externalEventRepository;
     private final ExternalEventRequestRepository externalEventRequestRepository;
+    private final EventOwnerRepository eventOwnerRepository;
 
     public List<ExternalEvent> getAllExternalEvents(Integer adminId) {
         Admin admin = adminRepository.findAdminById(adminId);
@@ -73,6 +77,37 @@ public class ExternalEventService {
 
         externalEventRepository.delete(externalEvent);
     }
+
+    ///  extra endpoints :
+
+    //add event by event owner
+    //event created with status "InActive"
+    //external event request created and saved to database with status "Requested"
+
+    // add event by event owner
+    public void addEventByOwner (ExternalEventDTOIn externalEventDTOIn){
+
+        // check first if owner exist
+        EventOwner  owner = eventOwnerRepository.findEventOwnerById(externalEventDTOIn.getOwnerId());
+        if (owner == null ){
+            throw new ApiException("event owner not found !");
+        }
+
+
+        // save
+        externalEventRepository.save(new ExternalEvent(null, externalEventDTOIn.getTitle(), externalEventDTOIn.getOrganizationName(),
+                                                        externalEventDTOIn.getDescription(), externalEventDTOIn.getCity(),
+                                                        externalEventDTOIn.getStart_date(), externalEventDTOIn.getEnd_date(),
+                                                        externalEventDTOIn.getStart_time() , externalEventDTOIn.getEnd_time(),
+                                                        externalEventDTOIn.getUrl() , null , null , null ));
+
+
+        // create an event request
+        ExternalEventRequest request 
+
+
+    }
+
 
 
 }

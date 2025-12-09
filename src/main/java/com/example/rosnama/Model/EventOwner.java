@@ -56,4 +56,8 @@ public class EventOwner {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventOwner")
     private Set<ExternalEvent> externalEvents;
+
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventOwner")
+    private Set<InternalEvent> internalEvents;
 }

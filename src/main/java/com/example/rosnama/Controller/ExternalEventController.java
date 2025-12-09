@@ -34,9 +34,9 @@ public class ExternalEventController {
 
     // update
     @PutMapping("/{adminId}/update/{id}")
-    public ResponseEntity<?> updateExternalEvent(@PathVariable Integer adminId, @PathVariable Integer id, @RequestBody @Valid ExternalEvent externalEvent){
+    public ResponseEntity<ApiResponse> updateExternalEvent(@PathVariable Integer adminId, @PathVariable Integer id, @RequestBody @Valid ExternalEvent externalEvent){
         externalEventService.updateExternalEventByAdmin(adminId, id, externalEvent);
-        return ResponseEntity.status(HttpStatus.OK).body("External Event has been updated successfully");
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External Event has been updated successfully"));
     }
 
 
