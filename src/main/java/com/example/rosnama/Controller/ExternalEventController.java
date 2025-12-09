@@ -20,51 +20,30 @@ public class ExternalEventController {
 
 
     // get
-    @GetMapping("/get")
-    public ResponseEntity<?> getAllExternalEvents(){
-        return ResponseEntity.status(HttpStatus.OK).body(externalEventService.getAllExternalEvents());
+    @GetMapping("/get/{adminId}")
+    public ResponseEntity<?> getAllExternalEvents(@PathVariable Integer adminId){
+        return ResponseEntity.status(HttpStatus.OK).body(externalEventService.getAllExternalEvents(adminId));
     }
 
     // add
-    @PostMapping("/add")
-    public ResponseEntity<?> addExternalEvent(@RequestBody @Valid ExternalEvent externalEvent){
+    @PostMapping("/add/{adminId}")
+    public ResponseEntity<?> addExternalEvent(@PathVariable Integer adminId, @RequestBody @Valid ExternalEvent externalEvent){
+        externalEventService.addExternalEventByAdmin(adminId, externalEvent);
         return ResponseEntity.status(HttpStatus.OK).body("External Event has been added successfully");
     }
 
     // update
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateExternalEvent(@PathVariable Integer id, @RequestBody @Valid ExternalEvent externalEvent){
-        externalEventService.updateExternalEvent(id,externalEvent);
+    @PutMapping("/{adminId}/update/{id}")
+    public ResponseEntity<?> updateExternalEvent(@PathVariable Integer adminId, @PathVariable Integer id, @RequestBody @Valid ExternalEvent externalEvent){
+        externalEventService.updateExternalEventByAdmin(adminId, id, externalEvent);
         return ResponseEntity.status(HttpStatus.OK).body("External Event has been updated successfully");
     }
 
 
     //delete
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteExternalEvent( @PathVariable Integer id){
-        externalEventService.deleteExternalEvent(id);
+    @DeleteMapping("{adminId}/delete/{id}")
+    public ResponseEntity<?> deleteExternalEvent(@PathVariable Integer adminId, @PathVariable Integer id){
+        externalEventService.deleteExternalEvent(adminId, id);
         return ResponseEntity.status(HttpStatus.OK).body("External Event has been deleted successfully");
-    }
-
-
-    ///  extera endpoints
-
-
-    // add external event by admin
-    @PostMapping("/admin-add-event/{adminId}")
-    public ResponseEntity<?> addExternalEventByAdmin(@PathVariable Integer adminId, @RequestBody @Valid ExternalEvent externalEvent) {
-
-        externalEventService.addExternalEventByAdmin(adminId, externalEvent);
-
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("external event created successfully"));
-    }
-
-    // admin publesh the event to user
-    @PutMapping("/admin-publish-event/{adminId}/publish/{eventId}")
-    public ResponseEntity<?> publishExternalEventByAdmin(@PathVariable Integer adminId, @PathVariable Integer eventId) {
-
-        externalEventService.publishExternalEvent(adminId, eventId);
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("external event published successfully"));
-
     }
 }

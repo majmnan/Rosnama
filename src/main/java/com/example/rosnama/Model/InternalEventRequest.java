@@ -9,14 +9,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class EventRequest {
+public class InternalEventRequest {
     @Id
     @GeneratedValue
     private Integer id;
@@ -24,7 +23,7 @@ public class EventRequest {
     @NotNull
     @OneToOne
     @MapsId
-    private Event event; //parent class of External and internal Events
+    private InternalEvent internalEvent; //parent class of External and internal Events
 
     @NotEmpty
     @Pattern(regexp = "^(Requested|Offered)$")

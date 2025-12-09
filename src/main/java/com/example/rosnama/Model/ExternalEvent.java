@@ -2,9 +2,11 @@ package com.example.rosnama.Model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,16 +29,12 @@ public class ExternalEvent {
     private Integer id;
 
     @NotEmpty(message = " event title can not be empty ! ")
-    @Column(columnDefinition = "varchar(100) not null ")
+    @Column(columnDefinition = "varchar(30) not null ")
     private String title ;
-
-    @NotNull(message = " event owner id can not be null ! ")
-    private Integer owner_id ;
-
 
     @NotEmpty(message = " event organizer name can not be empty ! ")
     @Column(columnDefinition = "varchar(50) not null ")
-    private String organizer_name ;
+    private String organizationName ;
 
     @NotEmpty(message = " event description can not be empty ! ")
     @Size(min = 10 , message = " description can not be less than 10 characters ! ")
@@ -44,27 +42,27 @@ public class ExternalEvent {
     private String description ;
 
     @NotEmpty(message = " event city can not be empty ! ")
-    @Column(columnDefinition = "varchar(100) not null ")
-    private String City;
+    @Column(columnDefinition = "varchar(20) not null ")
+    private String city;
 
     @NotNull(message = " event start date can not be empty ! ")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(nullable = false)
+    @Column(columnDefinition = "date not null")
     private LocalDate start_date;
 
     @NotNull(message = " event end date can not be empty ! ")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(nullable = false)
+    @Column(columnDefinition = "date not null")
     private LocalDate end_date;
 
     @NotNull(message = " event start time can not be empty ! ")
     @JsonFormat(pattern = "HH:mm:ss")
-    @Column(nullable = false)
+    @Column(columnDefinition = "timestamp not null")
     private LocalTime start_time;
 
     @NotNull(message = " event end time can not be empty ! ")
     @JsonFormat(pattern = "HH:mm:ss")
-    @Column(nullable = false)
+    @Column(columnDefinition = "timestamp not null")
     private LocalTime end_time;
 
 
@@ -75,8 +73,18 @@ public class ExternalEvent {
 
 
     @NotEmpty(message = " event status can not be empty ! ")
+    @Pattern(regexp = "^(InActive|Active)$")
     @Column(columnDefinition = "varchar(20) not null ")
     private String status ;
+
+    @OneToOne(mappedBy = "externalEvent", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @PrimaryKeyJoinColumn
+    private ExternalEventRequest externalEventRequest;
+
+    @ManyToOne
+    @JsonIgnore
+    private EventOwner eventOwner;
 
 
 }

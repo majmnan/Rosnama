@@ -5,6 +5,7 @@ import com.example.rosnama.Model.Admin;
 import com.example.rosnama.Model.ExternalEvent;
 import com.example.rosnama.Repository.AdminRepository;
 import com.example.rosnama.Repository.ExternalEventRepository;
+import com.example.rosnama.Repository.ExternalEventRequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,39 +18,37 @@ public class ExternalEventService {
     // connect to database
     private final AdminRepository adminRepository;
     private final ExternalEventRepository externalEventRepository;
+    private final ExternalEventRequestRepository externalEventRequestRepository;
 
-
-    // get all external events from the database
-    public List<ExternalEvent> getAllExternalEvents() {
+    public List<ExternalEvent> getAllExternalEvents(Integer adminId) {
+        Admin admin = adminRepository.findAdminById(adminId);
+        if(admin == null)
+            throw new ApiException("admin not found");
         return externalEventRepository.findAll();
     }
 
 
-    // add a new external event to the database
-    public  void addExternalEvent(ExternalEvent externalEvent) {
-
-        // set status to not active
-        externalEvent.setStatus("not active");
-
+    // add a new external event (By admin)
+    public  void addExternalEventByAdmin(Integer adminId, ExternalEvent externalEvent) {
+        Admin admin = adminRepository.findAdminById(adminId);
+        if(admin == null)
+            throw new ApiException("admin not found");
+        externalEvent.setStatus("active");
         externalEventRepository.save(externalEvent);
     }
 
 
-    // update external event in the database
-    public void updateExternalEvent(Integer id, ExternalEvent externalEvent) {
-
+    public void updateExternalEventByAdmin(Integer adminId, Integer id, ExternalEvent externalEvent) {
+        Admin admin = adminRepository.findAdminById(adminId);
+        if(admin == null)
+            throw new ApiException("admin not found");
 
         ExternalEvent old = externalEventRepository.findExternalEventById(id);
-
-        // check if the old external event exists
         if (old == null) {
             throw new ApiException("external event not found");
         }
 
-        // update
         old.setTitle(externalEvent.getTitle());
-        old.setOwner_id(externalEvent.getOwner_id());
-        old.setOrganizer_name(externalEvent.getOrganizer_name());
         old.setDescription(externalEvent.getDescription());
         old.setCity(externalEvent.getCity());
         old.setStart_date(externalEvent.getStart_date());
@@ -57,15 +56,13 @@ public class ExternalEventService {
         old.setStart_time(externalEvent.getStart_time());
         old.setEnd_time(externalEvent.getEnd_time());
         old.setUrl(externalEvent.getUrl());
+        old.setStatus("active");
 
-        old.setStatus("not active");
-
-        // save
         externalEventRepository.save(old);
     }
 
     // delete external event from the database
-    public  void deleteExternalEvent(Integer id) {
+    public  void deleteExternalEvent(Integer adminId, Integer id) {
 
         ExternalEvent externalEvent = externalEventRepository.findExternalEventById(id);
 
@@ -75,40 +72,6 @@ public class ExternalEventService {
         }
 
         externalEventRepository.delete(externalEvent);
-    }
-
-    ///  extra endpoint
-
-    // addmin add external event to the system
-    public void addExternalEventByAdmin(Integer admin_id, ExternalEvent externalEvent) {
-
-        Admin admin = adminRepository.findAdminById(admin_id);
-        // check if the admin exists
-        if (admin == null) {
-            throw new ApiException("admin not found");
-        }
-
-        externalEvent.setStatus("not active ");
-        externalEventRepository.save(externalEvent);
-
-    }
-
-    // admin publesh the event to user
-    public  void publishExternalEvent(Integer admin_id, Integer event_id) {
-
-        Admin admin = adminRepository.findAdminById(admin_id);
-        if(admin == null){
-            throw new ApiException("admen not found");
-        }
-
-        ExternalEvent externalEvent = externalEventRepository.findExternalEventById(eventId);
-        if(externalEvent == null){
-            throw new ApiException("extaernal event not foand");
-        }
-
-        externalEvent.setStatus("actave");
-        externalEventRepository.save(externalEvent);
-
     }
 
 

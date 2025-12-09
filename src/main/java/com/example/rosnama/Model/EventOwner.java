@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.URL;
 
+import java.util.Set;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -51,4 +53,7 @@ public class EventOwner {
     @PositiveOrZero
     @Column(columnDefinition = "int not null")
     private Double balance;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventOwner")
+    private Set<ExternalEvent> externalEvents;
 }
