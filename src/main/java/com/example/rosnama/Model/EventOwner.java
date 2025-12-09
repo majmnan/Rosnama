@@ -43,4 +43,8 @@ public class EventOwner {
     @URL
     @Column(columnDefinition = "text not null")
     private String url;
+
+    @NotEmpty
+    @Pattern(regexp = "^(Active|InActive)$")
+    private String status;
 }

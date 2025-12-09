@@ -18,6 +18,7 @@ public class EventOwnerService {
     }
 
     public void addEventOwner(EventOwner eventOwner){
+        eventOwner.setStatus("InActive");
         eventOwnerRepository.save(eventOwner);
     }
 
