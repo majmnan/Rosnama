@@ -50,6 +50,8 @@ public class ExternalEventController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External Event has been deleted successfully"));
     }
 
+    ///  extra end points
+
     // add external event by owner
     @PostMapping("/owner-add")
     public ResponseEntity<ApiResponse> addEventByOwner(@Valid @RequestBody ExternalEventDTO dto){
@@ -71,4 +73,12 @@ public class ExternalEventController {
         externalEventService.deleteEventByOwner(ownerId, eventId);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External event deleted successfully"));
     }
+
+    // get all active events to show to users
+    @GetMapping("/active-events")
+    public ResponseEntity<List<ExternalEventDTO>> getAllActiveEvents(){
+        return ResponseEntity.status(HttpStatus.OK).body(externalEventService.getAllActiveExternalEvents());
+    }
+
+
 }

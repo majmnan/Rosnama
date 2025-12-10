@@ -186,24 +186,6 @@ public class ExternalEventService {
         )).toList();
     }
 
-    // get all active events to show to users
-    public List<ExternalEventDTO> getAllInActiveExternalEvents() {
-        // only get events that are active
-        List<ExternalEvent> events = externalEventRepository.findExternalEventsByStatus("InActive");
-        // map regular event to DTO and return it
-        return events.stream().map(event -> new ExternalEventDTO(
-                event.getTitle(),
-                event.getOrganizationName(),
-                event.getDescription(),
-                event.getCity(),
-                event.getStart_date(),
-                event.getEnd_date(),
-                event.getStart_time(),
-                event.getEnd_time(),
-                event.getUrl(),
-                event.getEventOwner() != null ? event.getEventOwner().getId() : null
-        )).toList();
-    }
 
 
 
