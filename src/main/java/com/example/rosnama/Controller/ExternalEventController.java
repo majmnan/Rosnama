@@ -2,7 +2,7 @@ package com.example.rosnama.Controller;
 
 
 import com.example.rosnama.Api.ApiResponse;
-import com.example.rosnama.DTO.ExternalEventDTOIn;
+import com.example.rosnama.DTO.ExternalEventDTO;
 import com.example.rosnama.Model.ExternalEvent;
 import com.example.rosnama.Service.ExternalEventService;
 import jakarta.validation.Valid;
@@ -30,15 +30,15 @@ public class ExternalEventController {
 
     // add
     @PostMapping("/add/{adminId}")
-    public ResponseEntity<ApiResponse> addExternalEvent(@PathVariable Integer adminId, @RequestBody @Valid ExternalEvent externalEvent){
-        externalEventService.addExternalEventByAdmin(adminId, externalEvent);
+    public ResponseEntity<ApiResponse> addExternalEvent(@PathVariable Integer adminId, @RequestBody @Valid ExternalEventDTO externalEventDTO){
+        externalEventService.addExternalEventByAdmin(adminId, externalEventDTO);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External Event has been added successfully"));
     }
 
     // update
     @PutMapping("/{adminId}/update/{id}")
-    public ResponseEntity<ApiResponse> updateExternalEvent(@PathVariable Integer adminId, @PathVariable Integer id, @RequestBody @Valid ExternalEvent externalEvent){
-        externalEventService.updateExternalEventByAdmin(adminId, id, externalEvent);
+    public ResponseEntity<ApiResponse> updateExternalEvent(@PathVariable Integer adminId, @PathVariable Integer id, @RequestBody @Valid ExternalEventDTO externalEventDTO){
+        externalEventService.updateExternalEventByAdmin(adminId, id, externalEventDTO);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External Event has been updated successfully"));
     }
 
@@ -52,7 +52,7 @@ public class ExternalEventController {
 
     // add external event by owner
     @PostMapping("/owner-add")
-    public ResponseEntity<ApiResponse> addEventByOwner(@Valid @RequestBody ExternalEventDTOIn dto){
+    public ResponseEntity<ApiResponse> addEventByOwner(@Valid @RequestBody ExternalEventDTO dto){
         externalEventService.requestEventByOwner(dto);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External event created successfully and request generated automatically"));
     }
@@ -60,7 +60,7 @@ public class ExternalEventController {
 
     // update external event by owner
     @PutMapping("/owner/{ownerId}/update/{eventId}")
-    public ResponseEntity<ApiResponse> updateEventByOwner(@PathVariable Integer ownerId, @PathVariable Integer eventId, @Valid @RequestBody ExternalEventDTOIn dto){
+    public ResponseEntity<ApiResponse> updateEventByOwner(@PathVariable Integer ownerId, @PathVariable Integer eventId, @Valid @RequestBody ExternalEventDTO dto){
         externalEventService.updateEventByOwner(ownerId, eventId, dto);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External event updated successfully"));
     }
