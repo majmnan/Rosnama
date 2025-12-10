@@ -57,12 +57,12 @@ public class ExternalEvent {
 
     @NotNull(message = " event start time can not be empty ! ")
     @JsonFormat(pattern = "HH:mm:ss")
-    @Column(columnDefinition = "timestamp not null")
+    @Column(columnDefinition = "time not null")
     private LocalTime start_time;
 
     @NotNull(message = " event end time can not be empty ! ")
     @JsonFormat(pattern = "HH:mm:ss")
-    @Column(columnDefinition = "timestamp not null")
+    @Column(columnDefinition = "time not null")
     private LocalTime end_time;
 
     @NotEmpty
