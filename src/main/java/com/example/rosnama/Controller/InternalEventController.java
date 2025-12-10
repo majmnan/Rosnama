@@ -38,9 +38,9 @@ public class InternalEventController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Internal Events update successfully"));
     }
 
-@DeleteMapping("/delete/{owner_id}")
-    public ResponseEntity<ApiResponse> deleteInternalEvents(@PathVariable Integer owner_id ){
-        internalEventService.deleteInternalEventByOwner(owner_id );
+@DeleteMapping("/delete/{ownerId}/{internalEventId}")
+    public ResponseEntity<ApiResponse> deleteInternalEvents(@PathVariable Integer ownerId, @PathVariable Integer internalEventId ){
+        internalEventService.deleteInternalEventByOwner(ownerId, internalEventId);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Internal Events deleted successfully"));
     }
 }
