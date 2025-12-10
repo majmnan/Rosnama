@@ -5,9 +5,11 @@ import com.example.rosnama.DTO.InternalEventDTOIn;
 import com.example.rosnama.Model.*;
 import com.example.rosnama.Repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.support.PageableUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.function.ObjLongConsumer;
 
 @Service
 @RequiredArgsConstructor
@@ -38,9 +40,9 @@ public class InternalEventService  {
     }
 
 
-    public void updateInternalEventByOwner(Integer owner_id , InternalEventDTOIn internalEventDTOIn ){
+    public void updateInternalEventByOwner(Integer owner_id , Integer event_id, InternalEventDTOIn internalEventDTOIn ){
         EventOwner eventOwner = eventOwnerRepository.findEventOwnerById(owner_id);
-        InternalEvent oldInternalEvent = internalEventRepository.findInternalEventById(internalEventDTOIn.getOwnerId());
+        InternalEvent oldInternalEvent = internalEventRepository.findInternalEventById(event_id);
 
         if(eventOwner == null){
             throw new ApiException("Owner not found");
@@ -59,8 +61,18 @@ public class InternalEventService  {
         oldInternalEvent.setLocation(internalEventDTOIn.getLocation());
         oldInternalEvent.setDescription(internalEventDTOIn.getDescription());
         oldInternalEvent.setCity(internalEventDTOIn.getCity());
-
         internalEventRepository.save(oldInternalEvent);
+
+    }
+
+
+    public void deleteInternalEventByOwner(Integer owner_id ){
+        InternalEvent oldInternalEvent =  internalEventRepository.findInternalEventById(owner_id);
+
+        if(oldInternalEvent == null){
+            throw new ApiException("InternalEvent Not found");
+        }
+        internalEventRepository.delete(oldInternalEvent);
 
     }
 
