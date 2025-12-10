@@ -1,7 +1,6 @@
 package com.example.rosnama.DTO;
 
 
-import com.example.rosnama.Model.EventOwner;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotEmpty;
@@ -15,7 +14,7 @@ import java.time.LocalTime;
 
 @AllArgsConstructor
 @Data
-public class ExternalEventDTOIn {
+public class ExternalEventDTO {
 
     @NotEmpty(message = " event title can not be empty ! ")
     @Column(columnDefinition = "varchar(30) not null ")
