@@ -2,6 +2,7 @@ package com.example.rosnama.Controller;
 
 
 import com.example.rosnama.Api.ApiResponse;
+import com.example.rosnama.DTO.ExternalEventDTOIn;
 import com.example.rosnama.Model.ExternalEvent;
 import com.example.rosnama.Service.ExternalEventService;
 import jakarta.validation.Valid;
@@ -47,5 +48,27 @@ public class ExternalEventController {
     public ResponseEntity<ApiResponse> deleteExternalEvent(@PathVariable Integer adminId, @PathVariable Integer id){
         externalEventService.deleteExternalEvent(adminId, id);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External Event has been deleted successfully"));
+    }
+
+    // add external event by owner
+    @PostMapping("/owner-add")
+    public ResponseEntity<ApiResponse> addEventByOwner(@Valid @RequestBody ExternalEventDTOIn dto){
+        externalEventService.addEventByOwner(dto);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External event created successfully and request generated automatically"));
+    }
+
+
+    // update external event by owner
+    @PutMapping("/owner/{ownerId}/update/{eventId}")
+    public ResponseEntity<ApiResponse> updateEventByOwner(@PathVariable Integer ownerId, @PathVariable Integer eventId, @Valid @RequestBody ExternalEventDTOIn dto){
+        externalEventService.updateEventByOwner(ownerId, eventId, dto);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External event updated successfully"));
+    }
+
+    // delete external event by owner
+    @DeleteMapping("/owner/{ownerId}/delete/{eventId}")
+    public ResponseEntity<ApiResponse> deleteEventByOwner(@PathVariable Integer ownerId, @PathVariable Integer eventId){
+        externalEventService.deleteEventByOwner(ownerId, eventId);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External event deleted successfully"));
     }
 }

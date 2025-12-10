@@ -21,8 +21,6 @@ public class AdminController {
 
     // connect to the DataBase
     private final AdminService adminService;
-    private final ExternalEventService externalEventService;
-
 
     // get
     @GetMapping("/get")
@@ -55,30 +53,6 @@ public class AdminController {
     }
 
 
-    ///  extra endpoints
-
-    // add external event by owner
-    @PostMapping("/owner/add")
-    public ResponseEntity<ApiResponse> addEventByOwner(@Valid @RequestBody ExternalEventDTOIn dto){
-        externalEventService.addEventByOwner(dto);
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External event created successfully and request generated automatically"));
-    }
-
-
-    // update external event by owner
-    @PutMapping("/owner/update/{ownerId}/{eventId}")
-    public ResponseEntity<ApiResponse> updateEventByOwner(@PathVariable Integer ownerId, @PathVariable Integer eventId, @Valid @RequestBody ExternalEventDTOIn dto){
-        externalEventService.updateEventByOwner(ownerId, eventId, dto);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new ApiResponse("External event updated successfully"));
-    }
-
-    // delete external event by owner
-    @DeleteMapping("/owner/delete/{ownerId}/{eventId}")
-    public ResponseEntity<ApiResponse> deleteEventByOwner(@PathVariable Integer ownerId, @PathVariable Integer eventId){
-        externalEventService.deleteEventByOwner(ownerId, eventId);
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External event deleted successfully"));
-    }
 
 
 

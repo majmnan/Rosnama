@@ -104,9 +104,7 @@ public class ExternalEventService {
 
 
         // create an event request
-        ExternalEventRequest request = new ExternalEventRequest();
-        request.setExternalEvent(externalEvent);
-        request.setStatus("Requested"); // or pending
+        ExternalEventRequest request = new ExternalEventRequest(null, "Requested", null, externalEvent);
 
         // save
         externalEventRequestRepository.save(request);
