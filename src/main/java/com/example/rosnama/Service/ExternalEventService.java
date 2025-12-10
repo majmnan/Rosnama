@@ -121,26 +121,26 @@ public class ExternalEventService {
             throw new ApiException("event owner not found !");
         }
         // check event exists
-        ExternalEvent event = externalEventRepository.findExternalEventById(eventId);
-        if(event == null){
+        ExternalEvent old = externalEventRepository.findExternalEventById(eventId);
+        if(old == null){
             throw new ApiException("event not found !");
         }
         // check if the owner who want to update it owns this event
-        if(!event.getEventOwner().getId().equals(ownerId)){
+        if(!old.getEventOwner().getId().equals(ownerId)){
             throw new ApiException("you do not own this event to update its information!");
         }
         // update
-        event.setTitle(externalEventDTO.getTitle());
-        event.setOrganizationName(externalEventDTO.getOrganizationName());
-        event.setDescription(externalEventDTO.getDescription());
-        event.setCity(externalEventDTO.getCity());
-        event.setStart_date(externalEventDTO.getStartDate());
-        event.setEnd_date(externalEventDTO.getEndDate());
-        event.setStart_time(externalEventDTO.getStartTime());
-        event.setEnd_time(externalEventDTO.getEndTime());
-        event.setUrl(externalEventDTO.getUrl());
+        old.setTitle(externalEventDTO.getTitle());
+        old.setOrganizationName(externalEventDTO.getOrganizationName());
+        old.setDescription(externalEventDTO.getDescription());
+        old.setCity(externalEventDTO.getCity());
+        old.setStart_date(externalEventDTO.getStartDate());
+        old.setEnd_date(externalEventDTO.getEndDate());
+        old.setStart_time(externalEventDTO.getStartTime());
+        old.setEnd_time(externalEventDTO.getEndTime());
+        old.setUrl(externalEventDTO.getUrl());
         // save
-        externalEventRepository.save(event);
+        externalEventRepository.save(old);
     }
 
     // delete  event by event owner

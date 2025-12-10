@@ -30,7 +30,7 @@ public class InternalEventService  {
 
         EventOwner eventOwner = eventOwnerRepository.findEventOwnerById(event_owner_id);
         if (eventOwner == null) {
-            throw new ApiException("EventOwner not found");
+            throw new ApiException("Event owner not found");
         }
 
 
@@ -66,13 +66,13 @@ public class InternalEventService  {
     }
 
 
-    public void deleteInternalEventByOwner(Integer owner_id ){
-        InternalEvent oldInternalEvent =  internalEventRepository.findInternalEventById(owner_id);
+    public void deleteInternalEventByOwner(Integer ownerId , Integer internalEventId){
+        InternalEvent internalEvent =  internalEventRepository.findInternalEventById(internalEventId);
 
-        if(oldInternalEvent == null){
+        if(internalEvent == null){
             throw new ApiException("InternalEvent Not found");
         }
-        internalEventRepository.delete(oldInternalEvent);
+        internalEventRepository.delete(internalEvent);
 
     }
 
