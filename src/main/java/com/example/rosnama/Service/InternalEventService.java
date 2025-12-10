@@ -34,7 +34,7 @@ public class InternalEventService  {
         }
 
 
-        InternalEvent internalEvent = new InternalEvent(null,internalEventDTOIn.getTitle(),internalEventDTOIn.getCity(),internalEventDTOIn.getLocation(),internalEventDTOIn.getDescription(),internalEventDTOIn.getStartDate(),internalEventDTOIn.getEndDate(),internalEventDTOIn.getStartTime(),internalEventDTOIn.getEndTime(), "InActive", internalEventDTOIn.getPrice(), null , eventOwner);
+        InternalEvent internalEvent = new InternalEvent(null,internalEventDTOIn.getTitle(),internalEventDTOIn.getCity(),internalEventDTOIn.getLocation(),internalEventDTOIn.getDescription(),internalEventDTOIn.getStartDate(),internalEventDTOIn.getEndDate(),internalEventDTOIn.getStartTime(),internalEventDTOIn.getEndTime(), "InActive", internalEventDTOIn.getPrice(), null , eventOwner , null);
         internalEventRepository.save(internalEvent);
         internalEventRequestRepository.save(new InternalEventRequest(null, internalEvent, "Requested", internalEvent.getPrice()));
     }

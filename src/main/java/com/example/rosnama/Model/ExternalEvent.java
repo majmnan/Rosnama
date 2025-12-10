@@ -82,7 +82,11 @@ public class ExternalEvent {
 
     @ManyToOne
     @JsonIgnore
-    private EventOwner eventOwner; //in dto its name is event owner id
+    private EventOwner eventOwner;//in dto its name is event owner id
+
+    @ManyToOne
+    @JsonIgnore
+    private Category category;
 
 
 }

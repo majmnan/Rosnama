@@ -82,4 +82,12 @@ public class InternalEvent {
     @ManyToOne
     @JsonIgnore
     private EventOwner eventOwner;
+
+
+    @ManyToOne
+    @JsonIgnore
+    private Category category;
+
+
+
 }

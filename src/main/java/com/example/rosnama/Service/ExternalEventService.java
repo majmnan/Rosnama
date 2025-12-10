@@ -47,7 +47,7 @@ public class ExternalEventService {
                                                         externalEventDTO.getDescription(), externalEventDTO.getCity(),
                                                         externalEventDTO.getStartDate(), externalEventDTO.getEndDate(),
                                                         externalEventDTO.getStartTime() , externalEventDTO.getEndTime(),
-                                                        externalEventDTO.getUrl() , "Active" , null , null ));
+                                                        externalEventDTO.getUrl() , "Active" , null , null ,null));
     }
 
     // update external event (By admin)
@@ -105,7 +105,7 @@ public class ExternalEventService {
                                                         externalEventDTO.getDescription(), externalEventDTO.getCity(),
                                                         externalEventDTO.getStartDate(), externalEventDTO.getEndDate(),
                                                         externalEventDTO.getStartTime() , externalEventDTO.getEndTime(),
-                                                        externalEventDTO.getUrl() , "InActive" , null , owner ));
+                                                        externalEventDTO.getUrl() , "InActive" , null , owner , null ));
         // create an event request
         ExternalEventRequest request = new ExternalEventRequest(null, "Requested", null, externalEvent);
         // save
