@@ -46,4 +46,7 @@ public class User {
     @Column(columnDefinition = "varchar(40) not null unique")
     private String email;
 
+    @NotNull(message = "balance should not be null ")
+    @PositiveOrZero(message = "balance must be 0 or higher")
+    private Double balance;
 }

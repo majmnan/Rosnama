@@ -75,6 +75,18 @@ public class InternalEventRequestService {
         eventOwner.setBalance(eventOwner.getBalance()-request.getPrice());
         eventOwnerRepository.save(eventOwner);
 
+        InternalEvent internalEvent = request.getInternalEvent();
+
+        internalEvent.setStatus("Active");
+        internalEvent.setInternalEventRequest(null);
+        request.setInternalEvent(null);
+        internalEventRepository.save(request.getInternalEvent());
+        internalEventRequestRepository.delete(request);
+
+
+
+
+
     }
 
 

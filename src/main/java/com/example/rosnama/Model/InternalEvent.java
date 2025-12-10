@@ -1,5 +1,6 @@
 package com.example.rosnama.Model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -51,13 +52,15 @@ public class InternalEvent {
     @Column (columnDefinition = "DATE not null")
     private LocalDate end_date;
 
-    @NotNull(message = "start_time Can't be  null ")
-    @Column (columnDefinition = "timestamp not null")
+    @NotNull(message = " start time can not be empty ! ")
+    @JsonFormat(pattern = "HH:mm:ss")
+    @Column(columnDefinition = "TIME not null")
     private LocalTime start_time;
 
 
-    @NotNull(message = "end_time Can't be  null ")
-    @Column (columnDefinition = "timestamp not null")
+    @NotNull(message = "  end time can not be empty ! ")
+    @JsonFormat(pattern = "HH:mm:ss")
+    @Column(columnDefinition = "TIME not null")
     private LocalTime end_time;
 
 
@@ -66,7 +69,15 @@ public class InternalEvent {
     @Column(columnDefinition = "varchar(20) not null ")
     private String status ; //-
 
+@NotNull(message = "price should not be empty")
+@Column(columnDefinition = "Double not null")
+    private Double price;
 
+
+    @OneToOne(mappedBy = "internalEvent", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @PrimaryKeyJoinColumn
+    private InternalEventRequest internalEventRequest; //-
 
     @ManyToOne
     @JsonIgnore

@@ -31,10 +31,40 @@ public class InternalEventService  {
             throw new ApiException("EventOwner not found");
         }
 
-        InternalEvent internalEvent = new InternalEvent(null,internalEventDTOIn.getTitle(), internalEventDTOIn.getCity(), internalEventDTOIn.getLocation(), internalEventDTOIn.getDescription(), internalEventDTOIn.getStartDate(), internalEventDTOIn.getEndDate(), internalEventDTOIn.getStartTime(), internalEventDTOIn.getEndTime(), "InActive", eventOwner);
+
+        InternalEvent internalEvent = new InternalEvent(null,internalEventDTOIn.getTitle(),internalEventDTOIn.getCity(),internalEventDTOIn.getLocation(),internalEventDTOIn.getDescription(),internalEventDTOIn.getStartDate(),internalEventDTOIn.getEndDate(),internalEventDTOIn.getStartTime(),internalEventDTOIn.getEndTime(), "InActive", internalEventDTOIn.getPrice(), null , eventOwner);
         internalEventRepository.save(internalEvent);
-        internalEventRequestRepository.save(new InternalEventRequest(null, internalEvent, "Requested", null));
+        internalEventRequestRepository.save(new InternalEventRequest(null, internalEvent, "Requested", internalEvent.getPrice()));
     }
+
+
+    public void updateInternalEventByOwner(Integer owner_id , InternalEventDTOIn internalEventDTOIn ){
+        EventOwner eventOwner = eventOwnerRepository.findEventOwnerById(owner_id);
+        InternalEvent oldInternalEvent = internalEventRepository.findInternalEventById(internalEventDTOIn.getOwnerId());
+
+        if(eventOwner == null){
+            throw new ApiException("Owner not found");
+        }
+
+        if(oldInternalEvent == null){
+            throw new ApiException("InternalEvent not found");
+        }
+
+        oldInternalEvent.setTitle(internalEventDTOIn.getTitle());
+        oldInternalEvent.setStart_time(internalEventDTOIn.getStartTime());
+        oldInternalEvent.setEnd_time(internalEventDTOIn.getEndTime());
+        oldInternalEvent.setStart_date(internalEventDTOIn.getStartDate());
+        oldInternalEvent.setEnd_date(internalEventDTOIn.getEndDate());
+        oldInternalEvent.setPrice(internalEventDTOIn.getPrice());
+        oldInternalEvent.setLocation(internalEventDTOIn.getLocation());
+        oldInternalEvent.setDescription(internalEventDTOIn.getDescription());
+        oldInternalEvent.setCity(internalEventDTOIn.getCity());
+
+        internalEventRepository.save(oldInternalEvent);
+
+    }
+
+
 
 
 

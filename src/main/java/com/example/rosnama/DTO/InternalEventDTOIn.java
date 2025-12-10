@@ -54,6 +54,9 @@ public class InternalEventDTOIn {
     @JsonFormat(pattern = "HH:mm:ss")
     @Column(columnDefinition = "timestamp not null")
     private LocalTime startTime;
+    @NotNull(message = "price should not be empty")
+    @Column(columnDefinition = "Double not null")
+    private Double price;
 
     @NotNull(message = " event end time can not be empty ! ")
     @JsonFormat(pattern = "HH:mm:ss")
