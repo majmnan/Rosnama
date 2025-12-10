@@ -37,6 +37,11 @@ public class InternalEventDTOIn {
     @Column(columnDefinition = "date not null")
     private LocalDate start_date;
 
+    @NotNull(message = " event end date can not be empty ! ")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column(columnDefinition = "date not null")
+    private LocalDate end_date;
+
     @NotNull(message = " event start time can not be empty ! ")
     @JsonFormat(pattern = "HH:mm:ss")
     @Column(columnDefinition = "timestamp not null")

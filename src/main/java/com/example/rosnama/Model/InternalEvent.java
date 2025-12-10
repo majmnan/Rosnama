@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.URL;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
@@ -43,11 +45,11 @@ public class InternalEvent {
 
     @NotNull(message = "start_date  Can't be  null")
     @Column (columnDefinition = "DATE not null")
-    private Date start_date;
+    private LocalDate start_date;
 
     @NotNull(message = "end_date Can't be not null")
     @Column (columnDefinition = "DATE not null")
-    private Date end_date;
+    private LocalDate end_date;
 
     @NotNull(message = "start_time Can't be  null ")
     @Column (columnDefinition = "timestamp not null")
@@ -58,9 +60,21 @@ public class InternalEvent {
     @Column (columnDefinition = "timestamp not null")
     private LocalTime end_time;
 
+
+    @NotEmpty(message = " event status can not be empty ! ")
+    @Pattern(regexp = "^(InActive|Active)$")
+    @Column(columnDefinition = "varchar(20) not null ")
+    private String status ; //-
+
+
+
     @ManyToOne
     @JsonIgnore
     private EventOwner eventOwner;
+
+    @ManyToOne
+    @JsonIgnore
+    private User user;
 
     //regestration relation
 }
