@@ -17,42 +17,32 @@ import java.time.LocalTime;
 public class InternalEventDTOIn {
 
 
-
     @NotEmpty(message = " event title can not be empty ! ")
-    @Column(columnDefinition = "varchar(30) not null ")
     private String title ;
 
-
-
     @NotEmpty(message = " event city can not be empty ! ")
-    @Column(columnDefinition = "varchar(20) not null ")
     private String description ;
 
     @NotNull(message = " event end date can not be empty ! ")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(columnDefinition = "date not null")
     private String city;
 
     @NotNull
     @URL(protocol = "https", host = "www.google.com", message = "Must be a valid Google Maps URL")
     @Pattern(regexp = "^https:\\/\\/www\\.google\\.com\\/maps.*$",
             message = "URL must start with https://www.google.com/maps")
-    @Column(columnDefinition = "text not null")
     private String location;
 
     @NotNull(message = " event end date can not be empty ! ")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(columnDefinition = "date not null")
     private LocalDate startDate;
 
     @NotNull(message = " event end date can not be empty ! ")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(columnDefinition = "date not null")
     private LocalDate endDate;
 
     @NotNull(message = " event start time can not be empty ! ")
     @JsonFormat(pattern = "HH:mm:ss")
-    @Column(columnDefinition = "timestamp not null")
     private LocalTime startTime;
     @NotNull(message = "price should not be empty")
     @Column(columnDefinition = "Double not null")
@@ -60,7 +50,7 @@ public class InternalEventDTOIn {
 
     @NotNull(message = " event end time can not be empty ! ")
     @JsonFormat(pattern = "HH:mm:ss")
-    @Column(columnDefinition = "timestamp not null")
+
     private LocalTime endTime;
 
     @NotNull(message = "ownerId can not be null !")

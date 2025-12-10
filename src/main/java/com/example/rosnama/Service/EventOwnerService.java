@@ -31,6 +31,7 @@ public class EventOwnerService {
         old.setUsername(eventOwner.getUsername());
         old.setPassword(eventOwner.getPassword());
         old.setUrl(eventOwner.getUrl());
+        old.setBalance(eventOwner.getBalance());
         eventOwnerRepository.save(old);
     }
 

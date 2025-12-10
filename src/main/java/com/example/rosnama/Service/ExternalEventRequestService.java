@@ -38,8 +38,14 @@ public class ExternalEventRequestService {
         if(request == null)
             throw new ApiException("event request not found");
 
+        // check staus not offered
+        if (!request.getStatus().equals("Requested")) {
+            throw new ApiException("event request already offered");
+        }
+
         request.setPrice(price);
         request.setStatus("Offered");
+        externalEventRequestRepository.save(request);
     }
 
     public void negotiates(Integer ownerId, Integer requestId, Double price){
@@ -57,6 +63,8 @@ public class ExternalEventRequestService {
 
         eventRequest.setPrice(price);
         eventRequest.setStatus("Requested");
+
+        externalEventRequestRepository.save(eventRequest);
     }
 
     public void acceptOfferAndPay(Integer ownerId, Integer requestId){
@@ -76,7 +84,7 @@ public class ExternalEventRequestService {
         ExternalEvent externalEvent = request.getExternalEvent();
         externalEvent.setStatus("Active");
         externalEvent.setExternalEventRequest(null);
-        request.setExternalEvent(null);
+//        request.setExternalEvent(null);
         externalEventRepository.save(request.getExternalEvent());
         externalEventRequestRepository.delete(request);
     }
