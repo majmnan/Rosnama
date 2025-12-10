@@ -20,10 +20,6 @@ public class InternalEventRequest {
     @GeneratedValue
     private Integer id;
 
-    @NotNull
-    @OneToOne
-    @MapsId
-    private InternalEvent internalEvent; //parent class of External and internal Events
 
     @NotEmpty
     @Pattern(regexp = "^(Requested|Offered)$")
@@ -32,4 +28,10 @@ public class InternalEventRequest {
     @Positive
     @Column(columnDefinition = "double")
     private Double price;
+
+    @NotNull
+    @OneToOne
+    @MapsId
+    private InternalEvent internalEvent; //parent class of External and internal Events
+
 }

@@ -36,8 +36,14 @@ public class InternalEventRequestService {
         if(request == null)
             throw new ApiException("event request not found");
 
+        // check staus not offered
+        if ( request.getStatus().equals("Offered")) {
+            throw new ApiException("event request already offered");
+        }
+
         request.setPrice(price);
         request.setStatus("Offered");
+        internalEventRequestRepository.save(request);
     }
 
 
@@ -57,6 +63,7 @@ public class InternalEventRequestService {
 
         eventRequest.setPrice(price);
         eventRequest.setStatus("Requested");
+        internalEventRequestRepository.save(eventRequest);
     }
 
 
@@ -79,12 +86,8 @@ public class InternalEventRequestService {
 
         internalEvent.setStatus("Active");
         internalEvent.setInternalEventRequest(null);
-        request.setInternalEvent(null);
         internalEventRepository.save(request.getInternalEvent());
         internalEventRequestRepository.delete(request);
-
-
-
 
 
     }
