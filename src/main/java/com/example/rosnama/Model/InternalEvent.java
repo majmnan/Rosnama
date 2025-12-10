@@ -52,12 +52,12 @@ public class InternalEvent {
     private LocalDate end_date;
 
     @NotNull(message = "start_time Can't be  null ")
-    @Column (columnDefinition = "timestamp not null")
+    @Column (columnDefinition = "time not null")
     private LocalTime start_time;
 
 
     @NotNull(message = "end_time Can't be  null ")
-    @Column (columnDefinition = "timestamp not null")
+    @Column (columnDefinition = "time not null")
     private LocalTime end_time;
 
 
