@@ -61,7 +61,6 @@ public class ExternalEventService {
         old.setStart_time(externalEvent.getStart_time());
         old.setEnd_time(externalEvent.getEnd_time());
         old.setUrl(externalEvent.getUrl());
-        old.setStatus("active");
 
         externalEventRepository.save(old);
     }

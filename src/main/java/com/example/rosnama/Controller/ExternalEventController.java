@@ -53,7 +53,7 @@ public class ExternalEventController {
     // add external event by owner
     @PostMapping("/owner-add")
     public ResponseEntity<ApiResponse> addEventByOwner(@Valid @RequestBody ExternalEventDTOIn dto){
-        externalEventService.addEventByOwner(dto);
+        externalEventService.requestEventByOwner(dto);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External event created successfully and request generated automatically"));
     }
 
