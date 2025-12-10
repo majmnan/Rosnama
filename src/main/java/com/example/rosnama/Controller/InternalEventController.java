@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/internalevent")
+@RequestMapping("/api/v1/internal-event")
 @RequiredArgsConstructor
 public class InternalEventController {
 
