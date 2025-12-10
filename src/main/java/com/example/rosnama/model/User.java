@@ -46,6 +46,4 @@ public class User {
     @Column(columnDefinition = "varchar(40) not null unique")
     private String email;
 
-    @OneToMany(cascade = CascadeType.ALL , mappedBy = "user")
-    private Set <InternalEvent> internalEvents;
 }

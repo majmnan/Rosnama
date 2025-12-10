@@ -2,14 +2,8 @@ package com.example.rosnama.Service;
 
 import com.example.rosnama.Api.ApiException;
 import com.example.rosnama.DTO.InternalEventDTOIn;
-import com.example.rosnama.Model.Admin;
-import com.example.rosnama.Model.EventOwner;
-import com.example.rosnama.Model.InternalEvent;
-import com.example.rosnama.Model.User;
-import com.example.rosnama.Repository.AdminRepository;
-import com.example.rosnama.Repository.EventOwnerRepository;
-import com.example.rosnama.Repository.InternalEventRepository;
-import com.example.rosnama.Repository.UserRepository;
+import com.example.rosnama.Model.*;
+import com.example.rosnama.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +14,7 @@ import java.util.List;
 public class InternalEventService  {
 
     private final InternalEventRepository internalEventRepository;
+    private final InternalEventRequestRepository internalEventRequestRepository;
    private final EventOwnerRepository eventOwnerRepository;
 
 
@@ -36,17 +31,8 @@ public class InternalEventService  {
             throw new ApiException("EventOwner not found");
         }
 
-        InternalEvent internalEvent = new InternalEvent();
-
-        internalEvent.setTitle(internalEventDTOIn.getTitle());
-        internalEvent.setDescription(internalEventDTOIn.getDescription());
-        internalEvent.setCity(internalEventDTOIn.getCity());
-        internalEvent.setStart_date(internalEventDTOIn.getStart_date());
-        internalEvent.setEnd_time(internalEventDTOIn.getEnd_time());
-        internalEvent.setStart_time(internalEventDTOIn.getStart_time());
-        internalEvent.setEnd_time(internalEventDTOIn.getEnd_time());
-
-        internalEvent.setStatus("InActive");
+        InternalEvent internalEvent = new InternalEvent(null,internalEventDTOIn.getTitle(), internalEventDTOIn.getCity(), internalEventDTOIn.getLocation(), internalEventDTOIn.getDescription(), internalEventDTOIn.getStartDate(), internalEventDTOIn.getEndDate(), internalEventDTOIn.getStartTime(), internalEventDTOIn.getEndTime(), "InActive", eventOwner);
+        internalEventRequestRepository.save(new InternalEventRequest(null, internalEvent, "Requested", null));
 
         internalEvent.setEventOwner(eventOwner);
         internalEventRepository.save(internalEvent);

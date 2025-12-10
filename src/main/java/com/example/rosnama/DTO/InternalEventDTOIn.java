@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.validator.constraints.URL;
@@ -32,25 +33,32 @@ public class InternalEventDTOIn {
     @Column(columnDefinition = "date not null")
     private String city;
 
-    @NotNull(message = " event end date can not be empty ! ")
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(columnDefinition = "date not null")
-    private LocalDate start_date;
+    @NotNull
+    @URL(protocol = "https", host = "www.google.com", message = "Must be a valid Google Maps URL")
+    @Pattern(regexp = "^https:\\/\\/www\\.google\\.com\\/maps.*$",
+            message = "URL must start with https://www.google.com/maps")
+    @Column(columnDefinition = "text not null")
+    private String location;
 
     @NotNull(message = " event end date can not be empty ! ")
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(columnDefinition = "date not null")
-    private LocalDate end_date;
+    private LocalDate startDate;
+
+    @NotNull(message = " event end date can not be empty ! ")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Column(columnDefinition = "date not null")
+    private LocalDate endDate;
 
     @NotNull(message = " event start time can not be empty ! ")
     @JsonFormat(pattern = "HH:mm:ss")
     @Column(columnDefinition = "timestamp not null")
-    private LocalTime start_time;
+    private LocalTime startTime;
 
     @NotNull(message = " event end time can not be empty ! ")
     @JsonFormat(pattern = "HH:mm:ss")
     @Column(columnDefinition = "timestamp not null")
-    private LocalTime end_time;
+    private LocalTime endTime;
 
     @NotNull(message = "ownerId can not be null !")
     private Integer ownerId;

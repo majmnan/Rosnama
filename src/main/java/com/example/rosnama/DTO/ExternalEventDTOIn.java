@@ -37,22 +37,22 @@ public class ExternalEventDTOIn {
     @NotNull(message = " event start date can not be empty ! ")
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(columnDefinition = "date not null")
-    private LocalDate start_date;
+    private LocalDate startDate;
 
     @NotNull(message = " event end date can not be empty ! ")
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(columnDefinition = "date not null")
-    private LocalDate end_date;
+    private LocalDate endDate;
 
     @NotNull(message = " event start time can not be empty ! ")
     @JsonFormat(pattern = "HH:mm:ss")
     @Column(columnDefinition = "timestamp not null")
-    private LocalTime start_time;
+    private LocalTime startTime;
 
     @NotNull(message = " event end time can not be empty ! ")
     @JsonFormat(pattern = "HH:mm:ss")
     @Column(columnDefinition = "timestamp not null")
-    private LocalTime end_time;
+    private LocalTime endTime;
 
     @NotEmpty
     @URL

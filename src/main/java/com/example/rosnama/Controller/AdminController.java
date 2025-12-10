@@ -2,10 +2,8 @@ package com.example.rosnama.Controller;
 
 
 import com.example.rosnama.Api.ApiResponse;
-import com.example.rosnama.DTO.ExternalEventDTOIn;
 import com.example.rosnama.Model.Admin;
 import com.example.rosnama.Service.AdminService;
-import com.example.rosnama.Service.ExternalEventService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

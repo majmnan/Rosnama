@@ -48,12 +48,13 @@ public class InternalEventRequestService {
         if(eventRequest == null)
             throw new ApiException("event request not found");
 
-        if(!eventRequest.getStatus().equals("Offered"))
-            throw new ApiException("event request waits for offer");
-
         EventOwner eventOwner = eventRequest.getInternalEvent().getEventOwner();
         if(!eventOwner.getId().equals(ownerId))
             throw new ApiException("access denied");
+
+        if(!eventRequest.getStatus().equals("Offered"))
+            throw new ApiException("event request waits for offer");
+
         eventRequest.setPrice(price);
         eventRequest.setStatus("Requested");
     }

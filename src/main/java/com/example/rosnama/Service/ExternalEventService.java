@@ -68,7 +68,9 @@ public class ExternalEventService {
 
     // delete external event from the database
     public  void deleteExternalEvent(Integer adminId, Integer id) {
-
+        Admin admin = adminRepository.findAdminById(adminId);
+        if(admin == null)
+            throw new ApiException("admin not found");
         ExternalEvent externalEvent = externalEventRepository.findExternalEventById(id);
 
         // check if the external event exists
@@ -79,14 +81,9 @@ public class ExternalEventService {
         externalEventRepository.delete(externalEvent);
     }
 
-    ///  extra endpoints :
-
-    //add event by event owner
-    //event created with status "InActive"
-    //external event request created and saved to database with status "Requested"
 
     // add event by event owner
-    public void addEventByOwner (ExternalEventDTOIn externalEventDTOIn){
+    public void requestEventByOwner (ExternalEventDTOIn externalEventDTOIn){
 
         // check first if owner exist
         EventOwner  owner = eventOwnerRepository.findEventOwnerById(externalEventDTOIn.getOwnerId());
@@ -98,8 +95,8 @@ public class ExternalEventService {
         // save
         ExternalEvent externalEvent =  externalEventRepository.save(new ExternalEvent(null, externalEventDTOIn.getTitle(), externalEventDTOIn.getOrganizationName(),
                                                         externalEventDTOIn.getDescription(), externalEventDTOIn.getCity(),
-                                                        externalEventDTOIn.getStart_date(), externalEventDTOIn.getEnd_date(),
-                                                        externalEventDTOIn.getStart_time() , externalEventDTOIn.getEnd_time(),
+                                                        externalEventDTOIn.getStartDate(), externalEventDTOIn.getEndDate(),
+                                                        externalEventDTOIn.getStartTime() , externalEventDTOIn.getEndTime(),
                                                         externalEventDTOIn.getUrl() , "InActive" , null , owner ));
 
 
@@ -138,10 +135,10 @@ public class ExternalEventService {
         event.setOrganizationName(dto.getOrganizationName());
         event.setDescription(dto.getDescription());
         event.setCity(dto.getCity());
-        event.setStart_date(dto.getStart_date());
-        event.setEnd_date(dto.getEnd_date());
-        event.setStart_time(dto.getStart_time());
-        event.setEnd_time(dto.getEnd_time());
+        event.setStart_date(dto.getStartDate());
+        event.setEnd_date(dto.getEndDate());
+        event.setStart_time(dto.getStartTime());
+        event.setEnd_time(dto.getEndTime());
         event.setUrl(dto.getUrl());
 
 
@@ -176,9 +173,5 @@ public class ExternalEventService {
 
         externalEventRepository.delete(event);
     }
-
-
-
-
 
 }
