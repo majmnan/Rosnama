@@ -5,10 +5,7 @@ import com.example.rosnama.Model.Admin;
 import com.example.rosnama.Model.EventOwner;
 import com.example.rosnama.Model.ExternalEvent;
 import com.example.rosnama.Model.ExternalEventRequest;
-import com.example.rosnama.Repository.AdminRepository;
-import com.example.rosnama.Repository.EventOwnerRepository;
-import com.example.rosnama.Repository.ExternalEventRepository;
-import com.example.rosnama.Repository.ExternalEventRequestRepository;
+import com.example.rosnama.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +14,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ExternalEventRequestService {
+
     private final ExternalEventRequestRepository externalEventRequestRepository;
     private final AdminRepository adminRepository;
     private final EventOwnerRepository eventOwnerRepository;
@@ -24,19 +22,16 @@ public class ExternalEventRequestService {
 
     public List<ExternalEventRequest> getExternalEventRequests(Integer adminId){
         Admin admin = adminRepository.findAdminById(adminId);
-        if(admin == null)
-            throw new ApiException("admin not found");
+        if(admin == null) throw new ApiException("admin not found");
         return externalEventRequestRepository.findAll();
     }
 
     public void offerPrice(Integer adminId, Integer requestId, Double price){
         Admin admin = adminRepository.findAdminById(adminId);
-        if(admin == null)
-            throw new ApiException("admin not found");
+        if(admin == null)throw new ApiException("admin not found");
 
         ExternalEventRequest request = externalEventRequestRepository.findExternalEventRequestById(requestId);
-        if(request == null)
-            throw new ApiException("event request not found");
+        if(request == null) throw new ApiException("event request not found");
 
         // check staus not offered
         if (!request.getStatus().equals("Requested")) {
@@ -60,7 +55,6 @@ public class ExternalEventRequestService {
         if(!eventOwner.getId().equals(ownerId))
             throw new ApiException("access denied");
 
-
         eventRequest.setPrice(price);
         eventRequest.setStatus("Requested");
 
@@ -75,8 +69,9 @@ public class ExternalEventRequestService {
         if(!eventOwner.getId().equals(ownerId))
             throw new ApiException("access denied");
 
-        if(!(eventOwner.getBalance() >= request.getPrice()))
+        if (eventOwner.getBalance() < request.getPrice())
             throw new ApiException("event owner doesn't have enough money");
+
 
         eventOwner.setBalance(eventOwner.getBalance()-request.getPrice());
         eventOwnerRepository.save(eventOwner);
@@ -84,7 +79,7 @@ public class ExternalEventRequestService {
         ExternalEvent externalEvent = request.getExternalEvent();
         externalEvent.setStatus("Active");
         externalEvent.setExternalEventRequest(null);
-//        request.setExternalEvent(null);
+
         externalEventRepository.save(request.getExternalEvent());
         externalEventRequestRepository.delete(request);
     }

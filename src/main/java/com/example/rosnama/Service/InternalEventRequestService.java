@@ -11,6 +11,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class InternalEventRequestService {
+
     private final InternalEventRequestRepository internalEventRequestRepository;
     private final AdminRepository adminRepository;
     private final EventOwnerRepository eventOwnerRepository;

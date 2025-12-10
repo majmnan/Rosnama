@@ -24,7 +24,6 @@ public class CategoryService {
 
     public void addCategory(Integer adminId, Category category){
        Admin admin =  adminRepository.findAdminById(adminId);
-
        if(admin == null){
            throw new ApiException("Admin not found");
        }

@@ -1,15 +1,14 @@
 package com.example.rosnama.Service;
 
 import com.example.rosnama.Api.ApiException;
-import com.example.rosnama.DTO.InternalEventDTOIn;
+import com.example.rosnama.DTO.InternalEventDTO;
 import com.example.rosnama.Model.*;
 import com.example.rosnama.Repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.support.PageableUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.function.ObjLongConsumer;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +16,8 @@ public class InternalEventService  {
 
     private final InternalEventRepository internalEventRepository;
     private final InternalEventRequestRepository internalEventRequestRepository;
-   private final EventOwnerRepository eventOwnerRepository;
+    private final EventOwnerRepository eventOwnerRepository;
+    private final CategoryRepository categoryRepository;
 
 
     public List<InternalEvent> getAllAllInternalEvents(){
@@ -26,23 +26,43 @@ public class InternalEventService  {
     }
 
 
-    public void addInternalEventByOwner(Integer event_owner_id , InternalEventDTOIn internalEventDTOIn) {
+    public void addInternalEventByOwner(Integer ownerId, InternalEventDTO internalEventDTO) {
 
-        EventOwner eventOwner = eventOwnerRepository.findEventOwnerById(event_owner_id);
+        EventOwner eventOwner = eventOwnerRepository.findEventOwnerById(ownerId);
         if (eventOwner == null) {
             throw new ApiException("Event owner not found");
         }
 
+        Category category = categoryRepository.findCategoryById(internalEventDTO.getCategoryId());
+        if (category == null) {
+            throw new ApiException("Category not found");
+        }
 
-        InternalEvent internalEvent = new InternalEvent(null,internalEventDTOIn.getTitle(),internalEventDTOIn.getCity(),internalEventDTOIn.getLocation(),internalEventDTOIn.getDescription(),internalEventDTOIn.getStartDate(),internalEventDTOIn.getEndDate(),internalEventDTOIn.getStartTime(),internalEventDTOIn.getEndTime(), "InActive", internalEventDTOIn.getPrice(), null , eventOwner , null);
+        InternalEvent internalEvent = new InternalEvent(
+                null,
+                internalEventDTO.getTitle(),
+                internalEventDTO.getCity(),
+                internalEventDTO.getLocation(),
+                internalEventDTO.getDescription(),
+                internalEventDTO.getStartDate(),
+                internalEventDTO.getEndDate(),
+                internalEventDTO.getStartTime(),
+                internalEventDTO.getEndTime(),
+                "InActive",
+                internalEventDTO.getPrice(),
+                null,
+                null,
+                eventOwner
+        );
+        internalEvent.setCategory(category);
         internalEventRepository.save(internalEvent);
         internalEventRequestRepository.save(new InternalEventRequest(null, "Requested", internalEvent.getPrice() , internalEvent));
     }
 
 
-    public void updateInternalEventByOwner(Integer owner_id , Integer event_id, InternalEventDTOIn internalEventDTOIn ){
-        EventOwner eventOwner = eventOwnerRepository.findEventOwnerById(owner_id);
-        InternalEvent oldInternalEvent = internalEventRepository.findInternalEventById(event_id);
+    public void updateInternalEventByOwner(Integer ownerId, Integer eventId, InternalEventDTO internalEventDTOIn ){
+        EventOwner eventOwner = eventOwnerRepository.findEventOwnerById(ownerId);
+        InternalEvent oldInternalEvent = internalEventRepository.findInternalEventById(eventId);
 
         if(eventOwner == null){
             throw new ApiException("Owner not found");
@@ -52,32 +72,63 @@ public class InternalEventService  {
             throw new ApiException("InternalEvent not found");
         }
 
+        if (!oldInternalEvent.getEventOwner().getId().equals(ownerId)) {
+            throw new ApiException("You don't own this event");
+        }
+
         oldInternalEvent.setTitle(internalEventDTOIn.getTitle());
-        oldInternalEvent.setStart_time(internalEventDTOIn.getStartTime());
-        oldInternalEvent.setEnd_time(internalEventDTOIn.getEndTime());
-        oldInternalEvent.setStart_date(internalEventDTOIn.getStartDate());
-        oldInternalEvent.setEnd_date(internalEventDTOIn.getEndDate());
-        oldInternalEvent.setPrice(internalEventDTOIn.getPrice());
-        oldInternalEvent.setLocation(internalEventDTOIn.getLocation());
-        oldInternalEvent.setDescription(internalEventDTOIn.getDescription());
         oldInternalEvent.setCity(internalEventDTOIn.getCity());
+        oldInternalEvent.setDescription(internalEventDTOIn.getDescription());
+        oldInternalEvent.setLocation(internalEventDTOIn.getLocation());
+        oldInternalEvent.setStartDate(internalEventDTOIn.getStartDate());
+        oldInternalEvent.setEndDate(internalEventDTOIn.getEndDate());
+        oldInternalEvent.setStartTime(internalEventDTOIn.getStartTime());
+        oldInternalEvent.setEndTime(internalEventDTOIn.getEndTime());
+        oldInternalEvent.setPrice(internalEventDTOIn.getPrice());
+
+        Category category = categoryRepository.findCategoryById(internalEventDTOIn.getCategoryId());
+        if (category == null) throw new ApiException("Category not found");
+        oldInternalEvent.setCategory(category);
         internalEventRepository.save(oldInternalEvent);
 
     }
 
 
     public void deleteInternalEventByOwner(Integer ownerId , Integer internalEventId){
-        InternalEvent internalEvent =  internalEventRepository.findInternalEventById(internalEventId);
+        EventOwner owner = eventOwnerRepository.findEventOwnerById(ownerId);
+        if (owner == null) throw new ApiException("Owner not found");
 
+        InternalEvent internalEvent =  internalEventRepository.findInternalEventById(internalEventId);
         if(internalEvent == null){
             throw new ApiException("InternalEvent Not found");
         }
+        if (!internalEvent.getEventOwner().getId().equals(ownerId)) {
+            throw new ApiException("You don't own this event");
+        }
+
         internalEventRepository.delete(internalEvent);
 
     }
 
+    public List<InternalEvent> getTodayInternalEvents() {
+        return internalEventRepository.findInternalEventsByStartDate(LocalDate.now());
+    }
 
+    public List<InternalEvent> getInternalEventsBetween(LocalDate start, LocalDate end) {
+        return internalEventRepository.findInternalEventsByStartDateBetween(start, end);
+    }
 
+    public List<InternalEvent> getInternalEventsByType(String type) {
+        return internalEventRepository.findInternalEventsByType(type);
+    }
+
+    public List<InternalEvent> getInternalEventsByCity(String city) {
+        return internalEventRepository.findInternalEventsByCity(city);
+    }
+
+    public List<InternalEvent> getInternalEventsByCategory(Integer categoryId) {
+        return internalEventRepository.findInternalEventsByCategory_Id(categoryId);
+    }
 
 
 }

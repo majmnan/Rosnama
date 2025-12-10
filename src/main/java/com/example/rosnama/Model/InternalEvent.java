@@ -46,22 +46,22 @@ public class InternalEvent {
 
     @NotNull(message = "start_date  Can't be  null")
     @Column (columnDefinition = "DATE not null")
-    private LocalDate start_date;
+    private LocalDate startDate;
 
     @NotNull(message = "end_date Can't be not null")
     @Column (columnDefinition = "DATE not null")
-    private LocalDate end_date;
+    private LocalDate endDate;
 
     @NotNull(message = " start time can not be empty ! ")
     @JsonFormat(pattern = "HH:mm:ss")
     @Column(columnDefinition = "TIME not null")
-    private LocalTime start_time;
+    private LocalTime startTime;
 
 
     @NotNull(message = "  end time can not be empty ! ")
     @JsonFormat(pattern = "HH:mm:ss")
     @Column(columnDefinition = "TIME not null")
-    private LocalTime end_time;
+    private LocalTime endTime;
 
 
     @NotEmpty(message = " event status can not be empty ! ")
@@ -69,10 +69,15 @@ public class InternalEvent {
     @Column(columnDefinition = "varchar(20) not null ")
     private String status ; //-
 
-@NotNull(message = "price should not be empty")
-@Column(columnDefinition = "Double not null")
+    @NotNull(message = "price should not be empty")
+    @Column(columnDefinition = "Double not null")
     private Double price;
 
+    @NotEmpty
+    @Pattern(regexp = "^(Conference|MeetAndGreets|Hackathon|Opening Ceremony|Celebration|Others)$",
+            message = "Type must be one of the predefined categories : " +
+                      "Conference, MeetAndGreets, Hackathon, Opening Ceremony, Celebration, Others")
+    private String type;
 
     @OneToOne(mappedBy = "internalEvent", cascade = CascadeType.ALL)
     @JsonIgnore

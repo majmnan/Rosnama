@@ -27,23 +27,17 @@ public class AdminService {
 
 
     // update admin information in the database
-
     public  void updateAdmin(Integer id, Admin admin) {
-
-
         Admin old = adminRepository.findAdminById(id);
-
         // check if the old admin  exists
         if (old == null) {
             throw new ApiException("admin not found");
         }
-
         // update
         old.setUsername(admin.getUsername());
         old.setEmail(admin.getEmail());
         old.setPassword(admin.getPassword());
         old.setPhoneNumber(admin.getPhoneNumber());
-
         // save
         adminRepository.save(old);
     }
@@ -51,14 +45,11 @@ public class AdminService {
 
     // delete admin information from the database
     public void deleteAdmin(Integer id) {
-
         Admin admin = adminRepository.findAdminById(id);
-
         // check if the admin exists
         if (admin == null) {
             throw new ApiException("admin not found");
         }
-
         adminRepository.delete(admin);
     }
 

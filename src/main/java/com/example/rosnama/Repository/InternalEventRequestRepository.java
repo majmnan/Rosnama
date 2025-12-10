@@ -1,11 +1,13 @@
 package com.example.rosnama.Repository;
 
-import com.example.rosnama.Model.ExternalEventRequest;
+
 import com.example.rosnama.Model.InternalEventRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
+@Repository
 public interface InternalEventRequestRepository extends JpaRepository<InternalEventRequest, Integer> {
+
    InternalEventRequest findInternalEventRequestById(Integer id);
+
 }

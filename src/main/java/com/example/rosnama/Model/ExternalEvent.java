@@ -48,22 +48,22 @@ public class ExternalEvent {
     @NotNull(message = " event start date can not be empty ! ")
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(columnDefinition = "date not null")
-    private LocalDate start_date;
+    private LocalDate startDate;
 
     @NotNull(message = " event end date can not be empty ! ")
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(columnDefinition = "date not null")
-    private LocalDate end_date;
+    private LocalDate endDate;
 
     @NotNull(message = " event start time can not be empty ! ")
     @JsonFormat(pattern = "HH:mm:ss")
     @Column(columnDefinition = "TIME not null")
-    private LocalTime start_time;
+    private LocalTime startTime;
 
     @NotNull(message = " event end time can not be empty ! ")
     @JsonFormat(pattern = "HH:mm:ss")
     @Column(columnDefinition = "TIME not null")
-    private LocalTime end_time;
+    private LocalTime endTime;
 
     @NotEmpty
     @URL
@@ -74,6 +74,12 @@ public class ExternalEvent {
     @Pattern(regexp = "^(InActive|Active)$")
     @Column(columnDefinition = "varchar(20) not null ")
     private String status ; //-
+
+    @NotEmpty
+    @Pattern(regexp =  "^(Conference|MeetAndGreets|Hackathon|Opening Ceremony|Celebration|Others)$",
+             message = "Type must be one of the predefined categories :" +
+                       " (Conference , MeetAndGreets , Hackathon , Opening Ceremony, Celebration , Others)")
+    private String type;
 
     @OneToOne(mappedBy = "externalEvent", cascade = CascadeType.ALL)
     @JsonIgnore

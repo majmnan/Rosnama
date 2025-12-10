@@ -11,6 +11,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class EventOwnerService {
+
     private final EventOwnerRepository eventOwnerRepository;
 
     public List<EventOwner> getEventOwners(){

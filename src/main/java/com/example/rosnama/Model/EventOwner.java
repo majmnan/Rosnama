@@ -25,7 +25,11 @@ public class EventOwner {
     private String username;
 
     @NotEmpty
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,20}$")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,20}$",
+            message = "Password must have at least 8 characters, " +
+                               "and less than 20 characters, " +
+                               "one uppercase letter, one lowercase letter, one number, " +
+                               "one special character, one digit!")
     @Column(columnDefinition = "varchar(20) not null")
     private String password;
 

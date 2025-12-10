@@ -2,7 +2,6 @@ package com.example.rosnama.DTO;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -22,11 +21,10 @@ public class ExternalEventDTO {
     @NotEmpty(message = " event organizer name can not be empty ! ")
     private String organizationName ;
 
-    @NotEmpty(message = " event city can not be empty ! ")
+    @NotEmpty(message = " event description can not be empty ! ")
     private String description ;
 
-    @NotNull(message = " event end date can not be empty ! ")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = " event city can not be empty ! ")
     private String city;
 
     @NotNull(message = " event start date can not be empty ! ")
@@ -49,8 +47,10 @@ public class ExternalEventDTO {
     @URL
     private String url;
 
+
     @NotNull(message = "ownerId can not be null !")
     private Integer ownerId;
 
-
+    @NotNull(message = "CategoryId cannot be null")
+    private Integer categoryId;
 }

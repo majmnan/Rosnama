@@ -28,7 +28,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("User Added successfully"));
 
     }
-    @PutMapping("/update{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse>updateUser(@PathVariable Integer id ,@RequestBody @Valid User user){
         userService.updateUser(id, user);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("User Updated Successfully"));
@@ -39,4 +39,13 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("User Deleted Successfully"));
     }
+
+    ///  extra endpoint
+
+    @GetMapping("/recommend/{userId}")
+    public ResponseEntity<String> generateAiRecommendations(@PathVariable Integer userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(userService.generateAiRecommendations(userId)));
+    }
+
+
 }

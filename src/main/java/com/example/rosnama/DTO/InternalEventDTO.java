@@ -14,17 +14,16 @@ import java.time.LocalTime;
 
 @Data
 @AllArgsConstructor
-public class InternalEventDTOIn {
+public class InternalEventDTO {
 
 
     @NotEmpty(message = " event title can not be empty ! ")
     private String title ;
 
-    @NotEmpty(message = " event city can not be empty ! ")
+    @NotEmpty(message = " event description can not be empty ! ")
     private String description ;
 
-    @NotNull(message = " event end date can not be empty ! ")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @NotEmpty(message = " event end date can not be empty ! ")
     private String city;
 
     @NotNull
@@ -33,7 +32,7 @@ public class InternalEventDTOIn {
             message = "URL must start with https://www.google.com/maps")
     private String location;
 
-    @NotNull(message = " event end date can not be empty ! ")
+    @NotNull(message = " event start date can not be empty ! ")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
@@ -44,19 +43,20 @@ public class InternalEventDTOIn {
     @NotNull(message = " event start time can not be empty ! ")
     @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime startTime;
+
+    @NotNull(message = " event end time can not be empty ! ")
+    @JsonFormat(pattern = "HH:mm:ss")
+    private LocalTime endTime;
+
     @NotNull(message = "price should not be empty")
     @Column(columnDefinition = "Double not null")
     private Double price;
 
-    @NotNull(message = " event end time can not be empty ! ")
-    @JsonFormat(pattern = "HH:mm:ss")
-
-    private LocalTime endTime;
-
     @NotNull(message = "ownerId can not be null !")
     private Integer ownerId;
 
-
+    @NotNull(message = "CategoryId cannot be null")
+    private Integer categoryId;
 
 
 
