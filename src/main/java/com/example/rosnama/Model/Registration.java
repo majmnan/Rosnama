@@ -31,7 +31,7 @@ public class Registration {
     @NotNull
     private LocalDate date;
 
-    @Pattern(regexp = "^(Regestered|Active|Used|Ended)$")
+    @Pattern(regexp = "^(Registered|Used)$")
     @Column(columnDefinition = "varchar(10) not null")
     private String status;
 }
