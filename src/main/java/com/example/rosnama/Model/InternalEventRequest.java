@@ -32,6 +32,6 @@ public class InternalEventRequest {
     @NotNull
     @OneToOne
     @MapsId
-    private InternalEvent internalEvent; //parent class of External and internal Events
+    private InternalEvent internalEvent;
 
 }

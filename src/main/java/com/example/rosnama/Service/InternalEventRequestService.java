@@ -89,8 +89,6 @@ public class InternalEventRequestService {
         internalEvent.setInternalEventRequest(null);
         internalEventRepository.save(request.getInternalEvent());
         internalEventRequestRepository.delete(request);
-
-
     }
 
 

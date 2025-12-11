@@ -4,6 +4,7 @@ package com.example.rosnama.DTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.validator.constraints.URL;
@@ -46,6 +47,12 @@ public class ExternalEventDTO {
     @NotEmpty
     @URL
     private String url;
+
+    @NotEmpty
+    @Pattern(regexp =  "^(Conference|MeetAndGreets|Hackathon|Opening Ceremony|Others)$",
+            message = "Type must be one of the predefined categories :" +
+                    " (Conference , MeetAndGreets , Hackathon , Opening Ceremony, Others)")
+    private String type;
 
 
     @NotNull(message = "ownerId can not be null !")

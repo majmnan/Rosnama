@@ -17,9 +17,9 @@ public class InternalEventRequestController {
 
     private final InternalEventRequestService internalEventRequestService;
 
-    @GetMapping("/get/{admin_id}")
-    public ResponseEntity<List <InternalEventRequest>>getInternalEventRequests(@PathVariable Integer admin_id){
-        return ResponseEntity.status(HttpStatus.OK).body(internalEventRequestService.getAllEventsRequest(admin_id));
+    @GetMapping("/get/{adminId}")
+    public ResponseEntity<List <InternalEventRequest>>getInternalEventRequests(@PathVariable Integer adminId){
+        return ResponseEntity.status(HttpStatus.OK).body(internalEventRequestService.getAllEventsRequest(adminId));
 
     }
 

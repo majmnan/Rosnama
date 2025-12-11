@@ -23,7 +23,7 @@ public class InternalEventDTO {
     @NotEmpty(message = " event description can not be empty ! ")
     private String description ;
 
-    @NotEmpty(message = " event end date can not be empty ! ")
+    @NotEmpty(message = " event city can not be empty ! ")
     private String city;
 
     @NotNull
@@ -49,13 +49,20 @@ public class InternalEventDTO {
     private LocalTime endTime;
 
     @NotNull(message = "price should not be empty")
-    @Column(columnDefinition = "Double not null")
+    @Column(columnDefinition = "double not null")
     private Double price;
 
     @NotNull(message = "ownerId can not be null !")
     private Integer ownerId;
 
-    @NotNull(message = "CategoryId cannot be null")
+    @NotEmpty
+    @Pattern(regexp =  "^(Conference|MeetAndGreets|Hackathon|Opening Ceremony|Others)$",
+            message = "Type must be one of the predefined categories :" +
+                    " (Conference , MeetAndGreets , Hackathon , Opening Ceremony, Others)")
+    private String type;
+
+
+    @NotNull(message = "categoryId cannot be null")
     private Integer categoryId;
 
 

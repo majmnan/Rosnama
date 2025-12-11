@@ -39,7 +39,7 @@ public class CategoryService {
         if(admin == null){
             throw new ApiException("No Admin Found");
         }
-        oldcategory.setCategoryName(category.getCategoryName());
+        oldcategory.setName(category.getName());
         categoryRepository.save(oldcategory);
     }
 

@@ -23,7 +23,7 @@ public class Category {
 
     @NotEmpty(message = "CategoryName should not be empty")
     @Column(columnDefinition = "varchar(45) not null ")
-    private String categoryName;
+    private String name;
 
 
     @OneToMany(cascade = CascadeType.ALL , mappedBy = "category")

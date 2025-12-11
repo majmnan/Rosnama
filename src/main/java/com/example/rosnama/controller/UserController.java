@@ -39,13 +39,13 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("User Deleted Successfully"));
     }
-
-    ///  extra endpoint
-
-    @GetMapping("/recommend/{userId}")
-    public ResponseEntity<String> generateAiRecommendations(@PathVariable Integer userId) {
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(userService.generateAiRecommendations(userId)));
-    }
+//
+//    ///  extra endpoint
+//
+//    @GetMapping("/recommend/{userId}")
+//    public ResponseEntity<ApiResponse> generateAiRecommendations(@PathVariable Integer userId) {
+//        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(userService.generateAiRecommendations(userId)));
+//    }
 
 
 }

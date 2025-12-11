@@ -76,9 +76,9 @@ public class ExternalEvent {
     private String status ; //-
 
     @NotEmpty
-    @Pattern(regexp =  "^(Conference|MeetAndGreets|Hackathon|Opening Ceremony|Celebration|Others)$",
+    @Pattern(regexp =  "^(Conference|MeetAndGreets|Hackathon|Opening Ceremony|Others)$",
              message = "Type must be one of the predefined categories :" +
-                       " (Conference , MeetAndGreets , Hackathon , Opening Ceremony, Celebration , Others)")
+                       " (Conference , MeetAndGreets , Hackathon , Opening Ceremony, Others)")
     private String type;
 
     @OneToOne(mappedBy = "externalEvent", cascade = CascadeType.ALL)

@@ -35,20 +35,24 @@ public class ExternalEventService {
     public  void addExternalEventByAdmin(Integer adminId, ExternalEventDTO externalEventDTO) {
         // check admin exists
         Admin admin = adminRepository.findAdminById(adminId);
-        if(admin == null) throw new ApiException("admin not found");
+        if(admin == null)
+            throw new ApiException("admin not found");
+
         // check category exists
         Category category = categoryRepository.findCategoryById(externalEventDTO.getCategoryId());
-        if (category == null) throw new ApiException("Category not found");
+        if (category == null)
+            throw new ApiException("Category not found");
+
         // add the external event information to the database and save it
         ExternalEvent event = new ExternalEvent(
-                null, externalEventDTO.getTitle(), externalEventDTO.getOrganizationName(),
-                externalEventDTO.getDescription(), externalEventDTO.getCity(), externalEventDTO.getStartDate(),
-                externalEventDTO.getEndDate(), externalEventDTO.getStartTime(), externalEventDTO.getEndTime(), externalEventDTO.getUrl(),
-                "Active", externalEventDTO.getType(), null, null);
+                null, externalEventDTO.getTitle(), externalEventDTO.getOrganizationName(), externalEventDTO.getDescription(),
+                externalEventDTO.getCity(), externalEventDTO.getStartDate(), externalEventDTO.getEndDate(),
+                externalEventDTO.getStartTime(), externalEventDTO.getEndTime(), externalEventDTO.getUrl(),
+                "InActive", externalEventDTO.getType(), null, null, category);
+
         // set category
-        event.setCategory(category);
         // save
-        externalEventRepository.save(event);
+
          }
 
     // update external event (By admin)
@@ -105,26 +109,28 @@ public class ExternalEventService {
                 null, externalEventDTO.getTitle(), externalEventDTO.getOrganizationName(), externalEventDTO.getDescription(),
                 externalEventDTO.getCity(), externalEventDTO.getStartDate(), externalEventDTO.getEndDate(),
                 externalEventDTO.getStartTime(), externalEventDTO.getEndTime(), externalEventDTO.getUrl(),
-                "InActive", externalEventDTO.getType(), null, owner);
-        event.setCategory(category);
+                "InActive", externalEventDTO.getType(), null, owner, category);
+
         externalEventRepository.save(event);
-         // create an event request
         ExternalEventRequest request = new ExternalEventRequest(null, "Requested", null, event);
-        // save
         externalEventRequestRepository.save(request);
     }
 
 
     // update event by event owner
     public void updateEventByOwner(Integer ownerId, Integer eventId, ExternalEventDTO externalEventDTO){
+
         // check owner exists
         EventOwner owner = eventOwnerRepository.findEventOwnerById(ownerId);
         if(owner == null) throw new ApiException("event owner not found !");
+
         // check event exists
         ExternalEvent old = externalEventRepository.findExternalEventById(eventId);
         if(old == null) throw new ApiException("event not found !");
+
         // check if the owner who want to update it owns this event
         if (!old.getEventOwner().getId().equals(ownerId)) throw new ApiException("You do not own this event");
+
         // update
         old.setTitle(externalEventDTO.getTitle());
         old.setDescription(externalEventDTO.getDescription());
@@ -147,22 +153,28 @@ public class ExternalEventService {
     public void deleteEventByOwner(Integer ownerId, Integer eventId){
         // check owner exists
         EventOwner owner = eventOwnerRepository.findEventOwnerById(ownerId);
-        if(owner == null) throw new ApiException("event owner not found !");
+        if(owner == null)
+            throw new ApiException("event owner not found !");
+
         // check event exists
         ExternalEvent event = externalEventRepository.findExternalEventById(eventId);
-        if(event == null) throw new ApiException("event not found !");
+        if(event == null)
+            throw new ApiException("event not found !");
+
         // check if the owner who want to update it owns this event
-        if(!event.getEventOwner().getId().equals(ownerId)) throw new ApiException("you do not own this event to update its information!");
-        // check if the request is to this event to delete it
-        if(event.getExternalEventRequest() != null) externalEventRequestRepository.delete(event.getExternalEventRequest());
+        if(!event.getEventOwner().getId().equals(ownerId))
+            throw new ApiException("you do not own this event to update its information!");
+
         // delete
         externalEventRepository.delete(event);
     }
 
     // get all active events to show to users
     public List<ExternalEventDTO> getAllActiveExternalEvents() {
+
         // only get events that are active
         List<ExternalEvent> events = externalEventRepository.findExternalEventsByStatus("Active");
+
         // map regular event to DTO and return it
         return events.stream().map(event -> new ExternalEventDTO(
                 event.getTitle(), event.getOrganizationName(),
@@ -176,25 +188,15 @@ public class ExternalEventService {
     }
 
     //get today's events
-    public List<ExternalEvent> getTodayEvents() {
-        return externalEventRepository.findExternalEventsByStartDate(LocalDate.now());
-    }
+
     // get events between two dates
-    public List<ExternalEvent> getEventsBetween(LocalDate start, LocalDate end) {
-        return externalEventRepository.findExternalEventsByStartDateBetween(start, end);
-    }
+
     // get events by type
-    public List<ExternalEvent> getEventsByType(String type) {
-        return externalEventRepository.findExternalEventsByType(type);
-    }
+
     // get events by city
-    public List<ExternalEvent> getEventsByCity(String city) {
-        return externalEventRepository.findExternalEventsByCity(city);
-    }
+
     // get events by category
-    public List<ExternalEvent> getEventsByCategory(Integer categoryId) {
-        return externalEventRepository.findExternalEventsByCategory_Id(categoryId);
-    }
+
 
 
 

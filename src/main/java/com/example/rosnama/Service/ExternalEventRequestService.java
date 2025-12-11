@@ -22,16 +22,19 @@ public class ExternalEventRequestService {
 
     public List<ExternalEventRequest> getExternalEventRequests(Integer adminId){
         Admin admin = adminRepository.findAdminById(adminId);
-        if(admin == null) throw new ApiException("admin not found");
+        if(admin == null)
+            throw new ApiException("admin not found");
         return externalEventRequestRepository.findAll();
     }
 
     public void offerPrice(Integer adminId, Integer requestId, Double price){
         Admin admin = adminRepository.findAdminById(adminId);
-        if(admin == null)throw new ApiException("admin not found");
+        if(admin == null)
+            throw new ApiException("admin not found");
 
         ExternalEventRequest request = externalEventRequestRepository.findExternalEventRequestById(requestId);
-        if(request == null) throw new ApiException("event request not found");
+        if(request == null)
+            throw new ApiException("event request not found");
 
         // check staus not offered
         if (!request.getStatus().equals("Requested")) {
@@ -69,7 +72,7 @@ public class ExternalEventRequestService {
         if(!eventOwner.getId().equals(ownerId))
             throw new ApiException("access denied");
 
-        if (eventOwner.getBalance() < request.getPrice())
+        if(! (eventOwner.getBalance() >= request.getPrice()))
             throw new ApiException("event owner doesn't have enough money");
 
 
