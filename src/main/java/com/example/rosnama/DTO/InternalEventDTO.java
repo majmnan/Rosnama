@@ -62,6 +62,12 @@ public class InternalEventDTO {
     private String type;
 
 
+
+    @NotNull(message = "dailyCapacity should be not null")
+    @Column(columnDefinition = " int not null ")
+    private Integer dailyCapacity;
+
+
     @NotNull(message = "categoryId cannot be null")
     private Integer categoryId;
 

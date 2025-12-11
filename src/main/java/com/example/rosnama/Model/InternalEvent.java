@@ -98,6 +98,9 @@ public class InternalEvent {
     @JsonIgnore
     private Set<Registration> registrations;
 
-    //capaity
+@NotNull(message = "dailyCapacity should be not null")
+@Column(columnDefinition = " int not null ")
+    private Integer dailyCapacity;
+
 
 }

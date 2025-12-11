@@ -1,6 +1,7 @@
 package com.example.rosnama.Repository;
 
 
+import com.example.rosnama.Model.Category;
 import com.example.rosnama.Model.InternalEvent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -20,4 +21,8 @@ public interface InternalEventRepository extends JpaRepository<InternalEvent, In
     List<InternalEvent> findInternalEventByStartDate(LocalDate startDate);
     
     List<InternalEvent> findInternalEventByEndDate(LocalDate endDate);
+
+    List<InternalEvent> findInternalEventByEndDateBetween(LocalDate endDateAfter, LocalDate endDateBefore);
+
+
 }

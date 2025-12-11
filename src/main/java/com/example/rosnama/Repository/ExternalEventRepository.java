@@ -1,6 +1,4 @@
 package com.example.rosnama.Repository;
-
-import com.example.rosnama.DTO.ExternalEventDTO;
 import com.example.rosnama.Model.Category;
 import com.example.rosnama.Model.ExternalEvent;
 import org.springframework.data.jpa.repository.JpaRepository;
