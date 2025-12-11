@@ -6,6 +6,7 @@ import com.example.rosnama.Model.*;
 import com.example.rosnama.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import tools.jackson.core.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -192,12 +193,13 @@ public class ExternalEventService {
     // get events between two dates
 
     // get events by type
-
+    public List<ExternalEvent> getEventsByType(String type) {
+        return externalEventRepository.findExternalEventsByType(type);
+    }
     // get events by city
-
+    public List<ExternalEvent> getEventsByCity(String city) {
+        return externalEventRepository.findExternalEventsByCity(city);
+    }
     // get events by category
-
-
-
 
 }

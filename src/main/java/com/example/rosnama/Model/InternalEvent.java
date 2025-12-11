@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.Set;
 
 @AllArgsConstructor
 @Entity
@@ -93,6 +94,8 @@ public class InternalEvent {
     @JsonIgnore
     private Category category;
 
-
+    @OneToMany(mappedBy = "internalEvent")
+    @JsonIgnore
+    private Set<Registration> registrations;
 
 }

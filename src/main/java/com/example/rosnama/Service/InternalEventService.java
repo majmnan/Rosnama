@@ -53,8 +53,8 @@ public class InternalEventService  {
                 internalEventDTO.getType(),
                 null,
                 eventOwner,
-                category
-
+                category,
+                null
         );
         internalEventRepository.save(internalEvent);
         internalEventRequestRepository.save(new InternalEventRequest(null, "Requested", internalEvent.getPrice() , internalEvent));

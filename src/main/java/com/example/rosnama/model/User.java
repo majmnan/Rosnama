@@ -1,11 +1,14 @@
 package com.example.rosnama.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
 
 
 @Entity
@@ -52,4 +55,8 @@ public class User {
     @NotNull(message = "balance should not be null ")
     @PositiveOrZero(message = "balance must be 0 or higher")
     private Double balance;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private Set<Registration> registrations;
 }
