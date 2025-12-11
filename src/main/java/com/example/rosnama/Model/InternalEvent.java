@@ -66,7 +66,7 @@ public class InternalEvent {
 
 
     @NotEmpty(message = " event status can not be empty ! ")
-    @Pattern(regexp = "^(InActive|Active)$")
+    @Pattern(regexp = "^(?i)(InActive|Active|OnGoing|Ended)$")
     @Column(columnDefinition = "varchar(20) not null ")
     private String status ; //-
 
@@ -75,7 +75,7 @@ public class InternalEvent {
     private Double price;
 
     @NotEmpty
-    @Pattern(regexp = "^(Conference|MeetAndGreets|Hackathon|Opening Ceremony|Celebration|Others)$",
+    @Pattern(regexp = "^(?i)(Conference|MeetAndGreets|Hackathon|Opening Ceremony|Celebration|Others)$",
             message = "Type must be one of the predefined categories : " +
                       "Conference, MeetAndGreets, Hackathon, Opening Ceremony, Celebration, Others")
     private String type;

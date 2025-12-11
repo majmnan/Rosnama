@@ -19,4 +19,8 @@ public interface ExternalEventRepository extends JpaRepository<ExternalEvent, In
     List<ExternalEvent> findExternalEventsByType(String type);
 
     List<ExternalEvent> findExternalEventsByCity(String city);
+
+    List<ExternalEvent> findExternalEventsByStartDate(LocalDate startDate);
+
+    List<ExternalEvent> findExternalEventsByEndDate(LocalDate endDate);
 }

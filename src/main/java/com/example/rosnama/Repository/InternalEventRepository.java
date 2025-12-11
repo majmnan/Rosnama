@@ -16,4 +16,8 @@ public interface InternalEventRepository extends JpaRepository<InternalEvent, In
     List<InternalEvent> findInternalEventsByType(String type);
 
     List<InternalEvent> findInternalEventsByCity(String city);
+    
+    List<InternalEvent> findInternalEventByStartDate(LocalDate startDate);
+    
+    List<InternalEvent> findInternalEventByEndDate(LocalDate endDate);
 }

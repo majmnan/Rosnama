@@ -71,12 +71,12 @@ public class ExternalEvent {
     private String url;
 
     @NotEmpty(message = " event status can not be empty ! ")
-    @Pattern(regexp = "^(InActive|Active)$")
+    @Pattern(regexp = "^(?i)(InActive|Active|OnGoing|Ended)$")
     @Column(columnDefinition = "varchar(20) not null ")
     private String status ; //-
 
     @NotEmpty
-    @Pattern(regexp =  "^(Conference|MeetAndGreets|Hackathon|Opening Ceremony|Others)$",
+    @Pattern(regexp =  "^(?i)(Conference|MeetAndGreets|Hackathon|Opening Ceremony|Others)$",
              message = "Type must be one of the predefined categories :" +
                        " (Conference , MeetAndGreets , Hackathon , Opening Ceremony, Others)")
     private String type;

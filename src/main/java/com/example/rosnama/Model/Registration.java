@@ -16,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"user","event","date"})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id","internal_event_id","date"})})
 public class Registration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class Registration {
     @NotNull
     private LocalDate date;
 
-    @Pattern(regexp = "^(Registered|Used)$")
+    @Pattern(regexp = "^(?i)(Registered|Active|Used|Expired)$")
     @Column(columnDefinition = "varchar(10) not null")
     private String status;
 }
