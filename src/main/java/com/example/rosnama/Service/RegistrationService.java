@@ -32,11 +32,13 @@ public class RegistrationService {
         if(registrationDTOIn.getDate().isBefore(LocalDate.now()))
             throw new ApiException("can't register in past");
 
-        if(event.getStatus().equals("InActive"))
+        if(event.getStatus().equals("InActive") || event.getStatus().equals("ended"))
             throw new ApiException("event not active");
 
         if(!registrationDTOIn.getDate().isBefore(event.getEndDate()) && registrationDTOIn.getDate().isAfter(event.getStartDate()))
             throw new ApiException("enter date is out of event date");
+
+        //if(internalEvent.getRegistrations().size() >= capacity) throw new ApiException(event is full)
 
         registrationRepository.save(new Registration(
                 null,
@@ -45,6 +47,7 @@ public class RegistrationService {
                 registrationDTOIn.getDate(),
                 "Registered"
         ));
+
     }
 
     public void useRegistration(Integer registrationId){

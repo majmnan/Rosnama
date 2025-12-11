@@ -1,7 +1,8 @@
 package com.example.rosnama.Service;
 
 import com.example.rosnama.Api.ApiException;
-import com.example.rosnama.DTO.ExternalEventDTO;
+import com.example.rosnama.DTO.ExternalEventDTOIn;
+import com.example.rosnama.DTO.ExternalEventDTOOut;
 import com.example.rosnama.Model.*;
 import com.example.rosnama.Repository.*;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class ExternalEventService {
 
 
     // add a new external event (By admin)
-    public  void addExternalEventByAdmin(Integer adminId, ExternalEventDTO externalEventDTO) {
+    public  void addExternalEventByAdmin(Integer adminId, ExternalEventDTOIn externalEventDTO) {
         // check admin exists
         Admin admin = adminRepository.findAdminById(adminId);
         if(admin == null)
@@ -57,7 +58,7 @@ public class ExternalEventService {
          }
 
     // update external event (By admin)
-    public void updateExternalEventByAdmin(Integer adminId, Integer id, ExternalEventDTO externalEventDTO) {
+    public void updateExternalEventByAdmin(Integer adminId, Integer id, ExternalEventDTOIn externalEventDTO) {
         // check admin exists
         Admin admin = adminRepository.findAdminById(adminId);
         if(admin == null) throw new ApiException("admin not found");
@@ -98,7 +99,7 @@ public class ExternalEventService {
     /// extra endpoints
 
     // add event by event owner
-    public void requestEventByOwner (ExternalEventDTO externalEventDTO){
+    public void requestEventByOwner (ExternalEventDTOIn externalEventDTO){
         // check first if owner exist
         EventOwner  owner = eventOwnerRepository.findEventOwnerById(externalEventDTO.getOwnerId());
         if (owner == null ) throw new ApiException("event owner not found !");
@@ -119,7 +120,7 @@ public class ExternalEventService {
 
 
     // update event by event owner
-    public void updateEventByOwner(Integer ownerId, Integer eventId, ExternalEventDTO externalEventDTO){
+    public void updateEventByOwner(Integer ownerId, Integer eventId, ExternalEventDTOIn externalEventDTO){
 
         // check owner exists
         EventOwner owner = eventOwnerRepository.findEventOwnerById(ownerId);
@@ -171,31 +172,32 @@ public class ExternalEventService {
     }
 
     //get OnGoing Events
-    public List<ExternalEventDTO> getOnGoingEvents(){
+    public List<ExternalEventDTOOut> getOnGoingExternalEvents(){
         return convertToDtoOut(externalEventRepository.findExternalEventsByStatusOrderByEndDateAsc("OnGoing"));
     }
 
     // get all active events to show to users
-    public List<ExternalEventDTO> getUpcomingExternalEvents() {
+    public List<ExternalEventDTOOut> getUpcomingExternalEvents() {
         return convertToDtoOut(externalEventRepository.findExternalEventsByStatusOrderByStartDateAsc("Upcoming"));
     }
 
     // get events between two dates
-    public List<ExternalEventDTO> getEventsOnGoingBetween(LocalDate after, LocalDate before){
+    public List<ExternalEventDTOOut> getEventsOnGoingBetween(LocalDate after, LocalDate before){
         return convertToDtoOut(externalEventRepository.findExternalEventsByDateBetween(after, before));
     }
 
     // get events by type
-    public List<ExternalEventDTO> getEventsByType(String type) {
+    public List<ExternalEventDTOOut> getEventsByType(String type) {
         return convertToDtoOut(externalEventRepository.findExternalEventsByType(type));
     }
+
     // get events by city
-    public List<ExternalEventDTO> getEventsByCity(String city) {
+    public List<ExternalEventDTOOut> getEventsByCity(String city) {
         return convertToDtoOut(externalEventRepository.findExternalEventsByCity(city));
     }
 
     // get OnGoing events by category
-    public List<ExternalEventDTO> getOngoingByCategory(Integer categoryId){
+    public List<ExternalEventDTOOut> getOngoingByCategory(Integer categoryId){
         Category category = categoryRepository.findCategoryById(categoryId);
         if(category == null)
             throw new ApiException("Category not found");
@@ -205,15 +207,14 @@ public class ExternalEventService {
 
 
 
-    public List<ExternalEventDTO> convertToDtoOut(List<ExternalEvent> events){
-        return events.stream().map(event -> new ExternalEventDTO(
+    public List<ExternalEventDTOOut> convertToDtoOut(List<ExternalEvent> events){
+        return events.stream().map(event -> new ExternalEventDTOOut(
                 event.getTitle(), event.getOrganizationName(),
                 event.getDescription(), event.getCity(),
                 event.getStartDate(), event.getEndDate(),
                 event.getStartTime(), event.getEndTime(),
                 event.getUrl(), event.getType(),
-                event.getEventOwner() != null ? event.getEventOwner().getId() : null,
-                event.getCategory().getId()
+                event.getCategory().getName()
         )).toList();
     }
 }

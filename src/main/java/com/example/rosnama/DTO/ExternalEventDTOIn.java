@@ -14,7 +14,7 @@ import java.time.LocalTime;
 
 @AllArgsConstructor
 @Data
-public class ExternalEventDTO {
+public class ExternalEventDTOIn {
 
     @NotEmpty(message = " event title can not be empty ! ")
     private String title ;

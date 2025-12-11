@@ -98,4 +98,6 @@ public class InternalEvent {
     @JsonIgnore
     private Set<Registration> registrations;
 
+    //capaity
+
 }
