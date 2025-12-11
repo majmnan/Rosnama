@@ -1,5 +1,6 @@
 package com.example.rosnama.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -34,4 +35,10 @@ public class Registration {
     @Pattern(regexp = "^(?i)(Registered|Active|Used|Expired)$")
     @Column(columnDefinition = "varchar(15) not null")
     private String status;
+
+    // added for the one to one relationship with Review
+    @OneToOne(mappedBy = "registration", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Review review;
+
 }
