@@ -25,4 +25,10 @@ public class RegistrationController {
         registrationService.useRegistration(registrationId);
         return ResponseEntity.ok(new ApiResponse("registration used"));
     }
+
+    @PutMapping("/use/{registrationId}")
+    public ResponseEntity<ApiResponse> findRegistrationByInternalEventAndDate(@PathVariable Integer registrationId) {
+        registrationService.useRegistration(registrationId);
+        return ResponseEntity.ok(new ApiResponse("registration used"));
+    }
 }

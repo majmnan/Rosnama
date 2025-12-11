@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -38,8 +39,10 @@ public class RegistrationService {
         if(!registrationDTOIn.getDate().isBefore(event.getEndDate()) && registrationDTOIn.getDate().isAfter(event.getStartDate()))
             throw new ApiException("enter date is out of event date");
 
-        //if(findRegistrationsByInternalEventAndDate(internalEvent, dto.getDate).size() >= internalEvent.getCapacity();) throw new ApiException(event is full)
-
+        //if(internalEvent.getRegistrations().size() >= capacity) throw new ApiException(event is full)
+        if(registrationRepository.findRegistrationsByInternalEventAndDate(event,registrationDTOIn.getDate()).size() >= event.getDailyCapacity()){
+            throw new ApiException("Event is full");
+        }
         registrationRepository.save(new Registration(
                 null,
                 user,
@@ -63,5 +66,14 @@ public class RegistrationService {
         registrationRepository.save(registration);
 
 
+    }
+
+    public List<Registration> getRegistrationOfEventInADay(Integer internalEventID, LocalDate date){
+        List <Registration> registrations = registrationRepository.findRegistrationsByInternalEventAndDate(internalEventRepository.findInternalEventById(internalEventID),date);
+
+        if(registrations.isEmpty()){
+            throw new ApiException("No Registration found");
+        }
+        return registrations;
     }
 }

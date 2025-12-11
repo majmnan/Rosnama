@@ -34,4 +34,6 @@ public class Registration {
     @Pattern(regexp = "^(?i)(Registered|Active|Used|Expired)$")
     @Column(columnDefinition = "varchar(15) not null")
     private String status;
+
+
 }

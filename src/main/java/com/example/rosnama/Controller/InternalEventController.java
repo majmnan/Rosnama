@@ -1,8 +1,12 @@
 package com.example.rosnama.Controller;
 
+import com.example.rosnama.Api.ApiException;
 import com.example.rosnama.Api.ApiResponse;
 import com.example.rosnama.DTO.InternalEventDTO;
+import com.example.rosnama.DTO.InternalEventDTOOut;
 import com.example.rosnama.Model.InternalEvent;
+import com.example.rosnama.Model.Registration;
+import com.example.rosnama.Model.User;
 import com.example.rosnama.Service.InternalEventService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -20,7 +25,7 @@ public class InternalEventController {
     private final InternalEventService internalEventService;
 
     @GetMapping("/get")
-    public ResponseEntity<List <InternalEvent>> getAllInternalEvents(){
+    public ResponseEntity<List<InternalEvent>> getAllInternalEvents(){
         return ResponseEntity.status(HttpStatus.OK).body(internalEventService.getAllAllInternalEvents());
     }
 
@@ -31,7 +36,7 @@ public class InternalEventController {
     }
 
     @PutMapping("/update/{ownerId}/{eventId}")
-    public ResponseEntity<ApiResponse> updateInternalEvents(@PathVariable Integer ownerId , @PathVariable Integer eventId, @RequestBody @Valid InternalEventDTO internalEventDTO ){
+    public ResponseEntity<ApiResponse> updateInternalEvents(@PathVariable Integer ownerId , @PathVariable Integer eventId, @RequestBody @Valid InternalEventDTO internalEventDTO){
         internalEventService.updateInternalEventByOwner(ownerId , eventId , internalEventDTO);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Internal Events update successfully"));
     }
@@ -41,4 +46,27 @@ public class InternalEventController {
         internalEventService.deleteInternalEventByOwner(ownerId, internalEventId);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Internal Events deleted successfully"));
     }
+
+    @GetMapping("/type/{type}")
+    public ResponseEntity<List<InternalEventDTOOut>>getInternalEventsByType(@PathVariable String type){
+       return ResponseEntity.status(HttpStatus.OK).body(internalEventService.getInternalEventsByType(type));
+    }
+
+    @GetMapping("/city/{city}")
+    public ResponseEntity<List<InternalEventDTOOut>>getInternalEventsByCity(@PathVariable String city){
+        return ResponseEntity.status(HttpStatus.OK).body(internalEventService.getInternalEventsByCity(city));
+    }
+
+    @GetMapping("/between/{after}/{before}")
+    public ResponseEntity<List<InternalEventDTOOut>>getInternalEventByEndDateBetween(@PathVariable LocalDate after,@PathVariable LocalDate before){
+        return ResponseEntity.status(HttpStatus.OK).body(internalEventService.getInternalEventByEndDateBetween(after, before));
+    }
+
+
+    @GetMapping("/reg-by-user/{userId}")
+    public ResponseEntity<List<Registration>>getAllRegistrationsByUserId(@PathVariable Integer userId){
+        return ResponseEntity.status(HttpStatus.OK).body(internalEventService.getAllRegistrationsByUserId(userId));
+    }
+
+
 }

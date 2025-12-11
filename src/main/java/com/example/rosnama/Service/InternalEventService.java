@@ -2,6 +2,7 @@ package com.example.rosnama.Service;
 
 import com.example.rosnama.Api.ApiException;
 import com.example.rosnama.DTO.InternalEventDTO;
+import com.example.rosnama.DTO.InternalEventDTOOut;
 import com.example.rosnama.Model.*;
 import com.example.rosnama.Repository.*;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,8 @@ public class InternalEventService  {
     private final InternalEventRequestRepository internalEventRequestRepository;
     private final EventOwnerRepository eventOwnerRepository;
     private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
+    private final RegistrationRepository registrationRepository;
 
 
     public List<InternalEvent> getAllAllInternalEvents(){
@@ -25,6 +28,21 @@ public class InternalEventService  {
 
     }
 
+    public List<InternalEventDTOOut> convertToDtoOut(List<InternalEvent> events){
+        return events.stream().map(event -> new InternalEventDTOOut(
+                event.getTitle(),
+                event.getDescription(),
+                event.getCity(),
+                event.getLocation(),
+                event.getStartDate(),
+                event.getEndDate(),
+                event.getStartTime(),
+                event.getEndTime(),
+                event.getPrice(),
+                event.getType(),
+                event.getDailyCapacity()
+        )).toList();
+    }
 
     public void addInternalEventByOwner(Integer ownerId, InternalEventDTO internalEventDTO) {
 
@@ -54,14 +72,15 @@ public class InternalEventService  {
                 null,
                 eventOwner,
                 category,
-                null
+                null,
+                internalEventDTO.getDailyCapacity()
         );
         internalEventRepository.save(internalEvent);
         internalEventRequestRepository.save(new InternalEventRequest(null, "Requested", internalEvent.getPrice() , internalEvent));
     }
 
 
-    public void updateInternalEventByOwner(Integer ownerId, Integer eventId, InternalEventDTO internalEventDTOIn ){
+    public void updateInternalEventByOwner(Integer ownerId, Integer eventId, InternalEventDTO internalEventDTO){
         EventOwner eventOwner = eventOwnerRepository.findEventOwnerById(ownerId);
         InternalEvent oldInternalEvent = internalEventRepository.findInternalEventById(eventId);
 
@@ -77,17 +96,17 @@ public class InternalEventService  {
             throw new ApiException("You don't own this event");
         }
 
-        oldInternalEvent.setTitle(internalEventDTOIn.getTitle());
-        oldInternalEvent.setCity(internalEventDTOIn.getCity());
-        oldInternalEvent.setDescription(internalEventDTOIn.getDescription());
-        oldInternalEvent.setLocation(internalEventDTOIn.getLocation());
-        oldInternalEvent.setStartDate(internalEventDTOIn.getStartDate());
-        oldInternalEvent.setEndDate(internalEventDTOIn.getEndDate());
-        oldInternalEvent.setStartTime(internalEventDTOIn.getStartTime());
-        oldInternalEvent.setEndTime(internalEventDTOIn.getEndTime());
-        oldInternalEvent.setPrice(internalEventDTOIn.getPrice());
+        oldInternalEvent.setTitle(internalEventDTO.getTitle());
+        oldInternalEvent.setCity(internalEventDTO.getCity());
+        oldInternalEvent.setDescription(internalEventDTO.getDescription());
+        oldInternalEvent.setLocation(internalEventDTO.getLocation());
+        oldInternalEvent.setStartDate(internalEventDTO.getStartDate());
+        oldInternalEvent.setEndDate(internalEventDTO.getEndDate());
+        oldInternalEvent.setStartTime(internalEventDTO.getStartTime());
+        oldInternalEvent.setEndTime(internalEventDTO.getEndTime());
+        oldInternalEvent.setPrice(internalEventDTO.getPrice());
 
-        Category category = categoryRepository.findCategoryById(internalEventDTOIn.getCategoryId());
+        Category category = categoryRepository.findCategoryById(internalEventDTO.getCategoryId());
         if (category == null) throw new ApiException("Category not found");
         oldInternalEvent.setCategory(category);
         internalEventRepository.save(oldInternalEvent);
@@ -108,13 +127,33 @@ public class InternalEventService  {
 
     }
 
-    public List<InternalEvent> getInternalEventsByType(String type) {
-        return internalEventRepository.findInternalEventsByType(type);
+    public List<InternalEventDTOOut> getInternalEventsByType(String type) {
+        return convertToDtoOut(internalEventRepository.findInternalEventsByType(type));
     }
 
-    public List<InternalEvent> getInternalEventsByCity(String city) {
-        return internalEventRepository.findInternalEventsByCity(city);
+    public List<InternalEventDTOOut> getInternalEventsByCity(String city) {
+        return convertToDtoOut(internalEventRepository.findInternalEventsByCity(city));
     }
+
+    public List<InternalEventDTOOut>getInternalEventByEndDateBetween(LocalDate endDateAfter, LocalDate endDateBefore){
+        return convertToDtoOut(internalEventRepository.findInternalEventByEndDateBetween(endDateAfter, endDateBefore));
+    }
+
+    public List<Registration>getAllRegistrationsByUserId(Integer userId ){
+        User user = userRepository.findUserById(userId);
+
+        if(user == null){
+            throw new ApiException("User not found");
+        }
+
+        return user.getRegistrations()
+                .stream()
+                .toList();
+    }
+
+
+
+
 
 
 }
