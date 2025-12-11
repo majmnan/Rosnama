@@ -2,8 +2,10 @@ package com.example.rosnama.Repository;
 
 
 import com.example.rosnama.Model.Category;
+import com.example.rosnama.Model.ExternalEvent;
 import com.example.rosnama.Model.InternalEvent;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -22,7 +24,9 @@ public interface InternalEventRepository extends JpaRepository<InternalEvent, In
     
     List<InternalEvent> findInternalEventByEndDate(LocalDate endDate);
 
-    List<InternalEvent> findInternalEventByEndDateBetween(LocalDate endDateAfter, LocalDate endDateBefore);
+    @Query("select e from InternalEvent e where e.startDate<?1 and e.endDate>?1 or e.startDate > ?1 and e.startDate <?2 order by e.endDate asc")
+    List<InternalEvent> findInternalEventsByDateBetween(LocalDate after, LocalDate before);
 
+    List<InternalEvent> findInternalEventsByStatusAndCategoryOrderByEndDateAsc(String status, Category category);
 
 }
