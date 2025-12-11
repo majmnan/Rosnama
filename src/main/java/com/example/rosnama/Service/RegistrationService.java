@@ -38,7 +38,7 @@ public class RegistrationService {
         if(!registrationDTOIn.getDate().isBefore(event.getEndDate()) && registrationDTOIn.getDate().isAfter(event.getStartDate()))
             throw new ApiException("enter date is out of event date");
 
-        //if(internalEvent.getRegistrations().size() >= capacity) throw new ApiException(event is full)
+        //if(findRegistrationsByInternalEventAndDate(internalEvent, dto.getDate).size() >= internalEvent.getCapacity();) throw new ApiException(event is full)
 
         registrationRepository.save(new Registration(
                 null,

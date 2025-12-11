@@ -216,5 +216,5 @@ public class ExternalEventService {
                 event.getUrl(), event.getType(),
                 event.getCategory().getName()
         )).toList();
-    }
+    } 
 }

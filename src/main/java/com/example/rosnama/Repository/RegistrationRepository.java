@@ -1,5 +1,6 @@
 package com.example.rosnama.Repository;
 
+import com.example.rosnama.Model.InternalEvent;
 import com.example.rosnama.Model.Registration;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,4 +16,6 @@ public interface RegistrationRepository extends JpaRepository<Registration, Inte
     List<Registration> findRegistrationsByDate(LocalDate date);
 
     List<Registration> findRegistrationsByDateAndStatus(LocalDate date, String status);
+
+    List<Registration> findRegistrationsByInternalEventAndDate(InternalEvent internalEvent, LocalDate date);
 }
