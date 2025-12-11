@@ -170,13 +170,42 @@ public class ExternalEventService {
         externalEventRepository.delete(event);
     }
 
+    //get OnGoing Events
+    public List<ExternalEventDTO> getOnGoingEvents(){
+        return convertToDtoOut(externalEventRepository.findExternalEventsByStatusOrderByEndDateAsc("OnGoing"));
+    }
+
     // get all active events to show to users
-    public List<ExternalEventDTO> getAllActiveExternalEvents() {
+    public List<ExternalEventDTO> getUpcomingExternalEvents() {
+        return convertToDtoOut(externalEventRepository.findExternalEventsByStatusOrderByStartDateAsc("Upcoming"));
+    }
 
-        // only get events that are active
-        List<ExternalEvent> events = externalEventRepository.findExternalEventsByStatus("Active");
+    // get events between two dates
+    public List<ExternalEventDTO> getEventsOnGoingBetween(LocalDate after, LocalDate before){
+        return convertToDtoOut(externalEventRepository.findExternalEventsByDateBetween(after, before));
+    }
 
-        // map regular event to DTO and return it
+    // get events by type
+    public List<ExternalEventDTO> getEventsByType(String type) {
+        return convertToDtoOut(externalEventRepository.findExternalEventsByType(type));
+    }
+    // get events by city
+    public List<ExternalEventDTO> getEventsByCity(String city) {
+        return convertToDtoOut(externalEventRepository.findExternalEventsByCity(city));
+    }
+
+    // get OnGoing events by category
+    public List<ExternalEventDTO> getOngoingByCategory(Integer categoryId){
+        Category category = categoryRepository.findCategoryById(categoryId);
+        if(category == null)
+            throw new ApiException("Category not found");
+
+        return convertToDtoOut(externalEventRepository.findExternalEventsByStatusAndCategoryOrderByEndDateAsc("OnGoing",category));
+    }
+
+
+
+    public List<ExternalEventDTO> convertToDtoOut(List<ExternalEvent> events){
         return events.stream().map(event -> new ExternalEventDTO(
                 event.getTitle(), event.getOrganizationName(),
                 event.getDescription(), event.getCity(),
@@ -184,22 +213,7 @@ public class ExternalEventService {
                 event.getStartTime(), event.getEndTime(),
                 event.getUrl(), event.getType(),
                 event.getEventOwner() != null ? event.getEventOwner().getId() : null,
-                event.getCategory() != null ? event.getCategory().getId() : null
+                event.getCategory().getId()
         )).toList();
     }
-
-    //get today's events
-
-    // get events between two dates
-
-    // get events by type
-    public List<ExternalEvent> getEventsByType(String type) {
-        return externalEventRepository.findExternalEventsByType(type);
-    }
-    // get events by city
-    public List<ExternalEvent> getEventsByCity(String city) {
-        return externalEventRepository.findExternalEventsByCity(city);
-    }
-    // get events by category
-
 }

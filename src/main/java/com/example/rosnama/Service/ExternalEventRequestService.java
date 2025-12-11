@@ -80,7 +80,7 @@ public class ExternalEventRequestService {
         eventOwnerRepository.save(eventOwner);
 
         ExternalEvent externalEvent = request.getExternalEvent();
-        externalEvent.setStatus("Active");
+        externalEvent.setStatus("Upcoming");
         externalEvent.setExternalEventRequest(null);
 
         externalEventRepository.save(request.getExternalEvent());

@@ -71,7 +71,7 @@ public class ExternalEvent {
     private String url;
 
     @NotEmpty(message = " event status can not be empty ! ")
-    @Pattern(regexp = "^(?i)(InActive|Active|OnGoing|Ended)$")
+    @Pattern(regexp = "^(?i)(InActive|Upcoming|OnGoing|Ended)$")
     @Column(columnDefinition = "varchar(20) not null ")
     private String status ; //-
 

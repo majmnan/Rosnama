@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -44,7 +45,7 @@ public class ExternalEventController {
 
 
     //delete
-    @DeleteMapping("{adminId}/delete/{id}")
+    @DeleteMapping("/{adminId}/delete/{id}")
     public ResponseEntity<ApiResponse> deleteExternalEvent(@PathVariable Integer adminId, @PathVariable Integer id){
         externalEventService.deleteExternalEvent(adminId, id);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External Event has been deleted successfully"));
@@ -53,7 +54,7 @@ public class ExternalEventController {
     ///  extra end points
 
     // add external event by owner
-    @PostMapping("/owner-add")
+    @PostMapping("/request-event")
     public ResponseEntity<ApiResponse> addEventByOwner(@Valid @RequestBody ExternalEventDTO dto){
         externalEventService.requestEventByOwner(dto);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External event created successfully and request generated automatically"));
@@ -75,10 +76,33 @@ public class ExternalEventController {
     }
 
     // get all active events to show to users
-    @GetMapping("/active-events")
-    public ResponseEntity<List<ExternalEventDTO>> getAllActiveEvents(){
-        return ResponseEntity.status(HttpStatus.OK).body(externalEventService.getAllActiveExternalEvents());
+    @GetMapping("/upcoming")
+    public ResponseEntity<List<ExternalEventDTO>> getUpcomingExternalEvents(){
+        return ResponseEntity.status(HttpStatus.OK).body(externalEventService.getUpcomingExternalEvents());
     }
 
+    @GetMapping("/ongoing")
+    public ResponseEntity<List<ExternalEventDTO>> getOnGoingEvents() {
+        return ResponseEntity.status(HttpStatus.OK).body(externalEventService.getOnGoingEvents());
+    }
 
+    @GetMapping("/between/{after}/{before}")
+    public ResponseEntity<List<ExternalEventDTO>> getEventsOnGoingBetween(@PathVariable LocalDate after, @PathVariable LocalDate before) {
+        return ResponseEntity.status(HttpStatus.OK).body(externalEventService.getEventsOnGoingBetween(after, before));
+    }
+
+    @GetMapping("/type/{type}")
+    public ResponseEntity<List<ExternalEventDTO>> getEventsByType(@PathVariable String type) {
+        return ResponseEntity.status(HttpStatus.OK).body(externalEventService.getEventsByType(type));
+    }
+
+    @GetMapping("/city/{city}")
+    public ResponseEntity<List<ExternalEventDTO>> getEventsByCity(@PathVariable String city) {
+        return ResponseEntity.status(HttpStatus.OK).body(externalEventService.getEventsByCity(city));
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<ExternalEventDTO>> getOngoingByCategory(@PathVariable Integer categoryId) {
+        return ResponseEntity.status(HttpStatus.OK).body(externalEventService.getOngoingByCategory(categoryId));
+    }
 }
