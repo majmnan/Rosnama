@@ -38,7 +38,6 @@ public class AiService {
 
         Map choice = (Map)((List)response.get("choices")).get(0);
         Map msg = (Map) choice.get("message");
-
         return msg.get("content").toString();
     }
 }
