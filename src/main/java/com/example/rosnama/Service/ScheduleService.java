@@ -31,6 +31,10 @@ public class ScheduleService {
         //make registration active
         registrationRepository.findRegistrationsByDate(LocalDate.now())
                 .forEach(r -> r.setStatus("Active"));
+        //remind users of their active registration
+
+        //remind users of their TOMORROW registration
+
 
         //make registration ended
         registrationRepository.findRegistrationsByDateAndStatus(LocalDate.now().minusDays(1),"Active")

@@ -19,7 +19,6 @@ public class ExternalEventRequestService {
     private final AdminRepository adminRepository;
     private final EventOwnerRepository eventOwnerRepository;
     private final ExternalEventRepository externalEventRepository;
-    private final NotificationService notificationService;
 
     public List<ExternalEventRequest> getExternalEventRequests(Integer adminId){
         Admin admin = adminRepository.findAdminById(adminId);
@@ -45,6 +44,8 @@ public class ExternalEventRequestService {
         request.setPrice(price);
         request.setStatus("Offered");
         externalEventRequestRepository.save(request);
+
+        //notify owner that his event's status is offered
     }
 
     public void negotiates(Integer ownerId, Integer requestId, Double price){
@@ -63,6 +64,8 @@ public class ExternalEventRequestService {
         eventRequest.setStatus("Requested");
 
         externalEventRequestRepository.save(eventRequest);
+
+        //notify admin that owner negotiates the offer
     }
 
     public void acceptOfferAndPay(Integer ownerId, Integer requestId){
@@ -87,12 +90,8 @@ public class ExternalEventRequestService {
         externalEventRepository.save(request.getExternalEvent());
         externalEventRequestRepository.delete(request);
 
-        // sending email to event owner
-        notificationService.notifyOwnerPaymentSuccess(
-                eventOwner,
-                externalEvent.getTitle(),
-                request.getPrice()
-        );
+        //notify owner that his event is activated
+        //notify admin that his offer accepted and paid and the event activated
     }
 
 

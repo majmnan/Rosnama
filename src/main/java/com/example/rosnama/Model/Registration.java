@@ -36,9 +36,10 @@ public class Registration {
     @Column(columnDefinition = "varchar(15) not null")
     private String status;
 
-    // added for the one to one relationship with Review
+    // added for the one-to-one relationship with Review
     @OneToOne(mappedBy = "registration", cascade = CascadeType.ALL)
     @JsonIgnore
+    @PrimaryKeyJoinColumn
     private Review review;
 
 }

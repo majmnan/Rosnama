@@ -116,6 +116,8 @@ public class ExternalEventService {
         externalEventRepository.save(event);
         ExternalEventRequest request = new ExternalEventRequest(null, "Requested", null, event);
         externalEventRequestRepository.save(request);
+
+        //notify admin of the request
     }
 
 

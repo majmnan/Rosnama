@@ -18,9 +18,9 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Min(value = 1, message = "Rating must be at least 0")
+    @Min(value = 1, message = "Rating must be at least 1")
     @Max(value = 5, message = "Rating must be at most 5")
-    @Column(columnDefinition = "int not null")
+    @Column(columnDefinition = "integer not null")
     private Integer rating;
 
     @Size(min = 10, message = "Review must be at least 10 characters")

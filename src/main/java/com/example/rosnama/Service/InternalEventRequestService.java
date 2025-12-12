@@ -16,7 +16,6 @@ public class InternalEventRequestService {
     private final AdminRepository adminRepository;
     private final EventOwnerRepository eventOwnerRepository;
     private final InternalEventRepository internalEventRepository;
-    private final NotificationService notificationService;
 
 
 
@@ -92,11 +91,11 @@ public class InternalEventRequestService {
         internalEventRequestRepository.delete(request);
 
         // sending email to event owner
-        notificationService.notifyOwnerPaymentSuccess(
-                eventOwner,
-                internalEvent.getTitle(),
-                request.getPrice()
-        );
+//        notificationService.notifyOwnerPaymentSuccess(
+//                eventOwner,
+//                internalEvent.getTitle(),
+//                request.getPrice()
+//        );
 
     }
 

@@ -1,56 +1,61 @@
 package com.example.rosnama.Service;
 
-import com.example.rosnama.Model.EventOwner;
-import com.example.rosnama.Model.User;
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-
 
 @Service
 @RequiredArgsConstructor
 public class NotificationService {
+    private final JavaMailSender mailSender;
+    @Value("${ultramsg.token}")
+    private String token;
 
-    private final EmailService emailService;
-    private final WhatsAppService whatsAppService;
+    @Value("${ultramsg.instance-id}")
+    private String instance;
 
-    // this between admin  event owner
-    public void notifyOwnerPaymentSuccess(EventOwner owner, String eventTitle, Double amount) {
-        emailService.sendEmail(
-                owner.getEmail(),
-                "Payment Successful – Event Published",
-                """
-                Dear %s,
-
-                Your payment for the event "%s" has been completed successfully.
-                Amount Paid: %.2f SAR
-                Event Status: ACTIVE
-
-                Regards,
-                Rosnama Team
-                """.formatted(owner.getUsername(), eventTitle, amount)
-        );
+    public void notify(String email, String phone, String subject, String name, String msg) {
+        String body = createBody(name, msg);
+        sendEmail(email, subject, body);
+        sendWhatsapp(phone, subject, body);
     }
 
-    // this is for admin and user
-    public void notifyUserRegistrationSuccess(User user, String eventTitle, String date) {
-        whatsAppService.whatsapp(user.getPhoneNumber(),eventTitle+"Registration Success");
+    private void sendEmail(String toEmail,
+                          String subject, String body){
+        SimpleMailMessage message=new SimpleMailMessage();
+        message.setFrom("ibra9v1221@gmail.com");
+        message.setSubject(subject);
+        message.setTo(toEmail);
+        message.setText(body);
+        mailSender.send(message);
     }
 
-    // this is for admin  to event owner
-    public void notifyOwnerStatusChange(EventOwner owner, String eventTitle, String newStatus) {
-        emailService.sendEmail(
-                owner.getEmail(),
-                "Event Status Updated",
+    private void sendWhatsapp(String phone , String subject, String body){
+
+        HttpResponse<String> response = Unirest.post("https://api.ultramsg.com/"+instance+"/messages/chat")
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .field("token", token)
+                .field("to","+"+phone )
+                .field("body",subject + "\n\n" + body)
+                .asString();
+        System.out.println(response.getBody());
+    }
+
+    private String createBody(String name, String msg){
+        return
                 """
                 Hello %s,
 
-                Your event "%s" status has been updated to: %s.
+                %s
 
                 Regards,
                 Rosnama Team
-                """.formatted(owner.getUsername(), eventTitle, newStatus)
-        );
+                """
+                        .formatted(name,msg);
     }
-
 
 }
