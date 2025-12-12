@@ -23,6 +23,8 @@ public class InternalEventService  {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final RegistrationRepository registrationRepository;
+    private final EmailService emailService;
+    private final WhatsAppService whatsAppService;
 
 
     public List<InternalEvent> getAllAllInternalEvents(){
@@ -79,6 +81,16 @@ public class InternalEventService  {
                 internalEventDTO.getDailyCapacity()
         );
         internalEventRepository.save(internalEvent);
+        emailService.sendEmail(
+                eventOwner.getEmail(),
+                "Your Evenet Registration is confirmed ",
+                "Hello"+eventOwner.getUsername()+"\n"+
+                        "Your Registration has been confirmed successfully"+
+                        "Rosnama Team"
+
+
+        );
+
         internalEventRequestRepository.save(new InternalEventRequest(null, "Requested", internalEvent.getPrice() , internalEvent));
     }
 

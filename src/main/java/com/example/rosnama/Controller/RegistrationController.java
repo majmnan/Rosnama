@@ -36,9 +36,4 @@ public class RegistrationController {
         return ResponseEntity.status(HttpStatus.OK).body(registrationService.getRegistrationOfEventInADay(internalEventId, date));
     }
 
-    @PutMapping("/use/{registrationId}")
-    public ResponseEntity<ApiResponse> findRegistrationByInternalEventAndDate(@PathVariable Integer registrationId) {
-        registrationService.useRegistration(registrationId);
-        return ResponseEntity.ok(new ApiResponse("registration used"));
-    }
 }
