@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class NotificationService {
+
     private final JavaMailSender mailSender;
+
     @Value("${ultramsg.token}")
     private String token;
 
@@ -24,13 +26,14 @@ public class NotificationService {
         sendWhatsapp(phone, subject, body);
     }
 
-    private void sendEmail(String toEmail,
-                          String subject, String body){
+    private void sendEmail(String toEmail, String subject, String body){
+
         SimpleMailMessage message=new SimpleMailMessage();
         message.setFrom("ibra9v1221@gmail.com");
         message.setSubject(subject);
         message.setTo(toEmail);
         message.setText(body);
+
         mailSender.send(message);
     }
 
@@ -42,6 +45,7 @@ public class NotificationService {
                 .field("to","+"+phone )
                 .field("body",subject + "\n\n" + body)
                 .asString();
+
         System.out.println(response.getBody());
     }
 
@@ -57,5 +61,25 @@ public class NotificationService {
                 """
                         .formatted(name,msg);
     }
+
+
+    // for user notification
+    public void notifyUser(String email, String phone, String subject, String name, String msg) {
+        sendEmail(email, subject, createBody(name, msg));
+        sendWhatsapp(phone, subject, msg);
+    }
+
+    // for event owner notification
+    public void notifyEventOwner(String email, String phone, String subject, String name, String msg) {
+        sendEmail(email, subject, createBody(name, msg));
+        sendWhatsapp(phone, subject, msg);
+    }
+
+    // for admin notification
+    public void notifyAdmin(String email, String phone, String subject, String name, String msg) {
+        sendEmail(email, subject, createBody(name, msg));
+        sendWhatsapp(phone, subject, msg);
+    }
+
 
 }

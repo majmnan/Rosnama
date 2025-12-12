@@ -27,15 +27,15 @@ public class ExternalEventRequestController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("offer send successfully"));
     }
 
-    @PutMapping("/negotiates/{ownerId}/{requestId}/{price}")
-    public ResponseEntity<ApiResponse> negotiates(@PathVariable Integer ownerId, @PathVariable Integer requestId, @PathVariable Double price){
-        externalEventRequestService.negotiates(ownerId, requestId, price);
+    @PutMapping("/negotiates/{ownerId}/{requestId}/{price}/{adminId}")
+    public ResponseEntity<ApiResponse> negotiates(@PathVariable Integer ownerId, @PathVariable Integer requestId, @PathVariable Integer adminId,  @PathVariable Double price){
+        externalEventRequestService.negotiates(ownerId, requestId, price ,adminId);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("negotiate successfully"));
     }
 
-    @PutMapping("/accept-pay/{ownerId}/{requestId}")
-    public ResponseEntity<ApiResponse> acceptAndPay(@PathVariable Integer ownerId, @PathVariable Integer requestId){
-        externalEventRequestService.acceptOfferAndPay(ownerId, requestId);
+    @PutMapping("/accept-pay/{ownerId}/{requestId}/{adminId}")
+    public ResponseEntity<ApiResponse> acceptAndPay(@PathVariable Integer ownerId, @PathVariable Integer requestId , @PathVariable Integer adminId){
+        externalEventRequestService.acceptOfferAndPay(ownerId, requestId , adminId);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("event accepted and published successfully successfully"));
 
     }

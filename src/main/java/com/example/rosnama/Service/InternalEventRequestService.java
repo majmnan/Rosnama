@@ -16,6 +16,7 @@ public class InternalEventRequestService {
     private final AdminRepository adminRepository;
     private final EventOwnerRepository eventOwnerRepository;
     private final InternalEventRepository internalEventRepository;
+    private final NotificationService notificationService;
 
 
 
@@ -91,13 +92,13 @@ public class InternalEventRequestService {
         internalEventRequestRepository.delete(request);
 
         // sending email to event owner
-//        notificationService.notifyOwnerPaymentSuccess(
-//                eventOwner,
-//                internalEvent.getTitle(),
-//                request.getPrice()
-//        );
-
+        notificationService.notify(eventOwner.getEmail(),
+                eventOwner.getPhone(),
+                "Payment Successful",
+                eventOwner.getUsername(),
+                "Your internal event has been approved and activated successfully ");
     }
+
 
 
 

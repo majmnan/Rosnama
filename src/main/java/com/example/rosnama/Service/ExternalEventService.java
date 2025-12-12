@@ -22,6 +22,7 @@ public class ExternalEventService {
     private final ExternalEventRequestRepository externalEventRequestRepository;
     private final EventOwnerRepository eventOwnerRepository;
     private final CategoryRepository categoryRepository;
+    private final NotificationService notificationService;
 
     // get all external events (By admin)
     public List<ExternalEvent> getAllExternalEvents(Integer adminId) {
@@ -118,6 +119,13 @@ public class ExternalEventService {
         externalEventRequestRepository.save(request);
 
         //notify admin of the request
+        notificationService.notify(
+                "admin@email.com",
+                "9665xxxxxxxx",
+                "Event Price Negotiation",
+                "Admin",
+                " New external event request has been submited by " + owner.getUsername()
+        );
     }
 
 
