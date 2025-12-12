@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -103,5 +104,15 @@ public class RegistrationService {
             throw new ApiException("No Registration found");
         }
         return registrations;
+    }
+
+    public Set<Registration> getAllRegistrationsByUserId(Integer userId ){
+        User user = userRepository.findUserById(userId);
+
+        if(user == null){
+            throw new ApiException("User not found");
+        }
+
+        return user.getRegistrations();
     }
 }

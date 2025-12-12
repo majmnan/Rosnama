@@ -20,7 +20,7 @@ public class ExternalEventRequestService {
     private final EventOwnerRepository eventOwnerRepository;
     private final ExternalEventRepository externalEventRepository;
     private final NotificationService notificationService;
-
+    
     public List<ExternalEventRequest> getExternalEventRequests(Integer adminId){
         Admin admin = adminRepository.findAdminById(adminId);
         if(admin == null)
@@ -46,13 +46,14 @@ public class ExternalEventRequestService {
         request.setStatus("Offered");
         externalEventRequestRepository.save(request);
 
+        ExternalEvent event = request.getExternalEvent();
         //notify owner that his event's status is offered
         notificationService.notify(
-                request.getExternalEvent().getEventOwner().getEmail(),
-                request.getExternalEvent().getEventOwner().getPhone(),
+                event.getEventOwner().getEmail(),
+                event.getEventOwner().getPhone(),
                 "Event Price Offer",
-                request.getExternalEvent().getEventOwner().getUsername(),
-                "Your event has been offered a price of: " + price + " SAR. Please review and respond."
+                event.getEventOwner().getUsername(),
+                "Your event:\n" + event.getTitle() +"\nhas been offered a price of: " + price + " SAR. Please review and respond."
         );
     }
 
@@ -73,15 +74,16 @@ public class ExternalEventRequestService {
 
         externalEventRequestRepository.save(eventRequest);
 
-        Admin admin = adminRepository.findAdminById(adminId);
+        List<Admin> admins = adminRepository.findAll();
         //notify admin that owner negotiates the offer
+        admins.forEach( admin ->
         notificationService.notify(
                 admin.getEmail(),
                 admin.getPhoneNumber(),
                 "Event Price Negotiation",
                 "Admin",
-                "Event owner has proposed a new price: " + price + " SAR."
-        );
+                "Event:\n"+ eventRequest.getExternalEvent().getTitle() +"\nowner has proposed a new price: " + price + " SAR."
+        ));
 
     }
 
@@ -89,7 +91,10 @@ public class ExternalEventRequestService {
         ExternalEventRequest request = externalEventRequestRepository.findExternalEventRequestById(requestId);
         if(request == null)
             throw new ApiException("request not found");
-        EventOwner eventOwner = request.getExternalEvent().getEventOwner();
+
+        ExternalEvent event = request.getExternalEvent();
+
+        EventOwner eventOwner = event.getEventOwner();
         if(!eventOwner.getId().equals(ownerId))
             throw new ApiException("access denied");
 
@@ -100,11 +105,10 @@ public class ExternalEventRequestService {
         eventOwner.setBalance(eventOwner.getBalance()-request.getPrice());
         eventOwnerRepository.save(eventOwner);
 
-        ExternalEvent externalEvent = request.getExternalEvent();
-        externalEvent.setStatus("Upcoming");
-        externalEvent.setExternalEventRequest(null);
+        event.setStatus("Upcoming");
+        event.setExternalEventRequest(null);
 
-        externalEventRepository.save(request.getExternalEvent());
+        externalEventRepository.save(event);
         externalEventRequestRepository.delete(request);
 
         //notify owner that his event is activated
@@ -113,18 +117,19 @@ public class ExternalEventRequestService {
                 eventOwner.getPhone(),
                 "Event Price Negotiation",
                 eventOwner.getUsername(),
-                "You have accepted and paid the offered price of: " + request.getPrice() + " SAR. Your event is now activated."
+                "You have accepted and paid the offered price of: " + request.getPrice() + " SAR.\n Your event:\n"+ event.getTitle() +"is now activated."
         );
 
-        Admin admin = adminRepository.findAdminById(adminId);
+        List<Admin> admins = adminRepository.findAll();
         //notify admin that his offer accepted and paid and the event activated
+        admins.forEach( admin ->
         notificationService.notify(
                 admin.getEmail(),
                 admin.getPhoneNumber(),
                 "Event Price Negotiation",
                 "Admin",
-                "Event owner has accepted and paid the offered price of: " + request.getPrice() + " SAR. The event is now activated."
-        );
+                "Event:\n"+ event.getTitle() +"\nowner has accepted and paid the offered price of: " + request.getPrice() + " SAR.\n The event:\n"+ event.getTitle() +"is now activated."
+        ));
 
     }
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/registration")
@@ -40,5 +41,10 @@ public class RegistrationController {
     public ResponseEntity<ApiResponse> findRegistrationByInternalEventAndDate(@PathVariable Integer internalEventId) {
         registrationService.useRegistration(internalEventId);
         return ResponseEntity.ok(new ApiResponse("registration used"));
+    }
+
+    @GetMapping("/reg-by-user/{userId}")
+    public ResponseEntity<Set<Registration>>getAllRegistrationsByUserId(@PathVariable Integer userId){
+        return ResponseEntity.status(HttpStatus.OK).body(registrationService.getAllRegistrationsByUserId(userId));
     }
 }

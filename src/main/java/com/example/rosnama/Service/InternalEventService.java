@@ -60,7 +60,7 @@ public class InternalEventService  {
             throw new ApiException("Category not found");
         }
 
-        InternalEvent internalEvent = new InternalEvent(
+        InternalEvent event = new InternalEvent(
                 null,
                 internalEventDTO.getTitle(),
                 internalEventDTO.getCity(),
@@ -79,20 +79,20 @@ public class InternalEventService  {
                 null,
                 internalEventDTO.getDailyCapacity()
         );
-        internalEventRepository.save(internalEvent);
-        internalEventRequestRepository.save(new InternalEventRequest(null, "Requested", internalEvent.getPrice() , internalEvent));
+        internalEventRepository.save(event);
+        internalEventRequestRepository.save(new InternalEventRequest(null, "Requested", null , event));
 
 
         //notify admin of the request
-        Admin admin =  adminRepository.findAdminById(adminId);
-        if(admin == null){
-            throw new ApiException("Admin not found");
-        }
-        notificationService.notify(admin.getEmail(),
+        List<Admin> admins = adminRepository.findAll();
+        admins.forEach(admin ->
+        notificationService.notify(
+                admin.getEmail(),
                 admin.getPhoneNumber(),
-                "Internal Evenet Approve",
+                "Event Price Negotiation",
                 admin.getUsername(),
-                "Your Internal Event has been approved");
+                " New external event:\n" + event.getTitle() + "request has been submitted by " + eventOwner.getUsername()
+        ));
     }
 
 
@@ -161,16 +161,6 @@ public class InternalEventService  {
             throw new ApiException("Category not found");
 
         return convertToDtoOut(internalEventRepository.findInternalEventsByStatusAndCategoryOrderByEndDateAsc("OnGoing",category));
-    }
-
-    public Set<Registration> getAllRegistrationsByUserId(Integer userId ){
-        User user = userRepository.findUserById(userId);
-
-        if(user == null){
-            throw new ApiException("User not found");
-        }
-
-        return user.getRegistrations();
     }
 
 

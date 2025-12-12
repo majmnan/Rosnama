@@ -20,8 +20,8 @@ public class InternalEventRequestService {
 
 
 
-    public List<InternalEventRequest>getAllEventsRequest(Integer admin_id){
-        Admin admin =adminRepository.findAdminById(admin_id);
+    public List<InternalEventRequest>getAllEventsRequest(Integer adminId){
+        Admin admin =adminRepository.findAdminById(adminId);
         if(admin == null){
             throw new ApiException("Admin not found");
         }
@@ -29,10 +29,7 @@ public class InternalEventRequestService {
     }
 
 
-    public void offerPrice(Integer adminId, Integer requestId, Double price){
-        Admin admin = adminRepository.findAdminById(adminId);
-        if(admin == null)
-            throw new ApiException("admin not found");
+    public void offerPrice(Integer requestId, Double price){
 
         InternalEventRequest request = internalEventRequestRepository.findInternalEventRequestById(requestId);
         if(request == null)
@@ -46,6 +43,18 @@ public class InternalEventRequestService {
         request.setPrice(price);
         request.setStatus("Offered");
         internalEventRequestRepository.save(request);
+
+        InternalEvent event = request.getInternalEvent();
+        //notify owner that his event's status is offered
+        List<Admin> admins = adminRepository.findAll();
+        admins.forEach(admin ->
+        notificationService.notify(
+                event.getEventOwner().getEmail(),
+                event.getEventOwner().getPhone(),
+                "Event Price Offer",
+                event.getEventOwner().getUsername(),
+                "Your event:\n" + event.getTitle() +"\nhas been offered a price of: " + price + " SAR. Please review and respond."
+        ));
     }
 
 
@@ -66,6 +75,17 @@ public class InternalEventRequestService {
         eventRequest.setPrice(price);
         eventRequest.setStatus("Requested");
         internalEventRequestRepository.save(eventRequest);
+
+        List<Admin> admins = adminRepository.findAll();
+        //notify admin that owner negotiates the offer
+        admins.forEach( admin ->
+        notificationService.notify(
+                admin.getEmail(),
+                admin.getPhoneNumber(),
+                "Event Price Negotiation",
+                "Admin",
+                "Event:\n"+ eventRequest.getInternalEvent().getTitle() +"\nowner has proposed a new price: " + price + " SAR."
+        ));
     }
 
 
@@ -84,19 +104,32 @@ public class InternalEventRequestService {
         eventOwner.setBalance(eventOwner.getBalance()-request.getPrice());
         eventOwnerRepository.save(eventOwner);
 
-        InternalEvent internalEvent = request.getInternalEvent();
+        InternalEvent event = request.getInternalEvent();
 
-        internalEvent.setStatus("Active");
-        internalEvent.setInternalEventRequest(null);
+        event.setStatus("Active");
+        event.setInternalEventRequest(null);
         internalEventRepository.save(request.getInternalEvent());
         internalEventRequestRepository.delete(request);
 
-        // sending email to event owner
-        notificationService.notify(eventOwner.getEmail(),
+        //notify owner that his event is activated
+        notificationService.notify(
+                eventOwner.getEmail(),
                 eventOwner.getPhone(),
-                "Payment Successful",
+                "Event Price Negotiation",
                 eventOwner.getUsername(),
-                "Your internal event has been approved and activated successfully ");
+                "You have accepted and paid the offered price of: " + request.getPrice() + " SAR.\n Your event:\n"+ event.getTitle() +"is now activated."
+        );
+
+        List<Admin> admins = adminRepository.findAll();
+        //notify admin that his offer accepted and paid and the event activated
+        admins.forEach(admin ->
+        notificationService.notify(
+                admin.getEmail(),
+                admin.getPhoneNumber(),
+                "Event Price Negotiation",
+                "Admin",
+                "Event:\n"+ event.getTitle() +"\nowner has accepted and paid the offered price of: " + request.getPrice() + " SAR.\n The event:\n"+ event.getTitle() +"is now activated."
+        ));
     }
 
 

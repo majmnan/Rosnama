@@ -61,10 +61,9 @@ public class InternalEventController {
         return ResponseEntity.status(HttpStatus.OK).body(internalEventService.getInternalEventByDateBetween(after, before));
     }
 
-
-    @GetMapping("/reg-by-user/{userId}")
-    public ResponseEntity<Set<Registration>>getAllRegistrationsByUserId(@PathVariable Integer userId){
-        return ResponseEntity.status(HttpStatus.OK).body(internalEventService.getAllRegistrationsByUserId(userId));
+    @GetMapping("/get-category/{categoryId}")
+    public ResponseEntity<List<InternalEventDTOOut>> getOngoingByCategory(@PathVariable Integer categoryId){
+        return ResponseEntity.status(HttpStatus.OK).body(internalEventService.getOngoingByCategory(categoryId));
     }
 
 

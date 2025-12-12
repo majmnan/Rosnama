@@ -1,4 +1,5 @@
 package com.example.rosnama.Service;
+import com.example.rosnama.Model.InternalEvent;
 import com.example.rosnama.Repository.ExternalEventRepository;
 import com.example.rosnama.Repository.InternalEventRepository;
 import com.example.rosnama.Repository.RegistrationRepository;
@@ -32,31 +33,48 @@ public class ScheduleService {
 
         //make registration active
         registrationRepository.findRegistrationsByDate(LocalDate.now())
-                .forEach(r -> {
-                    r.setStatus("Active");
+                .forEach(registration -> {
+                    registration.setStatus("Active");
 
+                    InternalEvent event = registration.getInternalEvent();
                     //remind users of their active registration
                     notificationService.notifyUser(
-                            r.getUser().getEmail(),
-                            r.getUser().getPhoneNumber(),
+                            registration.getUser().getEmail(),
+                            registration.getUser().getPhoneNumber(),
                             "Event Today Reminder",
-                            r.getUser().getUsername(),
-                            "Reminder: You have an event today. Enjoy your time!"
+                            registration.getUser().getUsername(),
+                            """
+                                    Reminder: You have an event today:
+                                    title: %s
+                                    location: %s
+                                    startTime: %s
+                                    endTime: %s
+                                    """
+                                    .formatted(event.getTitle(), event.getLocation(), event.getStartTime(), event.getEndTime())
                     );
                 });
 
 
-        //remind users of their tommowrow registration
+        //remind users of their tomorrow registration
         registrationRepository.findRegistrationsByDate(LocalDate.now().plusDays(1))
                 .forEach(r -> {
-
+                    InternalEvent event = r.getInternalEvent();
                     // remind users of their active registration
                     notificationService.notifyUser(
                             r.getUser().getEmail(),
                             r.getUser().getPhoneNumber(),
-                            "Upcoming Event Reminder",
+                            "Tomorrow Event Reminder",
                             r.getUser().getUsername(),
-                            "Reminder: You have an event tomorrow. Don’t forget!"
+                            """
+                                    Reminder: You have an event tomorrow:
+                                    title: %s
+                                    location: %s
+                                    startTime: %s
+                                    endTime: %s
+                                    Don't Forget!
+                                    """
+                                    .formatted(event.getTitle(), event.getLocation(), event.getStartTime(), event.getEndTime())
+
                     );
                 });
 
@@ -72,8 +90,9 @@ public class ScheduleService {
                             r.getUser().getPhoneNumber(),
                             "Registration Expired",
                             r.getUser().getUsername(),
-                            "Your event registration has ended."
+                            "Your event registration has expired."
                     );
+
                 });
 
         //make events ended

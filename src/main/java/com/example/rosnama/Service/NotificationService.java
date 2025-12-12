@@ -42,7 +42,7 @@ public class NotificationService {
         HttpResponse<String> response = Unirest.post("https://api.ultramsg.com/"+instance+"/messages/chat")
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .field("token", token)
-                .field("to","+"+phone )
+                .field("to","+" + phone)
                 .field("body",subject + "\n\n" + body)
                 .asString();
 

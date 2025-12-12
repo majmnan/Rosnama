@@ -24,9 +24,9 @@ public class InternalEventRequestController {
     }
 
 
-    @PutMapping ("/offer-for/{adminId}/{requestId}/{price}")
-    public ResponseEntity<ApiResponse>offerPrice(@PathVariable Integer adminId, @PathVariable Integer requestId,@PathVariable Double price){
-        internalEventRequestService.offerPrice(adminId,requestId,price);
+    @PutMapping ("/offer-for/{requestId}/{price}")
+    public ResponseEntity<ApiResponse>offerPrice(@PathVariable Integer requestId,@PathVariable Double price){
+        internalEventRequestService.offerPrice(requestId,price);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("offer send successfully"));
 
     }
@@ -40,7 +40,7 @@ public class InternalEventRequestController {
     }
 
 
-    @PutMapping ("/accept-pay/{ownerId}/{requestId}/{price}")
+    @PutMapping ("/accept-pay/{ownerId}/{requestId}")
     public ResponseEntity<ApiResponse>acceptOfferAndPay(@PathVariable Integer ownerId, @PathVariable Integer requestId){
         internalEventRequestService.acceptOfferAndPay(ownerId,requestId);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("event accepted and published successfully "));

@@ -119,13 +119,15 @@ public class ExternalEventService {
         externalEventRequestRepository.save(request);
 
         //notify admin of the request
+        List<Admin> admins = adminRepository.findAll();
+        admins.forEach(admin ->
         notificationService.notify(
-                "admin@email.com",
-                "9665xxxxxxxx",
+                admin.getEmail(),
+                admin.getPhoneNumber(),
                 "Event Price Negotiation",
-                "Admin",
-                " New external event request has been submited by " + owner.getUsername()
-        );
+                admin.getUsername(),
+                " New external event:\n" + event.getTitle() + "request has been submitted by " + owner.getUsername()
+        ));
     }
 
 
