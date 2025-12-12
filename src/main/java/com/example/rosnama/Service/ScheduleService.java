@@ -59,7 +59,7 @@ public class ScheduleService {
         registrationRepository.findRegistrationsByDate(LocalDate.now().plusDays(1))
                 .forEach(r -> {
                     InternalEvent event = r.getInternalEvent();
-                    // remind users of their active registration
+                    //remind users of their active registration
                     notificationService.notifyUser(
                             r.getUser().getEmail(),
                             r.getUser().getPhoneNumber(),
@@ -84,17 +84,16 @@ public class ScheduleService {
                 .forEach(r -> {
                     r.setStatus("Expired");
 
+                    InternalEvent event = r.getInternalEvent();
                     //notify users that their registration expired and ended
                     notificationService.notifyUser(
                             r.getUser().getEmail(),
                             r.getUser().getPhoneNumber(),
                             "Registration Expired",
                             r.getUser().getUsername(),
-                            "Your event registration has expired."
+                            "Your registration of event:\n"+ event.getTitle() +"\nhas expired."
                     );
-
                 });
-
         //make events ended
         externalEventRepository.findExternalEventsByEndDate(LocalDate.now().minusDays(1))
                 .forEach(e -> e.setStatus("Ended"));
