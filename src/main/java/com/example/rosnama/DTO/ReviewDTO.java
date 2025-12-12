@@ -11,7 +11,7 @@ public class ReviewDTO {
 
 
     @NotNull(message = "Rating cannot be null")
-    @Min(value = 0, message = "Rating must be at least 0 ")
+    @Min(value = 1, message = "Rating must be at least 0 ")
     @Max(value = 5, message = "Rating cannot  be greater than 5")
     private Integer rating;
 

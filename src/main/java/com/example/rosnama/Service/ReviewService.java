@@ -20,10 +20,8 @@ public class ReviewService {
     private final RegistrationRepository registrationRepository;
 
     // get all reviews
-    public List<Review> getAllReviews() {
-
-        return reviewRepository.findAll();
-
+    public List<Review> getAllReviewsByInternalEventId(Integer eventId) {
+        return reviewRepository.getReviewsByInternalEventId(eventId);
     }
 
     // add a review

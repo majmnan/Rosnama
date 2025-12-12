@@ -20,9 +20,9 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     //get
-    @GetMapping("/get")
-    public ResponseEntity<List<Review>> getAllReviews() {
-        return ResponseEntity.status(HttpStatus.OK).body(reviewService.getAllReviews());
+    @GetMapping("/get/{eventId}")
+    public ResponseEntity<List<Review>> getAllReviewsOfInternalEvent(@PathVariable Integer eventId) {
+        return ResponseEntity.status(HttpStatus.OK).body(reviewService.getAllReviewsByInternalEventId(eventId));
     }
 
     //add
