@@ -20,6 +20,7 @@ public class RegistrationService {
     private final RegistrationRepository registrationRepository;
     private final UserRepository userRepository;
     private final InternalEventRepository internalEventRepository;
+    private final NotificationService notificationService;
 
     public void addRegistration(RegistrationDTOIn registrationDTOIn){
         User user = userRepository.findUserById(registrationDTOIn.getUserId());
@@ -54,6 +55,18 @@ public class RegistrationService {
 
         // send notification to user that registration is successful and details of registration
 
+        notificationService.notifyUser(
+                user.getEmail(),
+                user.getPhoneNumber(),
+                "Registration Successful",
+                user.getUsername(),
+                """
+                You have successfully registered for:
+                Event: %s
+                Date: %s
+                """
+                 .formatted(event.getTitle(), registrationDTOIn.getDate())
+        );
 
     }
 
@@ -68,6 +81,17 @@ public class RegistrationService {
 
         registration.setStatus("Used");
         registrationRepository.save(registration);
+
+        // send notification to user that registration is used
+        notificationService.notifyUser(
+                registration.getUser().getEmail(),
+                registration.getUser().getPhoneNumber(),
+                "Attendance confirmed",
+                registration.getUser().getUsername(),
+                " thank you for attending the event: %s on %s"
+                        .formatted(registration.getInternalEvent().getTitle(), registration.getDate())
+        );
+
 
 
     }

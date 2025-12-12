@@ -28,9 +28,9 @@ public class InternalEventController {
         return ResponseEntity.status(HttpStatus.OK).body(internalEventService.getAllAllInternalEvents());
     }
 
-    @PostMapping("/add/{eventOwnerId}")
-    public ResponseEntity<ApiResponse> addInternalEvents(@PathVariable Integer eventOwnerId , @RequestBody @Valid InternalEventDTOIn DTO){
-        internalEventService.addInternalEventByOwner(eventOwnerId , DTO);
+    @PostMapping("/add/{eventOwnerId}/{adminId}")
+    public ResponseEntity<ApiResponse> addInternalEvents(@PathVariable Integer eventOwnerId , @PathVariable Integer adminId ,  @RequestBody @Valid InternalEventDTOIn DTO){
+        internalEventService.addInternalEventByOwner(eventOwnerId , DTO ,adminId);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Internal Events Add successfully"));
     }
 

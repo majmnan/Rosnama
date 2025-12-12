@@ -23,6 +23,8 @@ public class InternalEventService  {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final RegistrationRepository registrationRepository;
+    private final NotificationService notificationService;
+    private final AdminRepository adminRepository;
 
     public List<InternalEvent> getAllAllInternalEvents(){
         return internalEventRepository.findAll();
@@ -46,7 +48,7 @@ public class InternalEventService  {
         )).toList();
     }
 
-    public void addInternalEventByOwner(Integer ownerId, InternalEventDTOIn internalEventDTO) {
+    public void addInternalEventByOwner(Integer ownerId, InternalEventDTOIn internalEventDTO , Integer adminId){
 
         EventOwner eventOwner = eventOwnerRepository.findEventOwnerById(ownerId);
         if (eventOwner == null) {
@@ -82,6 +84,15 @@ public class InternalEventService  {
 
 
         //notify admin of the request
+        Admin admin =  adminRepository.findAdminById(adminId);
+        if(admin == null){
+            throw new ApiException("Admin not found");
+        }
+        notificationService.notify(admin.getEmail(),
+                admin.getPhoneNumber(),
+                "Internal Evenet Approve",
+                admin.getUsername(),
+                "Your Internal Event has been approved");
     }
 
 

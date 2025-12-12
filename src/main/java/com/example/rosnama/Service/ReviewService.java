@@ -18,6 +18,7 @@ public class ReviewService {
     // connect to Database
     private final ReviewRepository reviewRepository;
     private final RegistrationRepository registrationRepository;
+    private final NotificationService notificationService;
 
     // get all reviews
     public List<Review> getAllReviewsByInternalEventId(Integer eventId) {
@@ -43,6 +44,16 @@ public class ReviewService {
 
         // save
         reviewRepository.save(review);
+
+        //send notification to user that review is submitted successfully
+        notificationService.notifyUser(
+                registration.getUser().getEmail(),
+                registration.getUser().getPhoneNumber(),
+                "Review confirmation",
+                registration.getUser().getUsername(),
+                "Your review has been submitted successfully. Thank you for your feedback!"
+        );
+
     }
 
     // update review
