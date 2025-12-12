@@ -20,6 +20,7 @@ public class RegistrationService {
     private final RegistrationRepository registrationRepository;
     private final UserRepository userRepository;
     private final InternalEventRepository internalEventRepository;
+    private final NotificationService notificationService;
 
     public void addRegistration(RegistrationDTOIn registrationDTOIn){
         User user = userRepository.findUserById(registrationDTOIn.getUserId());
@@ -48,8 +49,17 @@ public class RegistrationService {
                 user,
                 event,
                 registrationDTOIn.getDate(),
-                "Registered"
+                "Registered",
+                null
         ));
+
+        // send notification to user that registration is successful
+        notificationService.notifyUserRegistrationSuccess(
+                user,
+                event.getTitle(),
+                registrationDTOIn.getDate().toString()
+        );
+
 
     }
 

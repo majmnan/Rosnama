@@ -19,6 +19,7 @@ public class ExternalEventRequestService {
     private final AdminRepository adminRepository;
     private final EventOwnerRepository eventOwnerRepository;
     private final ExternalEventRepository externalEventRepository;
+    private final NotificationService notificationService;
 
     public List<ExternalEventRequest> getExternalEventRequests(Integer adminId){
         Admin admin = adminRepository.findAdminById(adminId);
@@ -85,6 +86,13 @@ public class ExternalEventRequestService {
 
         externalEventRepository.save(request.getExternalEvent());
         externalEventRequestRepository.delete(request);
+
+        // sending email to event owner
+        notificationService.notifyOwnerPaymentSuccess(
+                eventOwner,
+                externalEvent.getTitle(),
+                request.getPrice()
+        );
     }
 
 
