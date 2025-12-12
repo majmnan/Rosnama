@@ -20,6 +20,7 @@ public class RegistrationService {
     private final RegistrationRepository registrationRepository;
     private final UserRepository userRepository;
     private final InternalEventRepository internalEventRepository;
+    private final NotificationService notificationService;
 
     public void addRegistration(RegistrationDTOIn registrationDTOIn){
         User user = userRepository.findUserById(registrationDTOIn.getUserId());
@@ -40,7 +41,7 @@ public class RegistrationService {
             throw new ApiException("enter date is out of event date");
 
         //if(internalEvent.getRegistrations().size() >= capacity) throw new ApiException(event is full)
-        if(event.getRegistrations().size()>= event.getDailyCapacity()){
+        if(registrationRepository.findRegistrationsByInternalEventAndDate(event,registrationDTOIn.getDate()).size() >= event.getDailyCapacity()){
             throw new ApiException("Event is full");
         }
         registrationRepository.save(new Registration(
@@ -48,8 +49,17 @@ public class RegistrationService {
                 user,
                 event,
                 registrationDTOIn.getDate(),
-                "Registered"
+                "Registered",
+                null
         ));
+
+        // send notification to user that registration is successful
+        notificationService.notifyUserRegistrationSuccess(
+                user,
+                event.getTitle(),
+                registrationDTOIn.getDate().toString()
+        );
+
 
     }
 
@@ -68,8 +78,8 @@ public class RegistrationService {
 
     }
 
-    public List<Registration> findRegistrationByInternalEventAndDate(InternalEvent internalEvent, LocalDate date){
-        List <Registration> registrations = registrationRepository.findRegistrationByInternalEventAndDate(internalEvent,date);
+    public List<Registration> getRegistrationOfEventInADay(Integer internalEventID, LocalDate date){
+        List <Registration> registrations = registrationRepository.findRegistrationsByInternalEventAndDate(internalEventRepository.findInternalEventById(internalEventID),date);
 
         if(registrations.isEmpty()){
             throw new ApiException("No Registration found");

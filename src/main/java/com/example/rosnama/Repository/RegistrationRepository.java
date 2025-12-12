@@ -17,5 +17,5 @@ public interface RegistrationRepository extends JpaRepository<Registration, Inte
 
     List<Registration> findRegistrationsByDateAndStatus(LocalDate date, String status);
 
-    List<Registration> findRegistrationByInternalEventAndDate(InternalEvent internalEvent, LocalDate date);
+    List<Registration> findRegistrationsByInternalEventAndDate(InternalEvent internalEvent, LocalDate date);
 }

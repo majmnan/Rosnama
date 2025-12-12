@@ -39,10 +39,9 @@ public class InternalEventDTOOut {
 
     private Double price;
 
-
+    private String categoryName;
 
     private String type;
-
 
 
     private Integer dailyCapacity;

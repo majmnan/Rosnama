@@ -1,7 +1,8 @@
 package com.example.rosnama.Service;
 
 import com.example.rosnama.Api.ApiException;
-import com.example.rosnama.DTO.InternalEventDTO;
+import com.example.rosnama.DTO.InternalEventDTOIn;
+import com.example.rosnama.DTO.InternalEventDTOOut;
 import com.example.rosnama.DTO.InternalEventDTOOut;
 import com.example.rosnama.Model.*;
 import com.example.rosnama.Repository.*;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -40,11 +42,12 @@ public class InternalEventService  {
                 event.getEndTime(),
                 event.getPrice(),
                 event.getType(),
+                event.getCategory().getName(),
                 event.getDailyCapacity()
         )).toList();
     }
 
-    public void addInternalEventByOwner(Integer ownerId, InternalEventDTO internalEventDTO) {
+    public void addInternalEventByOwner(Integer ownerId, InternalEventDTOIn internalEventDTO) {
 
         EventOwner eventOwner = eventOwnerRepository.findEventOwnerById(ownerId);
         if (eventOwner == null) {
@@ -80,7 +83,7 @@ public class InternalEventService  {
     }
 
 
-    public void updateInternalEventByOwner(Integer ownerId, Integer eventId, InternalEventDTO internalEventDTO){
+    public void updateInternalEventByOwner(Integer ownerId, Integer eventId, InternalEventDTOIn internalEventDTO){
         EventOwner eventOwner = eventOwnerRepository.findEventOwnerById(ownerId);
         InternalEvent oldInternalEvent = internalEventRepository.findInternalEventById(eventId);
 
@@ -135,20 +138,26 @@ public class InternalEventService  {
         return convertToDtoOut(internalEventRepository.findInternalEventsByCity(city));
     }
 
-    public List<InternalEventDTOOut>getInternalEventByEndDateBetween(LocalDate endDateAfter, LocalDate endDateBefore){
-        return convertToDtoOut(internalEventRepository.findInternalEventByEndDateBetween(endDateAfter, endDateBefore));
+    public List<InternalEventDTOOut>getInternalEventByDateBetween(LocalDate endDateAfter, LocalDate endDateBefore){
+        return convertToDtoOut(internalEventRepository.findInternalEventsByDateBetween(endDateAfter, endDateBefore));
     }
 
-    public List<Registration>getAllRegistrationsByUserId(Integer userId ){
+    public List<InternalEventDTOOut> getOngoingByCategory(Integer categoryId){
+        Category category = categoryRepository.findCategoryById(categoryId);
+        if(category == null)
+            throw new ApiException("Category not found");
+
+        return convertToDtoOut(internalEventRepository.findInternalEventsByStatusAndCategoryOrderByEndDateAsc("OnGoing",category));
+    }
+
+    public Set<Registration> getAllRegistrationsByUserId(Integer userId ){
         User user = userRepository.findUserById(userId);
 
         if(user == null){
             throw new ApiException("User not found");
         }
 
-        return user.getRegistrations()
-                .stream()
-                .toList();
+        return user.getRegistrations();
     }
 
 
