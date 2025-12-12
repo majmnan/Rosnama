@@ -1,7 +1,7 @@
 package com.example.rosnama.Controller;
 
 import com.example.rosnama.Api.ApiResponse;
-import com.example.rosnama.Service.WhatsAppTemplateService;
+import com.example.rosnama.Service.WhatsAppService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,23 +12,19 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class WhatsAppTestController {
 
-    private final WhatsAppTemplateService whatsAppTemplateService;
+    private final WhatsAppService whatsAppService;
 
 
-    @PostMapping("/send-template")
-    public ResponseEntity<ApiResponse> sendTemplate() {
+    @PostMapping("/send/{phone}/{msg}")
+    public ResponseEntity<ApiResponse>send(@PathVariable String phone , @PathVariable String msg) {
 
-        whatsAppTemplateService.sendEventTemplate(
-                "+966545774754",
-                "test",
-                "12/1",
-                "3pm"
-        );
+
+               whatsAppService.whatsapp(phone, msg);
 
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(new ApiResponse("WhatsApp template sent successfully"));
+                .status(HttpStatus.OK).body(new ApiResponse("WhatsApp template sent successfully"));
     }
+
 
 
 }

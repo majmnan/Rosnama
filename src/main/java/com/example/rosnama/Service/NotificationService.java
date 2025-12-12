@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class NotificationService {
 
     private final EmailService emailService;
-    private final WhatsAppTemplateService whatsAppTemplateService;
+    private final WhatsAppService whatsAppService;
 
     // this between admin  event owner
     public void notifyOwnerPaymentSuccess(EventOwner owner, String eventTitle, Double amount) {
@@ -33,12 +33,7 @@ public class NotificationService {
 
     // this is for admin and user
     public void notifyUserRegistrationSuccess(User user, String eventTitle, String date) {
-        whatsAppTemplateService.sendEventTemplate(
-                user.getPhoneNumber(),
-                eventTitle,
-                date,
-                "Confirmed"
-        );
+        whatsAppService.whatsapp(user.getPhoneNumber(),eventTitle+"Registration Success");
     }
 
     // this is for admin  to event owner
