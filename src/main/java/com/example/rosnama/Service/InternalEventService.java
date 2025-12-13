@@ -8,6 +8,8 @@ import com.example.rosnama.Model.*;
 import com.example.rosnama.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -25,6 +27,7 @@ public class InternalEventService  {
     private final RegistrationRepository registrationRepository;
     private final NotificationService notificationService;
     private final AdminRepository adminRepository;
+    private final AiService aiService;
 
     public List<InternalEvent> getAllAllInternalEvents(){
         return internalEventRepository.findAll();
@@ -163,6 +166,85 @@ public class InternalEventService  {
         return convertToDtoOut(internalEventRepository.findInternalEventsByStatusAndCategoryOrderByEndDateAsc("OnGoing",category));
     }
 
+    public List<InternalEventDTOOut> recommendDependsOnUserAttendedEvents(Integer userId){
+        List<InternalEventDTOOut> dependsOn = convertToDtoOut(internalEventRepository.findInternalEventsByUserIdAndRegistrationStatus(userId, "Used"));
+        List<InternalEventDTOOut> from = convertToDtoOut(internalEventRepository.findAll());
+        return recommend(dependsOn, from);
+    }
+
+
+
+    public List<InternalEventDTOOut> recommend(
+            List<InternalEventDTOOut> dependsOn,
+            List<InternalEventDTOOut> from
+    ) {
+
+        // Basic validation
+        if (dependsOn == null || dependsOn.isEmpty() || from == null || from.isEmpty()) {
+            return List.of();
+        }
+
+        // 1. Build AI prompt
+        String prompt = """
+        You are an AI recommendation engine for an event management system called Rosnama.
+        
+        You are given two inputs:
+        
+        1) dependsOn:
+        A list of InternalEventDTOOut objects representing user preferences.
+        
+        2) from:
+        A list of InternalEventDTOOut objects representing candidate events.
+        
+        Your task:
+        - Recommend the TOP 3 most relevant events from "from" based on "dependsOn".
+        - Rank them from most relevant to least relevant.
+        - Do NOT recommend the same event as dependsOn.
+        - Use semantic similarity, not exact text matching.
+        
+        Priority rules:
+        - Highest: categoryName, type
+        - High: city, location
+        - Medium: startDate, startTime
+        - Low: price, dailyCapacity
+        - Use title and description semantically.
+        
+        Tie-breaking rules:
+        - Closer date first
+        - Then lower price
+        
+        IMPORTANT:
+        - Return ONLY valid JSON
+        - Return a JSON ARRAY
+        - Each element MUST match InternalEventDTOOut exactly
+        - No explanations
+        - No markdown
+        - No extra text
+        
+        dependsOn:
+        """ + aiService.toJson(dependsOn) + """
+        
+        from:
+        """ + aiService.toJson(from);
+
+        // 2. Call AI
+        String aiResponse = aiService.callAi(prompt);
+
+        // 3. Parse AI response into DTO
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<InternalEventDTOOut> recommended =
+                    objectMapper.readValue(
+                            aiService.extractJsonArray(aiResponse),
+                            new TypeReference<>() {}
+                    );
+
+            return recommended;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse AI recommendation", e);
+        }
+    }
 
 
 

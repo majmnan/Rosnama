@@ -19,9 +19,9 @@ public interface InternalEventRepository extends JpaRepository<InternalEvent, In
     List<InternalEvent> findInternalEventsByType(String type);
 
     List<InternalEvent> findInternalEventsByCity(String city);
-    
+
     List<InternalEvent> findInternalEventByStartDate(LocalDate startDate);
-    
+
     List<InternalEvent> findInternalEventByEndDate(LocalDate endDate);
 
     @Query("select e from InternalEvent e where e.startDate<?1 and e.endDate>?1 or e.startDate > ?1 and e.startDate <?2 order by e.endDate asc")
@@ -29,4 +29,6 @@ public interface InternalEventRepository extends JpaRepository<InternalEvent, In
 
     List<InternalEvent> findInternalEventsByStatusAndCategoryOrderByEndDateAsc(String status, Category category);
 
+    @Query("select distinct e from InternalEvent e join e.registrations r where r.user.id = ?1 and r.status=?2")
+    List<InternalEvent> findInternalEventsByUserIdAndRegistrationStatus(Integer userId, String status);
 }

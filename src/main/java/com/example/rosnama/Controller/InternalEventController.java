@@ -66,5 +66,10 @@ public class InternalEventController {
         return ResponseEntity.status(HttpStatus.OK).body(internalEventService.getOngoingByCategory(categoryId));
     }
 
+    @GetMapping("/recommend-user/{userId}")
+    public ResponseEntity<List<InternalEventDTOOut>> recommendByUserAttendedEvent(@PathVariable Integer userId){
+        return ResponseEntity.status(HttpStatus.OK).body(internalEventService.recommendDependsOnUserAttendedEvents(userId));
+    }
+
 
 }
