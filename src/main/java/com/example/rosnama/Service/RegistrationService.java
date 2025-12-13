@@ -84,14 +84,14 @@ public class RegistrationService {
         registrationRepository.save(registration);
 
         // send notification to user that registration is used
-//        notificationService.notifyUser(
-//                registration.getUser().getEmail(),
-//                registration.getUser().getPhoneNumber(),
-//                "Attendance confirmed",
-//                registration.getUser().getUsername(),
-//                " thank you for attending the event: %s on %s"
-//                        .formatted(registration.getInternalEvent().getTitle(), registration.getDate())
-//        );
+      notificationService.notify(
+                registration.getUser().getEmail(),
+                registration.getUser().getPhoneNumber(),
+                "Attendance confirmed",
+                registration.getUser().getUsername(),
+                " thank you for attending the event: %s on %s"
+                        .formatted(registration.getInternalEvent().getTitle(), registration.getDate())
+        );
 
 
 

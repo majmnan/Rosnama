@@ -63,6 +63,8 @@ public class ExternalEventService {
         // set category
         // save
 
+        externalEventRepository.save(event);
+
          }
 
     // update external event (By admin)
