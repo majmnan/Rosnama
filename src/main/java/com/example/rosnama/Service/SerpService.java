@@ -51,6 +51,8 @@ public class SerpService {
             for (JsonElement element : eventsArray) {
                 JsonObject eventObj = element.getAsJsonObject();
                 ExternalEventDTOIn dto = mapToExternalEventDTO(eventObj, from, to);
+                if(dto == null)
+                    continue;
                 result.add(dto);
             }
 
@@ -78,7 +80,9 @@ public class SerpService {
                 nonEmpty(getStringSafe(eventObj, "title"), "External Event")
         );
 
-        if(externalEventRepository.f)
+        if((externalEventRepository.findExternalEventByTitle(dto.getTitle())) != null)
+            return null;
+
 
         dto.setDescription(
                 nonEmpty(getStringSafe(eventObj, "description"),
