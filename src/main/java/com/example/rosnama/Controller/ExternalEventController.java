@@ -107,8 +107,19 @@ public class ExternalEventController {
     public ResponseEntity<List<ExternalEventDTOOut>> getOngoingByCategory(@PathVariable Integer categoryId) {
         return ResponseEntity.status(HttpStatus.OK).body(externalEventService.getOngoingByCategory(categoryId));
     }
-@GetMapping("/recommended-user/{userId}")
+
+    @GetMapping("recommend-event/{eventId}")
+    public ResponseEntity<List<ExternalEventDTOOut>> recommendByEvent(@PathVariable Integer eventId){
+        return ResponseEntity.status(HttpStatus.OK).body(externalEventService.recommendDependsOnEvent(eventId));
+    }
+
+    @GetMapping("/recommend-user-attending/{userId}")
     public ResponseEntity<List<ExternalEventDTOOut>>recommendDependsOnUserAttendedEvents(@PathVariable Integer userId){
         return ResponseEntity.status(HttpStatus.OK).body(externalEventService.recommendDependsOnUserAttendedEvents(userId));
+    }
+
+    @GetMapping("recommend-user-likes/{userId}")
+    public ResponseEntity<List<ExternalEventDTOOut>> recommendByUserHighRateEvents(@PathVariable Integer userId){
+        return ResponseEntity.status(HttpStatus.OK).body(externalEventService.recommendDependsOnUserHighRateEvents(userId));
     }
 }

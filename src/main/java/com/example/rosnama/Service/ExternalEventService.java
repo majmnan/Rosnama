@@ -57,7 +57,7 @@ public class ExternalEventService {
                 null, externalEventDTO.getTitle(), externalEventDTO.getOrganizationName(), externalEventDTO.getDescription(),
                 externalEventDTO.getCity(), externalEventDTO.getStartDate(), externalEventDTO.getEndDate(),
                 externalEventDTO.getStartTime(), externalEventDTO.getEndTime(), externalEventDTO.getUrl(),
-                "InActive", externalEventDTO.getType(), null, null, category);
+                "Active", externalEventDTO.getType(), null, null, category);
 
         externalEventRepository.save(event);
         // set category
@@ -224,16 +224,26 @@ public class ExternalEventService {
         return convertToDtoOut(externalEventRepository.findExternalEventsByStatusAndCategoryOrderByEndDateAsc("OnGoing",category));
     }
 
+    public List<ExternalEventDTOOut> recommendDependsOnEvent(Integer eventId){
+        List<ExternalEventDTOOut> dependsOn = convertToDtoOut(List.of(externalEventRepository.findExternalEventById(eventId)));
+        List<ExternalEventDTOOut> from = convertToDtoOut(externalEventRepository.findExternalEventsByDateBetween(LocalDate.now(),LocalDate.now().plusDays(7)));
+        return recommend(dependsOn, from);
+    }
 
+    public List<ExternalEventDTOOut> recommendDependsOnUserHighRateEvents(Integer userId){
+        List<InternalEventDTOOut> dependsOn = internalEventService.convertToDtoOut(internalEventRepository.findInternalEventHighReviewByUser(userId));
+        List<ExternalEventDTOOut> from = convertToDtoOut(externalEventRepository.findExternalEventsByDateBetween(LocalDate.now(),LocalDate.now().plusDays(7)));
+        return recommend(dependsOn, from);
+    }
 
     public List<ExternalEventDTOOut> recommendDependsOnUserAttendedEvents(Integer userId){
         List<InternalEventDTOOut> dependsOn = internalEventService.convertToDtoOut(internalEventRepository.findInternalEventsByUserIdAndRegistrationStatus(userId, "Used"));
-        List<ExternalEventDTOOut> from = convertToDtoOut(externalEventRepository.findAll());
+        List<ExternalEventDTOOut> from = convertToDtoOut(externalEventRepository.findExternalEventsByDateBetween(LocalDate.now(),LocalDate.now().plusDays(7)));
         return recommend(dependsOn, from);
     }
 
     public List<ExternalEventDTOOut> recommend(
-            List<InternalEventDTOOut> dependsOn,
+            List<?> dependsOn,
             List<ExternalEventDTOOut> from
     ) {
 
@@ -242,6 +252,13 @@ public class ExternalEventService {
             return List.of();
         }
 
+        String dependsClass;
+        if(dependsOn.get(0) instanceof InternalEventDTOOut)
+            dependsClass = "InternalEventDTOOut";
+        else if(dependsOn.get(0) instanceof ExternalEventDTOOut)
+            dependsClass = "ExternalEventDTOOut";
+        else
+            throw new ApiException("invalid List type");
         // 1. Build AI prompt
         String prompt = """
                 You are an AI recommendation engine for an event management system called Rosnama.
@@ -249,7 +266,7 @@ public class ExternalEventService {
                 You are given two inputs:
                 
                 1) dependsOn:
-                A list of InternalEventDTOOut objects representing user preferences.
+                A list of %s objects representing user preferences.
                 
                 2) from:
                 A list of ExternalEventDTOOut objects representing candidate events.
@@ -280,7 +297,7 @@ public class ExternalEventService {
                 - No extra text
                 
                 dependsOn:
-                """ + aiService.toJson(dependsOn) + """
+                """.formatted(dependsOn) + aiService.toJson(dependsOn) + """
                 
                 from:
                 """ + aiService.toJson(from);
@@ -304,6 +321,7 @@ public class ExternalEventService {
             throw new RuntimeException("Failed to parse AI recommendation", e);
         }
     }
+
 
 
 

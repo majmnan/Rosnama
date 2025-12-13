@@ -1,6 +1,7 @@
 package com.example.rosnama.Service;
 
 import com.example.rosnama.Api.ApiException;
+import com.example.rosnama.DTO.ExternalEventDTOOut;
 import com.example.rosnama.DTO.InternalEventDTOIn;
 import com.example.rosnama.DTO.InternalEventDTOOut;
 import com.example.rosnama.Model.*;
@@ -165,9 +166,21 @@ public class InternalEventService  {
         return convertToDtoOut(internalEventRepository.findInternalEventsByStatusAndCategoryOrderByEndDateAsc("OnGoing",category));
     }
 
+    public List<InternalEventDTOOut> recommendDependsOnEvent(Integer eventId){
+        List<InternalEventDTOOut> dependsOn = convertToDtoOut(List.of(internalEventRepository.findInternalEventById(eventId)));
+        List<InternalEventDTOOut> from = convertToDtoOut(internalEventRepository.findInternalEventsByDateBetween(LocalDate.now(),LocalDate.now().plusDays(7)));
+        return recommend(dependsOn, from);
+    }
+
+    public List<InternalEventDTOOut> recommendDependsOnUserHighRateEvents(Integer userId){
+        List<InternalEventDTOOut> dependsOn = convertToDtoOut(internalEventRepository.findInternalEventHighReviewByUser(userId));
+        List<InternalEventDTOOut> from = convertToDtoOut(internalEventRepository.findInternalEventsByDateBetween(LocalDate.now(),LocalDate.now().plusDays(7)));
+        return recommend(dependsOn, from);
+    }
+
     public List<InternalEventDTOOut> recommendDependsOnUserAttendedEvents(Integer userId){
         List<InternalEventDTOOut> dependsOn = convertToDtoOut(internalEventRepository.findInternalEventsByUserIdAndRegistrationStatus(userId, "Used"));
-        List<InternalEventDTOOut> from = convertToDtoOut(internalEventRepository.findAll());
+        List<InternalEventDTOOut> from = convertToDtoOut(internalEventRepository.findInternalEventsByDateBetween(LocalDate.now(),LocalDate.now().plusDays(7)));
         return recommend(dependsOn, from);
     }
 

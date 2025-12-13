@@ -1,7 +1,5 @@
 package com.example.rosnama.Advice;
 
-
-
 import com.example.rosnama.Api.ApiException;
 import com.example.rosnama.Api.ApiResponse;
 

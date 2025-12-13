@@ -1,4 +1,5 @@
 package com.example.rosnama.Service;
+import com.example.rosnama.DTO.ExternalEventDTOIn;
 import com.example.rosnama.Model.InternalEvent;
 import com.example.rosnama.Repository.ExternalEventRepository;
 import com.example.rosnama.Repository.InternalEventRepository;
@@ -7,7 +8,11 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.List;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -18,6 +23,8 @@ public class ScheduleService {
     private final InternalEventRepository internalEventRepository;
     private final RegistrationRepository registrationRepository;
     private final NotificationService notificationService;
+    private final SerpService serpService;
+    private final ExternalEventService externalEventService;
 
     @Transactional
     @Scheduled(cron = "0 0 0 * * *")
@@ -101,5 +108,28 @@ public class ScheduleService {
                 .forEach(e -> e.setStatus("Ended"));
 
         log.info("Daily schedule finished.");
+    }
+
+
+    @Scheduled(cron = "0 0 0 ? * WED")
+    public void fetchSunToTue() {
+        LocalDate sunday = LocalDate.now().with(DayOfWeek.SUNDAY);
+        LocalDate tuesday = sunday.plusDays(2);
+
+        List<ExternalEventDTOIn> events =
+                serpService.fetchExternalEvents(sunday, tuesday);
+
+        events.forEach(eDTOIn -> externalEventService.addExternalEventByAdmin(1,eDTOIn));
+    }
+
+    @Scheduled(cron = "0 0 9 ? * SUN")
+    public void fetchWedToSat() {
+        LocalDate wednesday = LocalDate.now().with(DayOfWeek.WEDNESDAY);
+        LocalDate saturday = wednesday.plusDays(3);
+
+        List<ExternalEventDTOIn> events =
+                serpService.fetchExternalEvents(wednesday, saturday);
+
+        events.forEach(eDTOIn -> externalEventService.addExternalEventByAdmin(1,eDTOIn));
     }
 }

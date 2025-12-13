@@ -24,6 +24,8 @@ public interface ExternalEventRepository extends JpaRepository<ExternalEvent, In
     List<ExternalEvent> findExternalEventsByStartDate(LocalDate startDate);
 
     List<ExternalEvent> findExternalEventsByEndDate(LocalDate endDate);
+    
+    ExternalEvent findExternalEventByTitle(String title);
 
     @Query("select e from ExternalEvent e where e.startDate<?1 and e.endDate>?1 or e.startDate > ?1 and e.startDate <?2 order by e.endDate asc")
     List<ExternalEvent> findExternalEventsByDateBetween(LocalDate after, LocalDate before);

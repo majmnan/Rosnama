@@ -1,6 +1,7 @@
 package com.example.rosnama.Controller;
 
 import com.example.rosnama.Api.ApiResponse;
+import com.example.rosnama.DTO.ExternalEventDTOOut;
 import com.example.rosnama.DTO.InternalEventDTOIn;
 import com.example.rosnama.DTO.InternalEventDTOOut;
 import com.example.rosnama.Model.InternalEvent;
@@ -68,11 +69,20 @@ public class InternalEventController {
         return ResponseEntity.status(HttpStatus.OK).body(internalEventService.getOngoingByCategory(categoryId));
     }
 
-    @GetMapping("/recommend-user/{userId}")
-    public ResponseEntity<List<InternalEventDTOOut>> recommendByUserAttendedEvent(@PathVariable Integer userId){
+    @GetMapping("/recommend-user-attending/{userId}")
+    public ResponseEntity<List<InternalEventDTOOut>> recommendByUserAttendedEvents(@PathVariable Integer userId){
         return ResponseEntity.status(HttpStatus.OK).body(internalEventService.recommendDependsOnUserAttendedEvents(userId));
     }
 
+    @GetMapping("recommend-user-high-rate/{userId}")
+    public ResponseEntity<List<InternalEventDTOOut>> recommendByUserHighRateEvents(@PathVariable Integer userId){
+        return ResponseEntity.status(HttpStatus.OK).body(internalEventService.recommendDependsOnUserHighRateEvents(userId));
+    }
+
+    @GetMapping("recommend-event/{eventId}")
+    public ResponseEntity<List<InternalEventDTOOut>> recommendByEvent(@PathVariable Integer eventId){
+        return ResponseEntity.status(HttpStatus.OK).body(internalEventService.recommendDependsOnEvent(eventId));
+    }
 
     @GetMapping("/review-summary/{ownerId}/{eventId}")
     public ResponseEntity<JsonNode> getEventReviewSummaryForOwner(@PathVariable Integer ownerId, @PathVariable Integer eventId) {

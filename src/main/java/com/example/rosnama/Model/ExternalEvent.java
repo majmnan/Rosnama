@@ -29,11 +29,11 @@ public class ExternalEvent {
     private Integer id;  //-
 
     @NotEmpty(message = " event title can not be empty ! ")
-    @Column(columnDefinition = "varchar(40) not null ")
+    @Column(columnDefinition = "varchar(100) not null ")
     private String title ;
 
     @NotEmpty(message = " event organizer name can not be empty ! ")
-    @Column(columnDefinition = "varchar(50) not null ")
+    @Column(columnDefinition = "varchar(100) not null ")
     private String organizationName ;
 
     @NotEmpty(message = " event description can not be empty ! ")

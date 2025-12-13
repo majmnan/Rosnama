@@ -31,4 +31,8 @@ public interface InternalEventRepository extends JpaRepository<InternalEvent, In
 
     @Query("select distinct e from InternalEvent e join e.registrations r where r.user.id = ?1 and r.status=?2")
     List<InternalEvent> findInternalEventsByUserIdAndRegistrationStatus(Integer userId, String status);
+
+    @Query("select distinct e from InternalEvent e join e.registrations r join r.review rev where r.user.id = ?1 and r.status = 'Used' and rev.rating >= 4")
+    List<InternalEvent> findInternalEventHighReviewByUser(Integer userId);
+
 }

@@ -7,12 +7,14 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.URL;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class ExternalEventDTOIn {
 

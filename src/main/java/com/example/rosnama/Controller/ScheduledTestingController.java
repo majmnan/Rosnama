@@ -20,4 +20,11 @@ public class ScheduledTestingController {
         scheduleService.dailyChanges();
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("daily scheduled method runes successfully"));
     }
+
+    @PutMapping("/fetch-events")
+    public ResponseEntity<ApiResponse> fetchEvents(){
+        scheduleService.fetchSunToTue();
+        scheduleService.fetchWedToSat();
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("event fetched successfully"));
+    }
 }
