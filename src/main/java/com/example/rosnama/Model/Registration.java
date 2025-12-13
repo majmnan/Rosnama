@@ -38,7 +38,6 @@ public class Registration {
 
     // added for the one-to-one relationship with Review
     @OneToOne(mappedBy = "registration", cascade = CascadeType.ALL)
-    @JsonIgnore
     @PrimaryKeyJoinColumn
     private Review review;
 

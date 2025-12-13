@@ -8,6 +8,7 @@ import com.example.rosnama.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDate;
@@ -244,23 +245,39 @@ public class InternalEventService  {
     }
 
 
-
-    // get a summary of a spesific internal event by reviews
-    public String summarizeEventReviews(Integer ownerId, Integer internalEventId) {
-
+    public JsonNode summarizeEventForOwner(Integer ownerId, Integer eventId){
         //check if  event exists
-        InternalEvent event = internalEventRepository.findInternalEventById(internalEventId);
+        InternalEvent event = internalEventRepository.findInternalEventById(eventId);
         if (event == null) {
             throw new ApiException("Internal event not found");
         }
 
-        //check if who is asking for the summary is the owner of event
-        if (!event.getEventOwner().getId().equals(ownerId)) {
-            throw new ApiException("access denied you do not own this event");
+        if(!event.getEventOwner().getId().equals(ownerId))
+            throw new ApiException("access denied");
+
+        return summarizeEventReviews(event,
+                """
+                    "improvements": {
+                    "recommendations": ["string", "string", "string"]
+                    }
+                    """
+                );
+    }
+
+    public JsonNode summarizeEvent(Integer eventId){
+        //check if  event exists
+        InternalEvent event = internalEventRepository.findInternalEventById(eventId);
+        if (event == null) {
+            throw new ApiException("Internal event not found");
         }
 
+        return summarizeEventReviews(event,"");
+    }
+
+    // get a summary of a spesific internal event by reviews
+    private JsonNode summarizeEventReviews(InternalEvent internalEvent, String additionalOutput) {
         // Get all reviews and check if there is a review
-        List<Review> reviews = reviewRepository.getReviewsByInternalEventId(internalEventId);
+        List<Review> reviews = reviewRepository.getReviewsByInternalEventId(internalEvent.getId());
         if (reviews.isEmpty()) {
             throw new ApiException("No reviews available for this event");
         }
@@ -271,30 +288,41 @@ public class InternalEventService  {
         //  AI Prompt
         String prompt = """
             You are an AI event quality analyst for an event platform called Rosnama.
-        
-            You are given reviews for ONE internal event.
-        
+            
+            You are given reviews for an internal event.
+            
             Your task:
-            - Analyze all reviews
-            - Summarize them clearly for the event owner
-            - Focus on:
-                1) What attendees liked
-                2) What attendees disliked
-                3) What needs improvement
-                4) Overall sentiment (Positive / Mixed / Negative)
-        
+            - Analyze ALL reviews
+            - Extract the most important insights
+            - Think like a professional event evaluator
+            
+            Return your response in EXACT JSON format only.
+            
+            JSON structure:
+            {
+              "summary": {
+                "positives": ["string", "string", "string"],
+                "negatives": ["string", "string", "string"],
+                "overallSentiment": "Positive | Mixed | Negative"
+              }"""+
+                additionalOutput
+            +"""
+            }
+            
             Rules:
-            - Be concise but useful
+            - Positives: top 3 most repeated or impactful strengths
+            - Negatives: top 3 most repeated or impactful weaknesses
+            - Recommendations must be actionable and realistic
             - Do NOT mention reviewers
             - Do NOT repeat reviews word-for-word
-            - Output MUST be plain text
-            - Use bullet points
-        
+            - Be concise and professional
+            - Output MUST be valid JSON ONLY (no markdown, no explanation)
+            
             Reviews:
             """ + aiService.toJson(reviewTexts);
 
-
-        return aiService.callAi(prompt);
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readTree(aiService.callAi(prompt));
     }
 
 
