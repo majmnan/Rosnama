@@ -35,12 +35,12 @@ public class EventOwner {
 
     @NotEmpty
     @Email
-    @Column(columnDefinition = "varchar(40) not null unique")
+    @Column(columnDefinition = "varchar(40) not null")
     private String email;
 
     @NotEmpty
     @Pattern(regexp = "^9665\\d{8}$")
-    @Column(columnDefinition = "varchar(15) not null unique")
+    @Column(columnDefinition = "varchar(15) not null")
     private String phone;
 
     @NotEmpty

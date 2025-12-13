@@ -63,23 +63,4 @@ public class NotificationService {
     }
 
 
-    // for user notification
-    public void notifyUser(String email, String phone, String subject, String name, String msg) {
-        sendEmail(email, subject, createBody(name, msg));
-        sendWhatsapp(phone, subject, msg);
-    }
-
-    // for event owner notification
-    public void notifyEventOwner(String email, String phone, String subject, String name, String msg) {
-        sendEmail(email, subject, createBody(name, msg));
-        sendWhatsapp(phone, subject, msg);
-    }
-
-    // for admin notification
-    public void notifyAdmin(String email, String phone, String subject, String name, String msg) {
-        sendEmail(email, subject, createBody(name, msg));
-        sendWhatsapp(phone, subject, msg);
-    }
-
-
 }

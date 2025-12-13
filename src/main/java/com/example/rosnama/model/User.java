@@ -44,12 +44,12 @@ public class User {
     @NotEmpty
     @Pattern(regexp = "^9665\\d{8}$",
             message = "Phone number must be in the format 9665xxxxxxxx")
-    @Column(columnDefinition = "varchar(15) not null unique")
+    @Column(columnDefinition = "varchar(15) not null")
     private String phoneNumber;
 
     @NotEmpty(message = "password should not be empty")
     @Email(message = "Email should be valid")
-    @Column(columnDefinition = "varchar(40) not null unique")
+    @Column(columnDefinition = "varchar(40) not null ")
     private String email;
 
     @NotNull(message = "balance should not be null ")

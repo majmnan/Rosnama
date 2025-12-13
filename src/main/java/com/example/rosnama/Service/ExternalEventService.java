@@ -126,7 +126,7 @@ public class ExternalEventService {
                 admin.getPhoneNumber(),
                 "Event Price Negotiation",
                 admin.getUsername(),
-                " New external event:\n" + event.getTitle() + "request has been submitted by " + owner.getUsername()
+                " New external event:\n" + event.getTitle() + "\nrequest has been submitted by " + owner.getUsername()
         ));
     }
 

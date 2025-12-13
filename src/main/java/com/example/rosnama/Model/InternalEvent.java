@@ -29,7 +29,7 @@ public class InternalEvent {
     private Integer id;
 
     @NotEmpty(message = "Title Can't be  null")
-    @Column(columnDefinition = "varchar (20) not null")
+    @Column(columnDefinition = "varchar (40) not null")
     private String title;
 
     @NotEmpty(message = "City Can't be not null")
@@ -76,7 +76,7 @@ public class InternalEvent {
 
     @NotEmpty
     @Pattern(regexp = "^(?i)(Conference|MeetAndGreets|Hackathon|Opening Ceremony|Celebration|Others)$",
-            message = "Type must be one of the predefined categories : " +
+            message = "Type must be one of the predefined types : " +
                       "Conference, MeetAndGreets, Hackathon, Opening Ceremony, Celebration, Others")
     private String type;
 

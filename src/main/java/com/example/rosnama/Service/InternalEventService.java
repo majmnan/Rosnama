@@ -31,7 +31,6 @@ public class InternalEventService  {
 
     public List<InternalEvent> getAllAllInternalEvents(){
         return internalEventRepository.findAll();
-
     }
 
     public List<InternalEventDTOOut> convertToDtoOut(List<InternalEvent> events){
@@ -87,15 +86,15 @@ public class InternalEventService  {
 
 
         //notify admin of the request
-        List<Admin> admins = adminRepository.findAll();
-        admins.forEach(admin ->
-        notificationService.notify(
-                admin.getEmail(),
-                admin.getPhoneNumber(),
-                "Event Price Negotiation",
-                admin.getUsername(),
-                " New external event:\n" + event.getTitle() + "request has been submitted by " + eventOwner.getUsername()
-        ));
+//        List<Admin> admins = adminRepository.findAll();
+//        admins.forEach(admin ->
+//        notificationService.notify(
+//                admin.getEmail(),
+//                admin.getPhoneNumber(),
+//                "Event Price Negotiation",
+//                admin.getUsername(),
+//                " New internal event: \n" + event.getTitle() + " \nrequest has been submitted by " + eventOwner.getUsername()
+//        ));
     }
 
 
@@ -172,8 +171,6 @@ public class InternalEventService  {
         return recommend(dependsOn, from);
     }
 
-
-
     public List<InternalEventDTOOut> recommend(
             List<InternalEventDTOOut> dependsOn,
             List<InternalEventDTOOut> from
@@ -204,10 +201,10 @@ public class InternalEventService  {
         
         Priority rules:
         - Highest: categoryName, type
+        - Use title and description semantically.
         - High: city, location
         - Medium: startDate, startTime
         - Low: price, dailyCapacity
-        - Use title and description semantically.
         
         Tie-breaking rules:
         - Closer date first
@@ -244,6 +241,7 @@ public class InternalEventService  {
         } catch (Exception e) {
             throw new RuntimeException("Failed to parse AI recommendation", e);
         }
+
     }
 
 

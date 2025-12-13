@@ -46,13 +46,13 @@ public class ReviewService {
         reviewRepository.save(review);
 
         //send notification to user that review is submitted successfully
-        notificationService.notifyUser(
-                registration.getUser().getEmail(),
-                registration.getUser().getPhoneNumber(),
-                "Review confirmation",
-                registration.getUser().getUsername(),
-                "Your review has been submitted successfully. Thank you for your feedback!"
-        );
+//        notificationService.notify(
+//                registration.getUser().getEmail(),
+//                registration.getUser().getPhoneNumber(),
+//                "Review confirmation",
+//                registration.getUser().getUsername(),
+//                "Your review has been submitted successfully. Thank you for your feedback!"
+//        );
 
     }
 
