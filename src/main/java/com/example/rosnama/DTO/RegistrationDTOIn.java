@@ -14,6 +14,7 @@ import org.checkerframework.checker.optional.qual.Present;
 
 import java.time.LocalDate;
 
+@AllArgsConstructor
 @Getter
 @Setter
 public class RegistrationDTOIn {

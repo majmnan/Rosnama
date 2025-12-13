@@ -38,7 +38,6 @@ public class UserController {
     public ResponseEntity<ApiResponse> addBalance(@PathVariable Integer id, @PathVariable Double balance){
         userService.addBalance(id,balance);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("User balance added Successfully"));
-
     }
 
     @DeleteMapping("/delete/{id}")
