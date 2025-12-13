@@ -53,6 +53,7 @@ public class ExternalEventService {
                 externalEventDTO.getStartTime(), externalEventDTO.getEndTime(), externalEventDTO.getUrl(),
                 "InActive", externalEventDTO.getType(), null, null, category);
 
+        externalEventRepository.save(event);
         // set category
         // save
 

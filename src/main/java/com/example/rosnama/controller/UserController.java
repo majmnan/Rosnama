@@ -34,18 +34,18 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("User Updated Successfully"));
     }
 
+    @PutMapping("/add-balance/{id}/{balance}")
+    public ResponseEntity<ApiResponse> addBalance(@PathVariable Integer id, @PathVariable Double balance){
+        userService.addBalance(id,balance);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("User balance added Successfully"));
+
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse>deleteUser(@PathVariable Integer id ){
         userService.deleteUser(id);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("User Deleted Successfully"));
     }
-//
-//    ///  extra endpoint
-//
-//    @GetMapping("/recommend/{userId}")
-//    public ResponseEntity<ApiResponse> generateAiRecommendations(@PathVariable Integer userId) {
-//        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(userService.generateAiRecommendations(userId)));
-//    }
 
 
 }

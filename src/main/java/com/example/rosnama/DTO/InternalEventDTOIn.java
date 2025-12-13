@@ -27,9 +27,6 @@ public class InternalEventDTOIn {
     private String city;
 
     @NotNull
-    @URL(protocol = "https", host = "www.google.com", message = "Must be a valid Google Maps URL")
-    @Pattern(regexp = "^https:\\/\\/www\\.google\\.com\\/maps.*$",
-            message = "URL must start with https://www.google.com/maps")
     private String location;
 
     @NotNull(message = " event start date can not be empty ! ")

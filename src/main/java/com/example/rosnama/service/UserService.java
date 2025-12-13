@@ -48,4 +48,12 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    public void addBalance(Integer id, Double balance){
+        User user = userRepository.findUserById(id);
+        if(user == null)
+            throw new ApiException("user not found");
+
+        user.setBalance(user.getBalance()+balance);
+        userRepository.save(user);
+    }
 }

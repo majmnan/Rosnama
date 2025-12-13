@@ -32,15 +32,9 @@ public class RegistrationController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("registration used"));
     }
 
-    @PutMapping("/get-by-event-date/{internalEventId}/{date}")
+    @GetMapping("/get-by-event-date/{internalEventId}/{date}")
     public ResponseEntity<List<Registration>> getRegistrationOfEventInADay(@PathVariable Integer internalEventId, @PathVariable LocalDate date) {
         return ResponseEntity.status(HttpStatus.OK).body(registrationService.getRegistrationOfEventInADay(internalEventId, date));
-    }
-
-    @PutMapping("/get-by-internal-event/{internalEventId}")
-    public ResponseEntity<ApiResponse> findRegistrationByInternalEventAndDate(@PathVariable Integer internalEventId) {
-        registrationService.useRegistration(internalEventId);
-        return ResponseEntity.ok(new ApiResponse("registration used"));
     }
 
     @GetMapping("/reg-by-user/{userId}")

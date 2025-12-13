@@ -7,10 +7,12 @@ import com.example.rosnama.Model.InternalEvent;
 import com.example.rosnama.Model.Registration;
 import com.example.rosnama.Service.InternalEventService;
 import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tools.jackson.databind.JsonNode;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -73,8 +75,13 @@ public class InternalEventController {
 
 
     @GetMapping("/review-summary/{ownerId}/{eventId}")
-    public ResponseEntity<ApiResponse> getEventReviewSummary(@PathVariable Integer ownerId, @PathVariable Integer eventId) {
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(internalEventService.summarizeEventReviews(ownerId, eventId)) );
+    public ResponseEntity<JsonNode> getEventReviewSummaryForOwner(@PathVariable Integer ownerId, @PathVariable Integer eventId) {
+        return ResponseEntity.status(HttpStatus.OK).body(internalEventService.summarizeEventForOwner(ownerId, eventId));
+    }
+
+    @GetMapping("/review-summary/{eventId}")
+    public ResponseEntity<JsonNode> getEventReviewSummaryForUser(@PathVariable Integer eventId) {
+        return ResponseEntity.status(HttpStatus.OK).body(internalEventService.summarizeEvent(eventId));
     }
 
 }
