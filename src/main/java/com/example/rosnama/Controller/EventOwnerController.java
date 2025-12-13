@@ -15,27 +15,31 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/event-owner")
 public class EventOwnerController {
+
     private final EventOwnerService eventOwnerService;
 
+    // get
     @GetMapping("/get")
     public ResponseEntity<List<EventOwner>> getEventOwners(){
         return ResponseEntity.status(HttpStatus.OK).body(eventOwnerService.getEventOwners());
     }
 
+    // add
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addEvent(@RequestBody@Valid EventOwner eventOwner){
         eventOwnerService.addEventOwner(eventOwner);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("event added successfully"));
     }
 
+    // update
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse> updateEvent(@PathVariable Integer id, @RequestBody@Valid EventOwner eventOwner){
         eventOwnerService.updateEventOwner(id, eventOwner);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("event updated successfully"));
     }
 
+    // delete
     @DeleteMapping("/delete/{id}")
-
     public ResponseEntity<ApiResponse> deleteEvent(@PathVariable Integer id){
         eventOwnerService.deleteEventOwner(id);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("event deleted successfully"));

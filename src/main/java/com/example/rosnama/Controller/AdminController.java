@@ -1,6 +1,5 @@
 package com.example.rosnama.Controller;
 
-
 import com.example.rosnama.Api.ApiResponse;
 import com.example.rosnama.Model.Admin;
 import com.example.rosnama.Service.AdminService;
@@ -33,8 +32,6 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Admin information has been added successfully") );
     }
 
-
-
     // update
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse> updateAdmin(@PathVariable Integer id, @Valid @RequestBody Admin admin){
@@ -42,16 +39,12 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Admin information has been updated successfully"));
     }
 
-
     // delete
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> deleteAdmin(@PathVariable Integer id){
         adminService.deleteAdmin(id);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Admin information has been deleted successfully"));
     }
-
-
-
 
 
 }

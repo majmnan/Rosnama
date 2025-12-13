@@ -18,10 +18,13 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
+    // get
     @GetMapping("/get")
     public ResponseEntity<List<Category>>getAllCategory(){
         return ResponseEntity.status(HttpStatus.OK).body(categoryService.getAllCategories());
     }
+
+    // add
     @PostMapping("/add/{adminId}")
         public ResponseEntity<ApiResponse>addCategory(@PathVariable Integer adminId, @RequestBody @Valid Category category){
             categoryService.addCategory(adminId, category);

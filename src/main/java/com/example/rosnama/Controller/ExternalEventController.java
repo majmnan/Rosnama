@@ -24,7 +24,6 @@ public class ExternalEventController {
     // connect to the DataBase
     private final ExternalEventService externalEventService;
 
-
     // get
     @GetMapping("/get/{adminId}")
     public ResponseEntity<List<ExternalEvent>> getAllExternalEvents(@PathVariable Integer adminId){
@@ -45,7 +44,6 @@ public class ExternalEventController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External Event has been updated successfully"));
     }
 
-
     //delete
     @DeleteMapping("/{adminId}/delete/{id}")
     public ResponseEntity<ApiResponse> deleteExternalEvent(@PathVariable Integer adminId, @PathVariable Integer id){
@@ -61,7 +59,6 @@ public class ExternalEventController {
         externalEventService.requestEventByOwner(dto);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External event created successfully and request generated automatically"));
     }
-
 
     // update external event by owner
     @PutMapping("/owner/{ownerId}/update/{eventId}")

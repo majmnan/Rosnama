@@ -57,7 +57,7 @@ public class ExternalEventService {
                 null, externalEventDTO.getTitle(), externalEventDTO.getOrganizationName(), externalEventDTO.getDescription(),
                 externalEventDTO.getCity(), externalEventDTO.getStartDate(), externalEventDTO.getEndDate(),
                 externalEventDTO.getStartTime(), externalEventDTO.getEndTime(), externalEventDTO.getUrl(),
-                "Active", externalEventDTO.getType(), null, null, category);
+                "Upcoming", externalEventDTO.getType(), null, null, category);
 
         externalEventRepository.save(event);
         // set category
