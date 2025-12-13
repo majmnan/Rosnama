@@ -72,4 +72,9 @@ public class InternalEventController {
     }
 
 
+    @GetMapping("/review-summary/{ownerId}/{eventId}")
+    public ResponseEntity<ApiResponse> getEventReviewSummary(@PathVariable Integer ownerId, @PathVariable Integer eventId) {
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(internalEventService.summarizeEventReviews(ownerId, eventId)) );
+    }
+
 }

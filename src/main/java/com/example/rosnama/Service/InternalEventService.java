@@ -3,7 +3,6 @@ package com.example.rosnama.Service;
 import com.example.rosnama.Api.ApiException;
 import com.example.rosnama.DTO.InternalEventDTOIn;
 import com.example.rosnama.DTO.InternalEventDTOOut;
-import com.example.rosnama.DTO.InternalEventDTOOut;
 import com.example.rosnama.Model.*;
 import com.example.rosnama.Repository.*;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,6 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +26,7 @@ public class InternalEventService  {
     private final NotificationService notificationService;
     private final AdminRepository adminRepository;
     private final AiService aiService;
+    private final ReviewRepository reviewRepository;
 
     public List<InternalEvent> getAllAllInternalEvents(){
         return internalEventRepository.findAll();
@@ -244,6 +243,59 @@ public class InternalEventService  {
 
     }
 
+
+
+    // get a summary of a spesific internal event by reviews
+    public String summarizeEventReviews(Integer ownerId, Integer internalEventId) {
+
+        //check if  event exists
+        InternalEvent event = internalEventRepository.findInternalEventById(internalEventId);
+        if (event == null) {
+            throw new ApiException("Internal event not found");
+        }
+
+        //check if who is asking for the summary is the owner of event
+        if (!event.getEventOwner().getId().equals(ownerId)) {
+            throw new ApiException("access denied you do not own this event");
+        }
+
+        // Get all reviews and check if there is a review
+        List<Review> reviews = reviewRepository.getReviewsByInternalEventId(internalEventId);
+        if (reviews.isEmpty()) {
+            throw new ApiException("No reviews available for this event");
+        }
+
+        // map reviews to text
+        List<String> reviewTexts = reviews.stream().map(review -> "Rating: " + review.getRating() + "/5 - " + review.getDescription()).toList();
+
+        //  AI Prompt
+        String prompt = """
+            You are an AI event quality analyst for an event platform called Rosnama.
+        
+            You are given reviews for ONE internal event.
+        
+            Your task:
+            - Analyze all reviews
+            - Summarize them clearly for the event owner
+            - Focus on:
+                1) What attendees liked
+                2) What attendees disliked
+                3) What needs improvement
+                4) Overall sentiment (Positive / Mixed / Negative)
+        
+            Rules:
+            - Be concise but useful
+            - Do NOT mention reviewers
+            - Do NOT repeat reviews word-for-word
+            - Output MUST be plain text
+            - Use bullet points
+        
+            Reviews:
+            """ + aiService.toJson(reviewTexts);
+
+
+        return aiService.callAi(prompt);
+    }
 
 
 
