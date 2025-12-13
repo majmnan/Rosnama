@@ -81,7 +81,6 @@ public class ScheduleService {
                                     Don't Forget!
                                     """
                                     .formatted(event.getTitle(), event.getLocation(), event.getStartTime(), event.getEndTime())
-
                     );
                 });
 

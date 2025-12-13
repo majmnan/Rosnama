@@ -46,10 +46,4 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Review deleted successfully"));
     }
 
-    ///  extra endpoint
-
-
-
-
-
 }

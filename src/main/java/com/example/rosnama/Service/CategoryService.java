@@ -17,7 +17,6 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final AdminRepository adminRepository;
 
-
     public List<Category>getAllCategories(){
         return categoryRepository.findAll();
     }
@@ -54,6 +53,6 @@ public class CategoryService {
             throw new ApiException("Admin not found");
         }
         categoryRepository.delete(category);
-
     }
+
 }

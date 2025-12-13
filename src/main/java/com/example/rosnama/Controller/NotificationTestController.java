@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/notification")
 public class NotificationTestController {
+
     private final NotificationService notificationService;
 
     @PostMapping("/send")
@@ -26,4 +27,5 @@ public class NotificationTestController {
         );
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("sent successfully"));
     }
+
 }

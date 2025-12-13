@@ -39,7 +39,6 @@ public class ExternalEventService {
         return externalEventRepository.findAll();
     }
 
-
     // add a new external event (By admin)
     public  void addExternalEventByAdmin(Integer adminId, ExternalEventDTOIn externalEventDTO) {
         // check admin exists
@@ -60,21 +59,20 @@ public class ExternalEventService {
                 "Upcoming", externalEventDTO.getType(), null, null, category);
 
         externalEventRepository.save(event);
-        // set category
-        // save
-
         externalEventRepository.save(event);
-
-         }
+    }
 
     // update external event (By admin)
     public void updateExternalEventByAdmin(Integer adminId, Integer id, ExternalEventDTOIn externalEventDTO) {
+
         // check admin exists
         Admin admin = adminRepository.findAdminById(adminId);
         if(admin == null) throw new ApiException("admin not found");
+
         // check external event exists
         ExternalEvent old = externalEventRepository.findExternalEventById(id);
         if (old == null) throw new ApiException("external event not found");
+
         // update from DTO to old
         old.setTitle(externalEventDTO.getTitle());
         old.setDescription(externalEventDTO.getDescription());
@@ -85,6 +83,7 @@ public class ExternalEventService {
         old.setEndTime(externalEventDTO.getEndTime());
         old.setUrl(externalEventDTO.getUrl());
         old.setType(externalEventDTO.getType());
+
         // update category
         Category category = categoryRepository.findCategoryById(externalEventDTO.getCategoryId());
         if (category == null) throw new ApiException("Category not found");
@@ -95,27 +94,32 @@ public class ExternalEventService {
 
     // delete external event from the database by admin
     public  void deleteExternalEvent(Integer adminId, Integer id) {
+
        // check admin exists
         Admin admin = adminRepository.findAdminById(adminId);
         if(admin == null) throw new ApiException("admin not found");
+
         // check external event exists
         ExternalEvent externalEvent = externalEventRepository.findExternalEventById(id);
         if (externalEvent == null) throw new ApiException("external event not found");
+
         // delete
         externalEventRepository.delete(externalEvent);
     }
-
 
     /// extra endpoints
 
     // add event by event owner
     public void requestEventByOwner (ExternalEventDTOIn externalEventDTO){
+
         // check first if owner exist
         EventOwner  owner = eventOwnerRepository.findEventOwnerById(externalEventDTO.getOwnerId());
         if (owner == null ) throw new ApiException("event owner not found !");
+
         // check category exists
         Category category = categoryRepository.findCategoryById(externalEventDTO.getCategoryId());
         if (category == null) throw new ApiException("Category not found");
+
         // save
         ExternalEvent event = new ExternalEvent(
                 null, externalEventDTO.getTitle(), externalEventDTO.getOrganizationName(), externalEventDTO.getDescription(),
@@ -164,16 +168,19 @@ public class ExternalEventService {
         old.setEndTime(externalEventDTO.getEndTime());
         old.setUrl(externalEventDTO.getUrl());
         old.setType(externalEventDTO.getType());
+
         // check category exists and update
         Category category = categoryRepository.findCategoryById(externalEventDTO.getCategoryId());
         if (category == null) throw new ApiException("Category not found");
         old.setCategory(category);
+
         // save
         externalEventRepository.save(old);
     }
 
     // delete  event by event owner
     public void deleteEventByOwner(Integer ownerId, Integer eventId){
+
         // check owner exists
         EventOwner owner = eventOwnerRepository.findEventOwnerById(ownerId);
         if(owner == null)
@@ -324,10 +331,6 @@ public class ExternalEventService {
         }
     }
 
-
-
-
-
     public List<ExternalEventDTOOut> convertToDtoOut(List<ExternalEvent> events){
         return events.stream().map(event -> new ExternalEventDTOOut(
                 event.getTitle(), event.getOrganizationName(),
@@ -338,8 +341,5 @@ public class ExternalEventService {
                 event.getCategory().getName()
         )).toList();
     }
-
-
-
 
 }

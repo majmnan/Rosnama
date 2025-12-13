@@ -22,7 +22,6 @@ public class InternalEventDTOOut {
 
     private String city;
 
-
     private String location;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -43,10 +42,6 @@ public class InternalEventDTOOut {
 
     private String type;
 
-
     private Integer dailyCapacity;
-
-
-
 
 }

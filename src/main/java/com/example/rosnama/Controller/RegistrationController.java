@@ -41,4 +41,5 @@ public class RegistrationController {
     public ResponseEntity<Set<Registration>>getAllRegistrationsByUserId(@PathVariable Integer userId){
         return ResponseEntity.status(HttpStatus.OK).body(registrationService.getAllRegistrationsByUserId(userId));
     }
+
 }

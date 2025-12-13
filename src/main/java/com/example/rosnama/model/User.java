@@ -10,7 +10,6 @@ import lombok.Setter;
 
 import java.util.Set;
 
-
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,12 +33,10 @@ public class User {
     @Column(columnDefinition = "varchar(20) not null")
     private String password;
 
-
     @NotNull(message = "Age should not be empty")
     @Column(columnDefinition = "int not null")
     @Max(100)
     private Integer age;
-
 
     @NotEmpty
     @Pattern(regexp = "^9665\\d{8}$",
@@ -59,4 +56,5 @@ public class User {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private Set<Registration> registrations;
+
 }

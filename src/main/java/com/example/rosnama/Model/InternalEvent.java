@@ -13,9 +13,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.URL;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -24,6 +22,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 public class InternalEvent {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -58,17 +57,15 @@ public class InternalEvent {
     @Column(columnDefinition = "TIME not null")
     private LocalTime startTime;
 
-
     @NotNull(message = "  end time can not be empty ! ")
     @JsonFormat(pattern = "HH:mm:ss")
     @Column(columnDefinition = "TIME not null")
     private LocalTime endTime;
 
-
     @NotEmpty(message = " event status can not be empty ! ")
     @Pattern(regexp = "^(?i)(InActive|Active|OnGoing|Ended)$")
     @Column(columnDefinition = "varchar(20) not null ")
-    private String status ; //-
+    private String status ;
 
     @NotNull(message = "price should not be empty")
     @Column(columnDefinition = "Double not null")
@@ -83,12 +80,11 @@ public class InternalEvent {
     @OneToOne(mappedBy = "internalEvent", cascade = CascadeType.ALL)
     @JsonIgnore
     @PrimaryKeyJoinColumn
-    private InternalEventRequest internalEventRequest; //-
+    private InternalEventRequest internalEventRequest;
 
     @ManyToOne
     @JsonIgnore
     private EventOwner eventOwner;
-
 
     @ManyToOne
     @JsonIgnore
@@ -101,6 +97,5 @@ public class InternalEvent {
     @NotNull(message = "dailyCapacity should be not null")
     @Column(columnDefinition = " int not null ")
     private Integer dailyCapacity;
-
 
 }

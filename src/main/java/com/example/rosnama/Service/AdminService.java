@@ -25,7 +25,6 @@ public class AdminService {
         adminRepository.save(admin);
     }
 
-
     // update admin information in the database
     public  void updateAdmin(Integer id, Admin admin) {
         Admin old = adminRepository.findAdminById(id);
@@ -42,7 +41,6 @@ public class AdminService {
         adminRepository.save(old);
     }
 
-
     // delete admin information from the database
     public void deleteAdmin(Integer id) {
         Admin admin = adminRepository.findAdminById(id);
@@ -52,10 +50,5 @@ public class AdminService {
         }
         adminRepository.delete(admin);
     }
-
-    /// extra endpoints
-
-
-
 
 }

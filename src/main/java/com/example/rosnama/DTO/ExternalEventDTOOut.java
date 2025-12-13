@@ -2,12 +2,8 @@ package com.example.rosnama.DTO;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.hibernate.validator.constraints.URL;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -36,9 +32,7 @@ public class ExternalEventDTOOut {
     @JsonFormat(pattern = "HH:mm:ss")
     private LocalTime endTime;
 
-
     private String url;
-
 
     private String type;
 

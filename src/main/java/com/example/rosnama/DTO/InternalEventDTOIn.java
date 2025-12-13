@@ -16,7 +16,6 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class InternalEventDTOIn {
 
-
     @NotEmpty(message = " event title can not be empty ! ")
     private String title ;
 
@@ -58,16 +57,11 @@ public class InternalEventDTOIn {
                     " (Conference , MeetAndGreets , Hackathon , Opening Ceremony, Others)")
     private String type;
 
-
-
     @NotNull(message = "dailyCapacity should be not null")
     @Column(columnDefinition = " int not null ")
     private Integer dailyCapacity;
 
-
     @NotNull(message = "categoryId cannot be null")
     private Integer categoryId;
-
-
 
 }

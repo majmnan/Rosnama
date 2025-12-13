@@ -15,6 +15,7 @@ import java.util.List;
 @RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
 
     @GetMapping("/get")
@@ -26,8 +27,8 @@ public class UserController {
     public ResponseEntity<ApiResponse>addUser(@RequestBody @Valid User user ) {
         userService.addUser(user);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("User Added successfully"));
-
     }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse>updateUser(@PathVariable Integer id ,@RequestBody @Valid User user){
         userService.updateUser(id, user);
@@ -38,7 +39,6 @@ public class UserController {
     public ResponseEntity<ApiResponse> addBalance(@PathVariable Integer id, @PathVariable Double balance){
         userService.addBalance(id,balance);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("User balance added Successfully"));
-
     }
 
     @DeleteMapping("/delete/{id}")
@@ -46,6 +46,5 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("User Deleted Successfully"));
     }
-
 
 }

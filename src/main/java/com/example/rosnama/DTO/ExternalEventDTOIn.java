@@ -56,7 +56,6 @@ public class ExternalEventDTOIn {
                     " (Conference , MeetAndGreets , Hackathon , Opening Ceremony, Others)")
     private String type;
 
-
     @NotNull(message = "ownerId can not be null !")
     private Integer ownerId;
 

@@ -18,8 +18,6 @@ public class InternalEventRequestService {
     private final InternalEventRepository internalEventRepository;
     private final NotificationService notificationService;
 
-
-
     public List<InternalEventRequest>getAllEventsRequest(Integer adminId){
         Admin admin =adminRepository.findAdminById(adminId);
         if(admin == null){
@@ -27,7 +25,6 @@ public class InternalEventRequestService {
         }
         return internalEventRequestRepository.findAll();
     }
-
 
     public void offerPrice(Integer requestId, Double price){
 
@@ -45,19 +42,18 @@ public class InternalEventRequestService {
         internalEventRequestRepository.save(request);
 
         InternalEvent event = request.getInternalEvent();
+
         //notify owner that his event's status is offered
-//        List<Admin> admins = adminRepository.findAll();
-//        admins.forEach(admin ->
-//        notificationService.notify(
-//                event.getEventOwner().getEmail(),
-//                event.getEventOwner().getPhone(),
-//                "Event Price Offer",
-//                event.getEventOwner().getUsername(),
-//                "Your event:\n" + event.getTitle() +"\nhas been offered a price of: " + price + " SAR. Please review and respond."
-//        ));
+        List<Admin> admins = adminRepository.findAll();
+        admins.forEach(admin ->
+        notificationService.notify(
+                event.getEventOwner().getEmail(),
+                event.getEventOwner().getPhone(),
+                "Event Price Offer",
+                event.getEventOwner().getUsername(),
+                "Your event:\n" + event.getTitle() +"\nhas been offered a price of: " + price + " SAR. Please review and respond."
+        ));
     }
-
-
 
 
     public void negotiates(Integer ownerId, Integer requestId, Double price){
@@ -87,7 +83,6 @@ public class InternalEventRequestService {
                 "Event:\n"+ eventRequest.getInternalEvent().getTitle() +"\nowner has proposed a new price: " + price + " SAR."
         ));
     }
-
 
 
     public void acceptOfferAndPay(Integer ownerId, Integer requestId){
@@ -131,9 +126,6 @@ public class InternalEventRequestService {
                 "Event:\n"+ event.getTitle() +"\nowner has accepted and paid the offered price of: " + request.getPrice() + " SAR.\n The event:\n"+ event.getTitle() +"is now activated."
         ));
     }
-
-
-
 
 
 }

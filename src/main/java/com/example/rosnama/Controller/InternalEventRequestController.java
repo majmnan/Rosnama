@@ -20,34 +20,24 @@ public class InternalEventRequestController {
     @GetMapping("/get/{adminId}")
     public ResponseEntity<List <InternalEventRequest>>getInternalEventRequests(@PathVariable Integer adminId){
         return ResponseEntity.status(HttpStatus.OK).body(internalEventRequestService.getAllEventsRequest(adminId));
-
     }
-
 
     @PutMapping ("/offer-for/{requestId}/{price}")
     public ResponseEntity<ApiResponse>offerPrice(@PathVariable Integer requestId,@PathVariable Double price){
         internalEventRequestService.offerPrice(requestId,price);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("offer send successfully"));
-
     }
-
 
     @PutMapping ("/negotiates/{ownerId}/{requestId}/{price}")
     public ResponseEntity<ApiResponse>negotiates(@PathVariable Integer ownerId, @PathVariable Integer requestId, @PathVariable Double price){
         internalEventRequestService.negotiates(ownerId,requestId,price);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("negotiate successfully"));
-
     }
-
 
     @PutMapping ("/accept-pay/{ownerId}/{requestId}")
     public ResponseEntity<ApiResponse>acceptOfferAndPay(@PathVariable Integer ownerId, @PathVariable Integer requestId){
         internalEventRequestService.acceptOfferAndPay(ownerId,requestId);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("event accepted and published successfully "));
-
     }
-
-
-
 
 }

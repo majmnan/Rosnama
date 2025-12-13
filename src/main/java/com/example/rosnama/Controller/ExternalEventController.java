@@ -1,10 +1,8 @@
 package com.example.rosnama.Controller;
 
-
 import com.example.rosnama.Api.ApiResponse;
 import com.example.rosnama.DTO.ExternalEventDTOIn;
 import com.example.rosnama.DTO.ExternalEventDTOOut;
-import com.example.rosnama.DTO.InternalEventDTOOut;
 import com.example.rosnama.Model.ExternalEvent;
 import com.example.rosnama.Service.ExternalEventService;
 import jakarta.validation.Valid;
@@ -74,7 +72,7 @@ public class ExternalEventController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External event deleted successfully"));
     }
 
-    // get all active events to show to users
+    /// filter events
     @GetMapping("/upcoming")
     public ResponseEntity<List<ExternalEventDTOOut>> getUpcomingExternalEvents(){
         return ResponseEntity.status(HttpStatus.OK).body(externalEventService.getUpcomingExternalEvents());
@@ -119,4 +117,5 @@ public class ExternalEventController {
     public ResponseEntity<List<ExternalEventDTOOut>> recommendByUserHighRateEvents(@PathVariable Integer userId){
         return ResponseEntity.status(HttpStatus.OK).body(externalEventService.recommendDependsOnUserHighRateEvents(userId));
     }
+
 }

@@ -25,14 +25,10 @@ public class Category {
     @Column(columnDefinition = "varchar(45) not null ")
     private String name;
 
-
     @OneToMany(cascade = CascadeType.ALL , mappedBy = "category")
     private Set<InternalEvent>internalEvents;
 
-
     @OneToMany(cascade = CascadeType.ALL , mappedBy = "category")
     private Set <ExternalEvent> externalEvents;
-
-
 
 }

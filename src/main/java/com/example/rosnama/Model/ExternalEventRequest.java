@@ -16,6 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ExternalEventRequest {
+
     @Id
     @GeneratedValue
     private Integer id;
@@ -32,4 +33,5 @@ public class ExternalEventRequest {
     @OneToOne
     @MapsId
     private ExternalEvent externalEvent;
+
 }

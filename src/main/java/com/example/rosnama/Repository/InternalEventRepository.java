@@ -1,8 +1,6 @@
 package com.example.rosnama.Repository;
 
-
 import com.example.rosnama.Model.Category;
-import com.example.rosnama.Model.ExternalEvent;
 import com.example.rosnama.Model.InternalEvent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

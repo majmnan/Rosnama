@@ -26,20 +26,23 @@ public class CategoryController {
 
     // add
     @PostMapping("/add/{adminId}")
-        public ResponseEntity<ApiResponse>addCategory(@PathVariable Integer adminId, @RequestBody @Valid Category category){
-            categoryService.addCategory(adminId, category);
-            return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Category Add successfully"));
-        }
-    @PutMapping("/update/{adminId}/{categoryId}")
-        public ResponseEntity<ApiResponse>updateCategory(@PathVariable Integer adminId,@PathVariable Integer categoryId ,@RequestBody @Valid Category category){
-            categoryService.updateCategory(adminId, categoryId, category);
-            return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Category updated successfully"));
-        }
-    @DeleteMapping("/delete/{adminId}/{categoryId}")
-        public ResponseEntity<ApiResponse>deleteCategory(@PathVariable Integer adminId ,@PathVariable Integer categoryId ){
-            categoryService.deleteCategory(adminId, categoryId);
-            return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Category deleted successfully"));
-        }
+    public ResponseEntity<ApiResponse>addCategory(@PathVariable Integer adminId, @RequestBody @Valid Category category){
+       categoryService.addCategory(adminId, category);
+       return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Category Add successfully"));
+    }
 
+    // update
+    @PutMapping("/update/{adminId}/{categoryId}")
+    public ResponseEntity<ApiResponse>updateCategory(@PathVariable Integer adminId,@PathVariable Integer categoryId ,@RequestBody @Valid Category category){
+        categoryService.updateCategory(adminId, categoryId, category);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Category updated successfully"));
+     }
+
+    // delete
+    @DeleteMapping("/delete/{adminId}/{categoryId}")
+    public ResponseEntity<ApiResponse>deleteCategory(@PathVariable Integer adminId ,@PathVariable Integer categoryId ){
+         categoryService.deleteCategory(adminId, categoryId);
+         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Category deleted successfully"));
+    }
 
 }

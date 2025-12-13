@@ -1,7 +1,6 @@
 package com.example.rosnama.Service;
 
 import com.example.rosnama.Api.ApiException;
-import com.example.rosnama.DTO.ExternalEventDTOOut;
 import com.example.rosnama.DTO.InternalEventDTOIn;
 import com.example.rosnama.DTO.InternalEventDTOOut;
 import com.example.rosnama.Model.*;
@@ -87,15 +86,15 @@ public class InternalEventService  {
 
 
         //notify admin of the request
-//        List<Admin> admins = adminRepository.findAll();
-//        admins.forEach(admin ->
-//        notificationService.notify(
-//                admin.getEmail(),
-//                admin.getPhoneNumber(),
-//                "Event Price Negotiation",
-//                admin.getUsername(),
-//                " New internal event: \n" + event.getTitle() + " \nrequest has been submitted by " + eventOwner.getUsername()
-//        ));
+        List<Admin> admins = adminRepository.findAll();
+        admins.forEach(admin ->
+        notificationService.notify(
+                admin.getEmail(),
+                admin.getPhoneNumber(),
+                "Event Price Negotiation",
+                admin.getUsername(),
+                " New internal event: \n" + event.getTitle() + " \nrequest has been submitted by " + eventOwner.getUsername()
+        ));
     }
 
 
@@ -132,8 +131,8 @@ public class InternalEventService  {
 
     }
 
-
     public void deleteInternalEventByOwner(Integer ownerId , Integer internalEventId){
+
         InternalEvent internalEvent =  internalEventRepository.findInternalEventById(internalEventId);
         if(internalEvent == null){
             throw new ApiException("InternalEvent Not found");
@@ -257,7 +256,6 @@ public class InternalEventService  {
 
     }
 
-
     public JsonNode summarizeEventForOwner(Integer ownerId, Integer eventId){
         //check if  event exists
         InternalEvent event = internalEventRepository.findInternalEventById(eventId);
@@ -337,7 +335,6 @@ public class InternalEventService  {
             ObjectMapper objectMapper = new ObjectMapper();
             return objectMapper.readTree(aiService.callAi(prompt));
     }
-
 
 
 

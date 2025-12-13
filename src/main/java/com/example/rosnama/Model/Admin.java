@@ -40,11 +40,9 @@ public class Admin {
     @Column(columnDefinition = "varchar(14) not null unique")
     private String phoneNumber;
 
-
     @NotEmpty(message = " error email can not be empty ! ")
     @Email(message = " please enter a valid email ! ")
     @Column(columnDefinition = "varchar(40) not null unique")
     private String email;
-
 
 }

@@ -14,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/external-event-request")
 public class ExternalEventRequestController {
+
     private final ExternalEventRequestService externalEventRequestService;
 
     @GetMapping("/get/{adminId}")

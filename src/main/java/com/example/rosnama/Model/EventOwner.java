@@ -16,6 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class EventOwner {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -61,7 +62,7 @@ public class EventOwner {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventOwner")
     private Set<ExternalEvent> externalEvents;
 
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventOwner")
     private Set<InternalEvent> internalEvents;
+
 }

@@ -44,4 +44,5 @@ public class EventOwnerController {
         eventOwnerService.deleteEventOwner(id);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("event deleted successfully"));
     }
+
 }

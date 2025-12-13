@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/test-schedule")
 public class ScheduledTestingController {
+
     private final ScheduleService scheduleService;
 
     @PutMapping("/daily")
@@ -27,4 +28,5 @@ public class ScheduledTestingController {
         scheduleService.fetchWedToSat();
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("event fetched successfully"));
     }
+
 }

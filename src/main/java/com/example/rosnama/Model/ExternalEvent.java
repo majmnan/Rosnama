@@ -1,6 +1,5 @@
 package com.example.rosnama.Model;
 
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -26,7 +25,7 @@ public class ExternalEvent {
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Integer id;  //-
+    private Integer id;
 
     @NotEmpty(message = " event title can not be empty ! ")
     @Column(columnDefinition = "varchar(100) not null ")
@@ -73,7 +72,7 @@ public class ExternalEvent {
     @NotEmpty(message = " event status can not be empty ! ")
     @Pattern(regexp = "^(?i)(InActive|Upcoming|OnGoing|Ended)$")
     @Column(columnDefinition = "varchar(20) not null ")
-    private String status ; //-
+    private String status ;
 
     @NotEmpty
     @Pattern(regexp =  "^(?i)(Conference|MeetAndGreets|Hackathon|Opening Ceremony|Others)$",
@@ -84,15 +83,14 @@ public class ExternalEvent {
     @OneToOne(mappedBy = "externalEvent", cascade = CascadeType.ALL)
     @JsonIgnore
     @PrimaryKeyJoinColumn
-    private ExternalEventRequest externalEventRequest; //-
+    private ExternalEventRequest externalEventRequest;
 
     @ManyToOne
     @JsonIgnore
-    private EventOwner eventOwner;//in dto its name is event owner id
+    private EventOwner eventOwner;
 
     @ManyToOne
     @JsonIgnore
     private Category category;
-
 
 }

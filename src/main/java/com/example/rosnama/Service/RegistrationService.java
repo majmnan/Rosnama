@@ -18,6 +18,7 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 public class RegistrationService {
+
     private final RegistrationRepository registrationRepository;
     private final UserRepository userRepository;
     private final InternalEventRepository internalEventRepository;
@@ -41,7 +42,6 @@ public class RegistrationService {
         if(!registrationDTOIn.getDate().isBefore(event.getEndDate()) && registrationDTOIn.getDate().isAfter(event.getStartDate()))
             throw new ApiException("enter date is out of event date");
 
-        //if(internalEvent.getRegistrations().size() >= capacity) throw new ApiException(event is full)
         if(registrationRepository.findRegistrationsByInternalEventAndDate(event,registrationDTOIn.getDate()).size() >= event.getDailyCapacity()){
             throw new ApiException("Event is full");
         }
@@ -55,19 +55,18 @@ public class RegistrationService {
         ));
 
         // send notification to user that registration is successful and details of registration
-
-//        notificationService.notify(
-//                user.getEmail(),
-//                user.getPhoneNumber(),
-//                "Registration Successful",
-//                user.getUsername(),
-//                """
-//                You have successfully registered for:
-//                Event: %s
-//                Date: %s
-//                """
-//                 .formatted(event.getTitle(), registrationDTOIn.getDate())
-//        );
+        notificationService.notify(
+                user.getEmail(),
+                user.getPhoneNumber(),
+                "Registration Successful",
+                user.getUsername(),
+                """
+                You have successfully registered for:
+                Event: %s
+                Date: %s
+                """
+                 .formatted(event.getTitle(), registrationDTOIn.getDate())
+        );
 
     }
 
@@ -93,8 +92,6 @@ public class RegistrationService {
                         .formatted(registration.getInternalEvent().getTitle(), registration.getDate())
         );
 
-
-
     }
 
     public List<Registration> getRegistrationOfEventInADay(Integer internalEventID, LocalDate date){
@@ -112,7 +109,6 @@ public class RegistrationService {
         if(user == null){
             throw new ApiException("User not found");
         }
-
         return user.getRegistrations();
     }
 }

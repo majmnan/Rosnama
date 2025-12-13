@@ -1,6 +1,5 @@
 package com.example.rosnama.DTO;
 
-
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +7,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ReviewDTO {
-
 
     @NotNull(message = "Rating cannot be null")
     @Min(value = 1, message = "Rating must be at least 0 ")
@@ -21,6 +19,5 @@ public class ReviewDTO {
 
     @NotNull(message = "Registration ID cannot be null")
     private Integer registrationId;
-
 
 }

@@ -16,10 +16,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class InternalEventRequest {
+
     @Id
     @GeneratedValue
     private Integer id;
-
 
     @NotEmpty
     @Pattern(regexp = "^(Requested|Offered)$")

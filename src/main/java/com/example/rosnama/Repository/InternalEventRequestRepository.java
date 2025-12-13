@@ -1,6 +1,5 @@
 package com.example.rosnama.Repository;
 
-
 import com.example.rosnama.Model.InternalEventRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
