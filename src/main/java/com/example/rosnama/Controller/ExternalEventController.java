@@ -4,6 +4,7 @@ package com.example.rosnama.Controller;
 import com.example.rosnama.Api.ApiResponse;
 import com.example.rosnama.DTO.ExternalEventDTOIn;
 import com.example.rosnama.DTO.ExternalEventDTOOut;
+import com.example.rosnama.DTO.InternalEventDTOOut;
 import com.example.rosnama.Model.ExternalEvent;
 import com.example.rosnama.Service.ExternalEventService;
 import jakarta.validation.Valid;
@@ -105,5 +106,9 @@ public class ExternalEventController {
     @GetMapping("/category/{categoryId}")
     public ResponseEntity<List<ExternalEventDTOOut>> getOngoingByCategory(@PathVariable Integer categoryId) {
         return ResponseEntity.status(HttpStatus.OK).body(externalEventService.getOngoingByCategory(categoryId));
+    }
+@GetMapping("/recommended-user/{userId}")
+    public ResponseEntity<List<ExternalEventDTOOut>>recommendDependsOnUserAttendedEvents(@PathVariable Integer userId){
+        return ResponseEntity.status(HttpStatus.OK).body(externalEventService.recommendDependsOnUserAttendedEvents(userId));
     }
 }
