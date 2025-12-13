@@ -1,18 +1,15 @@
 package com.example.rosnama.Service;
 
 import com.example.rosnama.Api.ApiException;
-//import com.example.rosnama.DTO.RecommendationDTO;
-import com.example.rosnama.Model.ExternalEvent;
 import com.example.rosnama.Model.User;
 import com.example.rosnama.Repository.ExternalEventRepository;
 import com.example.rosnama.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import tools.jackson.databind.ObjectMapper;
+
 
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +17,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final ExternalEventRepository externalEventRepository;
-//    private final AiService aiService;
+
 
     public List<User>getAllUsers(){
         return userRepository.findAll();
