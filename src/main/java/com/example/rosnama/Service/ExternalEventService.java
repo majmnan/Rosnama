@@ -3,11 +3,14 @@ package com.example.rosnama.Service;
 import com.example.rosnama.Api.ApiException;
 import com.example.rosnama.DTO.ExternalEventDTOIn;
 import com.example.rosnama.DTO.ExternalEventDTOOut;
+import com.example.rosnama.DTO.InternalEventDTOOut;
 import com.example.rosnama.Model.*;
 import com.example.rosnama.Repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tools.jackson.core.*;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,6 +26,9 @@ public class ExternalEventService {
     private final EventOwnerRepository eventOwnerRepository;
     private final CategoryRepository categoryRepository;
     private final NotificationService notificationService;
+    private final  InternalEventRepository internalEventRepository;
+    private final AiService aiService;
+    private final InternalEventService internalEventService;
 
     // get all external events (By admin)
     public List<ExternalEvent> getAllExternalEvents(Integer adminId) {
@@ -220,6 +226,88 @@ public class ExternalEventService {
 
 
 
+    public List<ExternalEventDTOOut> recommendDependsOnUserAttendedEvents(Integer userId){
+        List<InternalEventDTOOut> dependsOn = internalEventService.convertToDtoOut(internalEventRepository.findInternalEventsByUserIdAndRegistrationStatus(userId, "Used"));
+        List<ExternalEventDTOOut> from = convertToDtoOut(externalEventRepository.findAll());
+        return recommend(dependsOn, from);
+    }
+
+    public List<ExternalEventDTOOut> recommend(
+            List<InternalEventDTOOut> dependsOn,
+            List<ExternalEventDTOOut> from
+    ) {
+
+        // Basic validation
+        if (dependsOn == null || dependsOn.isEmpty() || from == null || from.isEmpty()) {
+            return List.of();
+        }
+
+        // 1. Build AI prompt
+        String prompt = """
+                You are an AI recommendation engine for an event management system called Rosnama.
+                
+                You are given two inputs:
+                
+                1) dependsOn:
+                A list of InternalEventDTOOut objects representing user preferences.
+                
+                2) from:
+                A list of ExternalEventDTOOut objects representing candidate events.
+                
+                Your task:
+                - Recommend the TOP 3 most relevant events from "from" based on "dependsOn".
+                - Rank them from most relevant to least relevant.
+                - Do NOT recommend the same event as dependsOn.
+                - Use semantic similarity, not exact text matching.
+                
+                Priority rules:
+                - Highest: categoryName, type
+                - Use title and description semantically.
+                - High: city, location
+                - Medium: startDate, startTime
+                - Low: price, dailyCapacity
+                
+                Tie-breaking rules:
+                - Closer date first
+                - Then lower price
+                
+                IMPORTANT:
+                - Return ONLY valid JSON
+                - Return a JSON ARRAY
+                - Each element MUST match ExternalEventDTOOut exactly
+                - No explanations
+                - No markdown
+                - No extra text
+                
+                dependsOn:
+                """ + aiService.toJson(dependsOn) + """
+                
+                from:
+                """ + aiService.toJson(from);
+
+        // 2. Call AI
+        String aiResponse = aiService.callAi(prompt);
+
+        // 3. Parse AI response into DTO
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<ExternalEventDTOOut> recommended =
+                    objectMapper.readValue(
+                            aiService.extractJsonArray(aiResponse),
+                            new TypeReference<>() {
+                            }
+                    );
+
+            return recommended;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse AI recommendation", e);
+        }
+    }
+
+
+
+
     public List<ExternalEventDTOOut> convertToDtoOut(List<ExternalEvent> events){
         return events.stream().map(event -> new ExternalEventDTOOut(
                 event.getTitle(), event.getOrganizationName(),
@@ -229,5 +317,9 @@ public class ExternalEventService {
                 event.getUrl(), event.getType(),
                 event.getCategory().getName()
         )).toList();
-    } 
+    }
+
+
+
+
 }
