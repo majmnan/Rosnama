@@ -55,16 +55,16 @@ public class ExternalEventController {
 
     // add external event by owner
     @PostMapping("/request-event")
-    public ResponseEntity<ApiResponse> addEventByOwner(@Valid @RequestBody ExternalEventDTOIn dto){
-        externalEventService.requestEventByOwner(dto);
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External event created successfully and request generated automatically"));
+    public ResponseEntity<ApiResponse> addEventByOwner(@Valid @RequestBody ExternalEventDTOIn externalEventDTOIn){
+        externalEventService.requestEventByOwner(externalEventDTOIn);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External event has been created successfully and request generated automatically"));
     }
 
     // update external event by owner
     @PutMapping("/owner/{ownerId}/update/{eventId}")
-    public ResponseEntity<ApiResponse> updateEventByOwner(@PathVariable Integer ownerId, @PathVariable Integer eventId, @Valid @RequestBody ExternalEventDTOIn dto){
-        externalEventService.updateEventByOwner(ownerId, eventId, dto);
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External event updated successfully"));
+    public ResponseEntity<ApiResponse> updateEventByOwner(@PathVariable Integer ownerId, @PathVariable Integer eventId, @Valid @RequestBody ExternalEventDTOIn externalEventDTOIn){
+        externalEventService.updateEventByOwner(ownerId, eventId, externalEventDTOIn);
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("External event has been updated successfully"));
     }
 
     // delete external event by owner

@@ -87,15 +87,15 @@ public class InternalEventService  {
 
 
         //notify admin of the request
-//        List<Admin> admins = adminRepository.findAll();
-//        admins.forEach(admin ->
-//        notificationService.notify(
-//                admin.getEmail(),
-//                admin.getPhoneNumber(),
-//                "Event Price Negotiation",
-//                admin.getUsername(),
-//                " New internal event: \n" + event.getTitle() + " \nrequest has been submitted by " + eventOwner.getUsername()
-//        ));
+        List<Admin> admins = adminRepository.findAll();
+        admins.forEach(admin ->
+        notificationService.notify(
+                admin.getEmail(),
+                admin.getPhoneNumber(),
+                "Event Price Negotiation",
+                admin.getUsername(),
+                " New internal event: \n" + event.getTitle() + " \nrequest has been submitted by " + eventOwner.getUsername()
+        ));
     }
 
 

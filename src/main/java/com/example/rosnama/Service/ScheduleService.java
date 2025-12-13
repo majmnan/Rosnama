@@ -45,20 +45,20 @@ public class ScheduleService {
 
                     InternalEvent event = registration.getInternalEvent();
                     //remind users of their active registration
-//                    notificationService.notify(
-//                            registration.getUser().getEmail(),
-//                            registration.getUser().getPhoneNumber(),
-//                            "Event Today Reminder",
-//                            registration.getUser().getUsername(),
-//                            """
-//                                    Reminder: You have an event today:
-//                                    title: %s
-//                                    location: %s
-//                                    startTime: %s
-//                                    endTime: %s
-//                                    """
-//                                    .formatted(event.getTitle(), event.getLocation(), event.getStartTime(), event.getEndTime())
-//                    );
+                    notificationService.notify(
+                            registration.getUser().getEmail(),
+                            registration.getUser().getPhoneNumber(),
+                            "Event Today Reminder",
+                            registration.getUser().getUsername(),
+                            """
+                                    Reminder: You have an event today:
+                                    title: %s
+                                    location: %s
+                                    startTime: %s
+                                    endTime: %s
+                                    """
+                                    .formatted(event.getTitle(), event.getLocation(), event.getStartTime(), event.getEndTime())
+                    );
                 });
 
 
@@ -67,22 +67,22 @@ public class ScheduleService {
                 .forEach(r -> {
                     InternalEvent event = r.getInternalEvent();
                     //remind users of their active registration
-//                    notificationService.notify(
-//                            r.getUser().getEmail(),
-//                            r.getUser().getPhoneNumber(),
-//                            "Tomorrow Event Reminder",
-//                            r.getUser().getUsername(),
-//                            """
-//                                    Reminder: You have an event tomorrow:
-//                                    title: %s
-//                                    location: %s
-//                                    startTime: %s
-//                                    endTime: %s
-//                                    Don't Forget!
-//                                    """
-//                                    .formatted(event.getTitle(), event.getLocation(), event.getStartTime(), event.getEndTime())
-//
-//                    );
+                    notificationService.notify(
+                            r.getUser().getEmail(),
+                            r.getUser().getPhoneNumber(),
+                            "Tomorrow Event Reminder",
+                            r.getUser().getUsername(),
+                            """
+                                    Reminder: You have an event tomorrow:
+                                    title: %s
+                                    location: %s
+                                    startTime: %s
+                                    endTime: %s
+                                    Don't Forget!
+                                    """
+                                    .formatted(event.getTitle(), event.getLocation(), event.getStartTime(), event.getEndTime())
+
+                    );
                 });
 
         //make registration ended
@@ -93,13 +93,13 @@ public class ScheduleService {
 
                     InternalEvent event = r.getInternalEvent();
                     //notify users that their registration expired and ended
-//                    notificationService.notify(
-//                            r.getUser().getEmail(),
-//                            r.getUser().getPhoneNumber(),
-//                            "Registration Expired",
-//                            r.getUser().getUsername(),
-//                            "Your registration of event:\n"+ event.getTitle() +"\nhas expired."
-//                    );
+                    notificationService.notify(
+                            r.getUser().getEmail(),
+                            r.getUser().getPhoneNumber(),
+                            "Registration Expired",
+                            r.getUser().getUsername(),
+                            "Your registration of event:\n"+ event.getTitle() +"\nhas expired."
+                    );
                 });
         //make events ended
         externalEventRepository.findExternalEventsByEndDate(LocalDate.now().minusDays(1))
