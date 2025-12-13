@@ -29,21 +29,21 @@ public class AdminController {
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addAdmin(@Valid @RequestBody Admin admin){
         adminService.addAdmin(admin);
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Admin information has been added successfully") );
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Admin has been added successfully") );
     }
 
     // update
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse> updateAdmin(@PathVariable Integer id, @Valid @RequestBody Admin admin){
         adminService.updateAdmin(id,admin);
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Admin information has been updated successfully"));
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Admin has been updated successfully"));
     }
 
     // delete
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> deleteAdmin(@PathVariable Integer id){
         adminService.deleteAdmin(id);
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Admin information has been deleted successfully"));
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Admin has been deleted successfully"));
     }
 
 
