@@ -32,10 +32,10 @@ public class ScheduleService {
         log.info("Daily schedule started...");
 
         //make events OnGoing
-        externalEventRepository.findExternalEventsByStartDate(LocalDate.now())
+        externalEventRepository.findExternalEventsByDateBetween(LocalDate.now(),LocalDate.now())
                 .forEach(e ->e.setStatus("OnGoing"));
 
-        internalEventRepository.findInternalEventByStartDate(LocalDate.now())
+        internalEventRepository.findInternalEventsByDateBetween(LocalDate.now(),LocalDate.now())
                 .forEach(e -> e.setStatus("OnGoing"));
 
         //make registration active

@@ -101,6 +101,9 @@ public class InternalEventRequestService {
         if(!(eventOwner.getBalance() >= request.getPrice()))
             throw new ApiException("event owner doesn't have enough money");
 
+        if(request.getStatus().equals("Requested"))
+            throw new ApiException("event wait of offer!");
+
         eventOwner.setBalance(eventOwner.getBalance()-request.getPrice());
         eventOwnerRepository.save(eventOwner);
 

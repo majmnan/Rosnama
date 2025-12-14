@@ -13,6 +13,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 
@@ -41,6 +42,12 @@ public class ControllerAdvice {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ApiResponse> HttpMessageNotReadableException(HttpMessageNotReadableException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage()));
+    }
+
+
+    @ExceptionHandler(WebClientResponseException.class)
+    public ResponseEntity<ApiResponse> HttpMessageNotReadableException(WebClientResponseException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage()));
     }
 

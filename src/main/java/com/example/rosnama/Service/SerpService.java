@@ -90,7 +90,7 @@ public class SerpService {
         );
 
         dto.setCity(
-                nonEmpty(extractCity(eventObj), "Riyadh")
+                nonEmpty(extractCity(eventObj), "Saudi")
         );
 
         dto.setUrl(

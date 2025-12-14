@@ -21,9 +21,9 @@ public class NotificationService {
     private String instance;
 
     public void notify(String email, String phone, String subject, String name, String msg) {
-        String body = createBody(name, msg);
-        sendEmail(email, subject, body);
-        sendWhatsapp(phone, subject, body);
+//        String body = createBody(name, msg);
+//        sendEmail(email, subject, body);
+//        sendWhatsapp(phone, subject, body);
     }
 
     private void sendEmail(String toEmail, String subject, String body){

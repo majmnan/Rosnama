@@ -51,7 +51,7 @@ public class InternalEventService  {
         )).toList();
     }
 
-    public void addInternalEventByOwner(Integer ownerId, InternalEventDTOIn internalEventDTO , Integer adminId){
+    public void addInternalEventByOwner(Integer ownerId, InternalEventDTOIn internalEventDTO){
 
         EventOwner eventOwner = eventOwnerRepository.findEventOwnerById(ownerId);
         if (eventOwner == null) {

@@ -24,7 +24,7 @@ public interface InternalEventRepository extends JpaRepository<InternalEvent, In
 
     List<InternalEvent> findInternalEventByEndDate(LocalDate endDate);
 
-    @Query("select e from InternalEvent e where e.startDate<?1 and e.endDate>?1 or e.startDate > ?1 and e.startDate <?2 order by e.endDate asc")
+    @Query("select e from InternalEvent e where e.startDate<=?1 and e.endDate>=?1 or e.startDate >= ?1 and e.startDate <= ?2 order by e.endDate asc")
     List<InternalEvent> findInternalEventsByDateBetween(LocalDate after, LocalDate before);
 
     List<InternalEvent> findInternalEventsByStatusAndCategoryOrderByEndDateAsc(String status, Category category);

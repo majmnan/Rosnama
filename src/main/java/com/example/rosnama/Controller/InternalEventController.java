@@ -32,8 +32,8 @@ public class InternalEventController {
     }
 
     @PostMapping("/add/{eventOwnerId}/{adminId}")
-    public ResponseEntity<ApiResponse> addInternalEvents(@PathVariable Integer eventOwnerId , @PathVariable Integer adminId ,  @RequestBody @Valid InternalEventDTOIn DTO){
-        internalEventService.addInternalEventByOwner(eventOwnerId , DTO ,adminId);
+    public ResponseEntity<ApiResponse> addInternalEvents(@PathVariable Integer eventOwnerId , @RequestBody @Valid InternalEventDTOIn DTO){
+        internalEventService.addInternalEventByOwner(eventOwnerId , DTO);
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Internal Events Add successfully"));
     }
 
