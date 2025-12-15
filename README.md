@@ -44,6 +44,11 @@ It enhances user experience using AI recommendations, AI review summaries, autom
 
 ---
 
+## ER Diagram
+![ER Diagram](https://github.com/majmnan/Rosnama/blob/master/Er%20Diagram.png)
+
+---
+
 ## 📌 Team Responsibilities Recap
 
 | Member       | Core Responsibilities                                                        |
