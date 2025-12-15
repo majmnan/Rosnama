@@ -129,9 +129,9 @@ By: Asrar, Mohannad
 | POST | /add/{adminId} | Add external event (admin) | Asrar |
 | PUT | /{adminId}/update/{id} | Update external event (admin) | Asrar |
 | DELETE | /{adminId}/delete/{id} | Delete external event (admin) | Asrar |
-| POST | /request-event | Owner creates external event + request auto generated | Mohannad |
-| PUT | /owner/{ownerId}/update/{eventId} | Update external event (owner) | Mohannad |
-| DELETE | /owner/{ownerId}/delete/{eventId} | Delete external event (owner) | Mohannad |
+| POST | /request-event | Owner creates external event + request auto generated | Asrar |
+| PUT | /owner/{ownerId}/update/{eventId} | Update external event (owner) | Asrar |
+| DELETE | /owner/{ownerId}/delete/{eventId} | Delete external event (owner) | Asrar |
 | GET | /upcoming | Get upcoming external events | Mohannad |
 | GET | /ongoing | Get ongoing external events | Mohannad |
 | GET | /between/{after}/{before} | Get ongoing external events between dates | Mohannad |
