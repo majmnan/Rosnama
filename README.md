@@ -1,8 +1,49 @@
 # 📅 Rosnama (رزنامة السعودية)
 
-A smart Saudi events platform to discover, manage, request, publish, and register for events with AI-powered recommendations and summaries.
+## Overview
+Rosnama (روزنامة السعودية) is a smart event platform for discovering, publishing, and managing internal and external events through a controlled request and approval process.
+It enhances user experience using AI recommendations, AI review summaries, automation, and real-world event data integration.
 
 ---
+
+## 👥 Stakeholders & System Capabilities
+
+### 👤 For Users
+
+1. Discover events by **city, type, and category**, with advanced filtering options.
+2. View complete event details including **title, description, schedule, location, and external URLs** when applicable.
+3. Register for **internal events** directly within Rosnama without leaving the platform.
+4. View and track their **registrations and event participation status**.
+5. **AI Recommendations:** receive personalized event suggestions based on attended events, preferences, and ratings.
+6. **Reviews & Feedback:** submit reviews after attending events, with **AI-generated summaries** highlighting key strengths and improvement areas.
+
+---
+
+### 🏢 For Companies & Startups (Event Owners)
+
+1. Register and manage an **EventOwner** account.
+2. Submit event publishing requests through Rosnama:
+
+   * **External Event Request:** provide event details and an external registration URL, published after admin offer approval and payment.
+   * **Internal Event Request:** create events hosted inside Rosnama where users register directly through the platform, published after admin offer approval and payment.
+3. **Negotiate pricing**, accept offers, and complete payment to activate events.
+4. Monitor event status transitions such as **Requested, Offered, Published, Ongoing, and Ended**.
+
+---
+
+### 🤖 AI & Automation (Platform-Wide)
+
+* Provide **AI-powered recommendations** to improve user engagement.
+* Generate **AI summaries of reviews** to give quick insights for users and event owners.
+
+---
+
+### ⏱️ Scheduling methods
+* Automate **daily status updates** for events and registrations.
+* Fetch real events using **SerpApi** to enrich platform content.
+
+---
+
 ## 📌 Team Responsibilities Recap
 
 | Member       | Core Responsibilities                                                        |
